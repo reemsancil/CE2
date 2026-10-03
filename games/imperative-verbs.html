@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A fun imperative verbs game for CE2 English students." />
+    <title>Imperative Verbs | CE2 Learning Games</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="imperative-verbs.css" />
+  </head>
+  <body>
+    <main class="game-page">
+      <a class="home-link" href="../index.html"><span aria-hidden="true">←</span> CE2 Homepage</a>
+
+      <section class="game-panel" aria-labelledby="game-title">
+        <header class="game-header">
+          <div class="title-wrap">
+            <span class="game-icon" aria-hidden="true">🚦</span>
+            <div><p class="kicker">Sentence game</p><h1 id="game-title">Imperative Verbs</h1></div>
+          </div>
+          <div class="score-pill">⭐ Score: <strong id="score">0</strong></div>
+        </header>
+
+        <div id="quiz-view">
+          <div class="progress-info">
+            <span>Question <strong id="question-number">1</strong> / 10</span>
+            <span id="progress-label">Let’s begin!</span>
+          </div>
+          <div class="progress-track" role="progressbar" aria-label="Game progress" aria-valuemin="0" aria-valuemax="10" aria-valuenow="1">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+
+          <div class="question-area">
+            <p class="instruction">Is this a command or an instruction?</p>
+            <div class="sentence" id="sentence">Open your book.</div>
+            <div class="answers" id="answers" aria-label="Answer choices">
+              <button class="answer-button answer-button--command" type="button" data-answer="command"><span aria-hidden="true">💬</span> COMMAND</button>
+              <button class="answer-button answer-button--direction" type="button" data-answer="direction"><span aria-hidden="true">🧭</span> INSTRUCTION / DIRECTION</button>
+            </div>
+            <p class="feedback" id="feedback" aria-live="polite"></p>
+            <button class="primary-button next-button" id="next-button" type="button">Next Question <span aria-hidden="true">→</span></button>
+          </div>
+        </div>
+
+        <div class="results" id="results" hidden>
+          <div class="celebration" aria-hidden="true">🎉</div>
+          <h2 tabindex="-1">Excellent work!</h2>
+          <p>Your score: <strong><span id="final-score">0</span> / 10</strong></p>
+          <div class="result-actions">
+            <button class="primary-button" id="play-again" type="button">↻ Play Again</button>
+            <a class="secondary-button" href="../index.html">⌂ Back to CE2 Homepage</a>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="imperative-verbs.js"></script>
+  </body>
+</html>
