@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Fun, child-friendly learning games for CE2 students." />
+    <title>CE2 Learning Games</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <div class="hero__decor hero__decor--star" aria-hidden="true">★</div>
+        <div class="hero__decor hero__decor--note" aria-hidden="true">♫</div>
+        <div class="hero__badge" aria-hidden="true">✏️</div>
+        <h1>CE2 Learning Games</h1>
+        <p>Choose a game and have fun learning!</p>
+      </header>
+
+      <main class="games" aria-labelledby="games-heading">
+        <div class="section-title">
+          <span aria-hidden="true">✨</span>
+          <h2 id="games-heading">Pick a game</h2>
+          <span aria-hidden="true">✨</span>
+        </div>
+
+        <div class="game-grid">
+          <!-- Add future CE2 game cards to this grid. Each card can link to its own page. -->
+          <a class="game-card game-card--rhymes" href="games/rhyming-words.html">
+            <span class="game-card__icon" aria-hidden="true">🎵</span>
+            <span class="game-card__content">
+              <span class="game-card__eyebrow">Word game</span>
+              <span class="game-card__title">Rhyming Words</span>
+              <span class="game-card__description">Find the words that rhyme!</span>
+            </span>
+            <span class="game-card__arrow" aria-hidden="true">→</span>
+          </a>
+
+          <div class="coming-soon" aria-hidden="true">
+            <span>More fun games</span>
+            <strong>coming soon!</strong>
+          </div>
+        </div>
+      </main>
+
+      <footer><span aria-hidden="true">🌈</span> Learn, play, and grow!</footer>
+    </div>
+  </body>
+</html>

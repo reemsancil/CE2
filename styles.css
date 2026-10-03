@@ -1,0 +1,93 @@
+:root {
+  --ink: #26345d;
+  --muted: #60709c;
+  --purple: #7056d9;
+  --purple-dark: #5941bf;
+  --yellow: #ffd65a;
+  --cream: #fffaf0;
+  --white: #ffffff;
+  font-family: "Nunito", system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--cream);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 8% 8%, rgba(255, 214, 90, .28) 0 70px, transparent 72px),
+    radial-gradient(circle at 92% 20%, rgba(111, 210, 190, .2) 0 100px, transparent 102px),
+    linear-gradient(180deg, #fffdf7 0%, #fff7e5 100%);
+}
+
+.page-shell { min-height: 100vh; display: flex; flex-direction: column; }
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 64px 24px 72px;
+  text-align: center;
+  color: white;
+  background: linear-gradient(125deg, #6750cf 0%, #866be6 58%, #9c78ed 100%);
+  border-radius: 0 0 48% 48% / 0 0 36px 36px;
+  box-shadow: 0 10px 28px rgba(79, 55, 164, .2);
+}
+
+.hero::before, .hero::after {
+  content: ""; position: absolute; border: 3px solid rgba(255,255,255,.22); border-radius: 50%;
+}
+.hero::before { width: 150px; height: 150px; left: -40px; top: -55px; }
+.hero::after { width: 210px; height: 210px; right: -60px; bottom: -130px; }
+
+.hero__badge {
+  display: grid; place-items: center; width: 64px; height: 64px; margin: 0 auto 14px;
+  font-size: 31px; background: var(--yellow); border: 4px solid rgba(255,255,255,.7);
+  border-radius: 20px; transform: rotate(-5deg); box-shadow: 0 7px 0 #d9a923;
+}
+
+.hero h1 {
+  margin: 0; font-family: "Baloo 2", sans-serif; font-size: clamp(2.35rem, 6vw, 4rem);
+  line-height: 1.05; letter-spacing: -.03em; text-shadow: 0 3px 0 rgba(48,31,110,.25);
+}
+
+.hero p { margin: 12px 0 0; font-size: clamp(1.05rem, 2.4vw, 1.35rem); font-weight: 700; color: #f2edff; }
+.hero__decor { position: absolute; opacity: .75; color: var(--yellow); }
+.hero__decor--star { left: 15%; top: 35%; font-size: 28px; transform: rotate(-15deg); }
+.hero__decor--note { right: 16%; top: 30%; font-size: 36px; transform: rotate(12deg); }
+
+.games { width: min(1080px, calc(100% - 40px)); margin: 50px auto 70px; flex: 1; }
+.section-title { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 25px; }
+.section-title h2 { margin: 0; font-family: "Baloo 2", sans-serif; font-size: clamp(1.8rem, 4vw, 2.35rem); }
+.game-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 24px; }
+
+.game-card {
+  display: flex; align-items: center; gap: 20px; min-height: 190px; padding: 30px;
+  color: inherit; text-decoration: none; background: white; border: 3px solid #ece5ff;
+  border-radius: 30px; box-shadow: 0 12px 0 #ded4fb, 0 18px 34px rgba(69, 54, 121, .13);
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.game-card:hover { transform: translateY(-6px); border-color: #bcaaff; box-shadow: 0 16px 0 #ded4fb, 0 24px 38px rgba(69,54,121,.17); }
+.game-card:focus-visible { outline: 5px solid var(--yellow); outline-offset: 5px; }
+.game-card__icon { flex: 0 0 auto; display: grid; place-items: center; width: 92px; height: 92px; font-size: 50px; background: #fff2bb; border-radius: 27px; }
+.game-card__content { display: flex; flex-direction: column; }
+.game-card__eyebrow { width: max-content; margin-bottom: 3px; padding: 5px 11px; color: #6249cb; background: #eee9ff; border-radius: 20px; font-size: .78rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+.game-card__title { font-family: "Baloo 2", sans-serif; font-size: clamp(1.65rem, 4vw, 2.25rem); font-weight: 800; line-height: 1.15; }
+.game-card__description { color: var(--muted); font-size: 1.08rem; font-weight: 700; }
+.game-card__arrow { margin-left: auto; display: grid; place-items: center; min-width: 48px; height: 48px; color: white; background: var(--purple); border-radius: 50%; font-size: 26px; font-weight: 800; }
+.coming-soon { min-height: 190px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #8b86a1; border: 3px dashed #dcd5c9; border-radius: 30px; font-size: 1.05rem; }
+.coming-soon strong { color: #746d87; font-family: "Baloo 2", sans-serif; font-size: 1.55rem; }
+footer { padding: 22px; text-align: center; color: #70678a; font-weight: 800; }
+
+@media (max-width: 600px) {
+  .hero { padding: 48px 18px 58px; }
+  .hero__decor { display: none; }
+  .games { width: min(100% - 28px, 1080px); margin-top: 38px; }
+  .game-card { min-height: 0; padding: 22px 18px; gap: 15px; border-radius: 24px; }
+  .game-card__icon { width: 70px; height: 70px; font-size: 38px; border-radius: 20px; }
+  .game-card__arrow { min-width: 40px; height: 40px; }
+}
+
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; } }
