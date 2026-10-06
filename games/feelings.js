@@ -18,6 +18,7 @@ const questions = [
   { section: "Choose the correct feeling", sentence: "We are going on a field trip.", choices: ["excited", "angry", "cold"], answer: "excited" },
   { section: "Choose the correct feeling", sentence: "I take deep breaths and relax.", choices: ["calm", "worried", "hot"], answer: "calm" },
   { section: "Choose the correct feeling", sentence: "I miss my family.", choices: ["sad", "happy", "excited"], answer: "sad" },
+  { section: "Choose the correct feeling", sentence: "My friends shout \"Surprise!\" I did not know they were planning a party for me.", choices: ["tired", "surprised", "cold"], answer: "surprised" },
 ];
 
 const positiveMessages = ["Great job!", "Correct!", "Excellent!", "Well done!"];
