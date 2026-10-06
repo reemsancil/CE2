@@ -23,9 +23,13 @@
           <div class="score-pill">⭐ Score: <strong id="score">0</strong></div>
         </header>
 
+        <nav class="exercise-picker" aria-label="Choose an exercise">
+          <button class="secondary-button" id="sentence-mode" type="button" aria-pressed="true">📝 Sentences</button>
+          <button class="secondary-button" id="picture-mode" type="button" aria-pressed="false">🖼️ Picture matching</button>
+        </nav>
         <div id="quiz-view">
           <div class="progress-info">
-            <span>Question <strong id="question-number">1</strong> / 19</span>
+            <span>Question <strong id="question-number">1</strong> / <span id="question-total">19</span></span>
             <span id="progress-label">Let’s begin!</span>
           </div>
           <div class="progress-track" role="progressbar" aria-label="Game progress" aria-valuemin="0" aria-valuemax="19" aria-valuenow="1">
@@ -35,6 +39,7 @@
           <div class="question-area">
             <p class="instruction" id="instruction">How do I feel?</p>
             <div class="sentence" id="sentence">I feel _____ when it's really sunny outside.</div>
+            <div class="feeling-picture" id="feeling-picture" role="img" hidden></div>
             <div class="answers" id="answers" aria-label="Answer choices"></div>
             <p class="feedback" id="feedback" aria-live="polite"></p>
             <button class="primary-button next-button" id="next-button" type="button">Next Question <span aria-hidden="true">→</span></button>
@@ -44,7 +49,7 @@
         <div class="results" id="results" hidden>
           <div class="celebration" aria-hidden="true">🎉</div>
           <h2 tabindex="-1">Great work!</h2>
-          <p>Your score: <strong><span id="final-score">0</span> / 19</strong></p>
+          <p>Your score: <strong><span id="final-score">0</span> / <span id="final-total">19</span></strong></p>
           <div class="result-actions">
             <button class="primary-button" id="play-again" type="button">↻ Play Again</button>
             <a class="secondary-button" href="../index.html#unit-1">← Back to Unit 1</a>
