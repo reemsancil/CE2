@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Practise am, is and are in affirmative, negative and question forms for CE2 students." />
+    <title>Verb to Be | CE2 Learning Games</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="verb-to-be.css" />
+  </head>
+  <body>
+    <main class="game-page">
+      <a class="home-link" href="../index.html#unit-1"><span aria-hidden="true">←</span> Back to Unit 1</a>
+
+      <section class="game-panel" aria-labelledby="game-title">
+        <header class="game-header">
+          <div class="title-wrap">
+            <span class="game-icon" aria-hidden="true">🧩</span>
+            <div><p class="kicker">Grammar game</p><h1 id="game-title">Verb to Be</h1></div>
+          </div>
+          <div class="score-pill">⭐ Score: <strong id="score">0</strong></div>
+        </header>
+
+        <nav class="exercise-picker" aria-label="Choose a verb to be exercise">
+          <button class="secondary-button" type="button" data-exercise="affirmative" aria-pressed="true">✓ Affirmative</button>
+          <button class="secondary-button" type="button" data-exercise="negative" aria-pressed="false">✗ Negative</button>
+          <button class="secondary-button" type="button" data-exercise="interrogative" aria-pressed="false">? Questions</button>
+        </nav>
+        <p class="grammar-guide" id="grammar-guide">I am · You / We / They are · He / She / It is</p>
+        <div id="quiz-view">
+          <div class="progress-info">
+            <span>Question <strong id="question-number">1</strong> / 7</span>
+            <span id="progress-label">Let’s begin!</span>
+          </div>
+          <div class="progress-track" role="progressbar" aria-label="Game progress" aria-valuemin="0" aria-valuemax="7" aria-valuenow="1">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+
+          <div class="question-area">
+            <p class="instruction" id="instruction">Complete the affirmative sentence.</p>
+            <div class="sentence" id="sentence">I _____ eight years old.</div>
+            <div class="answers" id="answers" aria-label="Answer choices"></div>
+            <p class="feedback" id="feedback" aria-live="polite"></p>
+            <button class="primary-button next-button" id="next-button" type="button">Next Question <span aria-hidden="true">→</span></button>
+          </div>
+        </div>
+
+        <div class="results" id="results" hidden>
+          <div class="celebration" aria-hidden="true">🎉</div>
+          <h2 tabindex="-1">Great work!</h2>
+          <p>Your score: <strong><span id="final-score">0</span> / 7</strong></p>
+          <div class="result-actions">
+            <button class="primary-button" id="play-again" type="button">↻ Play Again</button>
+            <a class="secondary-button" href="../index.html#unit-1">← Back to Unit 1</a>
+            <a class="secondary-button" href="../index.html">⌂ Back to CE2 Homepage</a>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="verb-to-be.js"></script>
+  </body>
+</html>

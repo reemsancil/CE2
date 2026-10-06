@@ -59,7 +59,8 @@ body {
 .hero__decor--note { right: 16%; top: 30%; font-size: 36px; transform: rotate(12deg); }
 
 .games { width: min(1080px, calc(100% - 40px)); margin: 50px auto 70px; flex: 1; }
-.section-title { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 25px; }
+.section-title { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 25px; text-align: center; }
+.section-title__eyebrow { margin: 0 0 -3px; color: #75699a; font-size: .78rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
 .section-title h2 { margin: 0; font-family: "Baloo 2", sans-serif; font-size: clamp(1.8rem, 4vw, 2.35rem); }
 .game-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 24px; }
 
@@ -77,6 +78,7 @@ body {
 .game-card__title { font-family: "Baloo 2", sans-serif; font-size: clamp(1.65rem, 4vw, 2.25rem); font-weight: 800; line-height: 1.15; }
 .game-card__description { color: var(--muted); font-size: 1.08rem; font-weight: 700; }
 .game-card__arrow { margin-left: auto; display: grid; place-items: center; min-width: 48px; height: 48px; color: white; background: var(--purple); border-radius: 50%; font-size: 26px; font-weight: 800; }
+.game-card--feelings .game-card__icon { background: #dff9ee; }
 .coming-soon { min-height: 190px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #8b86a1; border: 3px dashed #dcd5c9; border-radius: 30px; font-size: 1.05rem; }
 .coming-soon strong { color: #746d87; font-family: "Baloo 2", sans-serif; font-size: 1.55rem; }
 footer { padding: 22px; text-align: center; color: #70678a; font-weight: 800; }
