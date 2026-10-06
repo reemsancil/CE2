@@ -1,4 +1,4 @@
-const questions = [
+const sentenceQuestions = [
   { sentence: "I feel _____ when it's really sunny outside.", choices: ["hot", "cold", "sad"], answer: "hot" },
   { sentence: "I feel _____ when I have a big test coming up.", choices: ["worried", "excited", "calm"], answer: "worried" },
   { sentence: "I feel _____ when it's snowing outside.", choices: ["cold", "hot", "happy"], answer: "cold" },
@@ -21,6 +21,120 @@ const questions = [
   { section: "Choose the correct feeling", sentence: "My friends shout \"Surprise!\" I did not know they were planning a party for me.", choices: ["tired", "surprised", "cold"], answer: "surprised" },
 ];
 
+const pictureQuestions = [
+  {
+    "picture": "🥵",
+    "description": "A face sweating in the heat",
+    "choices": [
+      "hot",
+      "cold",
+      "sad"
+    ],
+    "answer": "hot"
+  },
+  {
+    "picture": "😟",
+    "description": "A face with raised eyebrows and an uneasy mouth",
+    "choices": [
+      "calm",
+      "happy",
+      "worried"
+    ],
+    "answer": "worried"
+  },
+  {
+    "picture": "🥶",
+    "description": "A blue face with chattering teeth and ice",
+    "choices": [
+      "angry",
+      "cold",
+      "hot"
+    ],
+    "answer": "cold"
+  },
+  {
+    "picture": "😊",
+    "description": "A face with a big smile",
+    "choices": [
+      "happy",
+      "sad",
+      "scared"
+    ],
+    "answer": "happy"
+  },
+  {
+    "picture": "😴",
+    "description": "A face with closed eyes and sleep symbols",
+    "choices": [
+      "excited",
+      "angry",
+      "tired"
+    ],
+    "answer": "tired"
+  },
+  {
+    "picture": "😨",
+    "description": "A face with wide eyes and a frightened open mouth",
+    "choices": [
+      "happy",
+      "scared",
+      "calm"
+    ],
+    "answer": "scared"
+  },
+  {
+    "picture": "😠",
+    "description": "A face with a frown and eyebrows pointing down",
+    "choices": [
+      "angry",
+      "happy",
+      "cold"
+    ],
+    "answer": "angry"
+  },
+  {
+    "picture": "🤩",
+    "description": "A smiling face with stars in its eyes",
+    "choices": [
+      "tired",
+      "sad",
+      "excited"
+    ],
+    "answer": "excited"
+  },
+  {
+    "picture": "😌",
+    "description": "A face with gently closed eyes and a relaxed smile",
+    "choices": [
+      "angry",
+      "calm",
+      "worried"
+    ],
+    "answer": "calm"
+  },
+  {
+    "picture": "😢",
+    "description": "A face with a frown and a tear",
+    "choices": [
+      "sad",
+      "happy",
+      "hot"
+    ],
+    "answer": "sad"
+  },
+  {
+    "picture": "😲",
+    "description": "A face with raised eyebrows, wide eyes and a round open mouth",
+    "choices": [
+      "tired",
+      "cold",
+      "surprised"
+    ],
+    "answer": "surprised"
+  }
+];
+let questions = sentenceQuestions;
+
 const positiveMessages = ["Great job!", "Correct!", "Excellent!", "Well done!"];
 let currentQuestion = 0;
 let score = 0;
@@ -30,6 +144,9 @@ const elements = {
   quizView: document.querySelector("#quiz-view"), results: document.querySelector("#results"),
   questionNumber: document.querySelector("#question-number"), sentence: document.querySelector("#sentence"),
   instruction: document.querySelector("#instruction"), answers: document.querySelector("#answers"),
+  picture: document.querySelector("#feeling-picture"),
+  questionTotal: document.querySelector("#question-total"), finalTotal: document.querySelector("#final-total"),
+  sentenceMode: document.querySelector("#sentence-mode"), pictureMode: document.querySelector("#picture-mode"),
   feedback: document.querySelector("#feedback"),
   score: document.querySelector("#score"), nextButton: document.querySelector("#next-button"),
   progressFill: document.querySelector("#progress-fill"), progressBar: document.querySelector("[role='progressbar']"),
@@ -42,7 +159,16 @@ function renderQuestion() {
   const question = questions[currentQuestion];
   elements.questionNumber.textContent = currentQuestion + 1;
   elements.instruction.textContent = question.section || "How do I feel?";
-  elements.sentence.textContent = question.sentence;
+  const isPicture = Boolean(question.picture);
+  elements.instruction.textContent = isPicture ? "Match the picture to the correct word." : (question.section || "How do I feel?");
+  elements.sentence.hidden = isPicture;
+  elements.picture.hidden = !isPicture;
+  elements.sentence.textContent = question.sentence || "";
+  elements.picture.textContent = question.picture || "";
+  elements.picture.setAttribute("aria-label", question.description || "");
+  elements.questionTotal.textContent = questions.length;
+  elements.finalTotal.textContent = questions.length;
+  elements.progressBar.setAttribute("aria-valuemax", questions.length);
   elements.feedback.textContent = "";
   elements.feedback.className = "feedback";
   elements.nextButton.classList.remove("visible");
@@ -108,4 +234,12 @@ elements.answers.addEventListener("click", (event) => {
 });
 elements.nextButton.addEventListener("click", nextQuestion);
 elements.playAgain.addEventListener("click", restartGame);
+function selectExercise(pictureMode) {
+  questions = pictureMode ? pictureQuestions : sentenceQuestions;
+  elements.sentenceMode.setAttribute("aria-pressed", String(!pictureMode));
+  elements.pictureMode.setAttribute("aria-pressed", String(pictureMode));
+  restartGame();
+}
+elements.sentenceMode.addEventListener("click", () => selectExercise(false));
+elements.pictureMode.addEventListener("click", () => selectExercise(true));
 renderQuestion();
