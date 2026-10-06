@@ -1,0 +1,4 @@
+@import url("feelings.css");
+.grammar-guide { margin: 20px 20px 0; padding: 16px; color: #5941bf; background: #f0ecff; border-radius: 16px; text-align: center; font-weight: 800; line-height: 1.6; }
+.answer-button { text-transform: none; }
+@media (max-width: 620px) { .exercise-picker { gap: 10px; } .exercise-picker button { padding: 10px 14px; } }
