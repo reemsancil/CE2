@@ -209,6 +209,7 @@ function nextQuestion() {
 }
 
 function showResults() {
+  CompletionResult.show("Feelings", questions === pictureQuestions ? "Picture matching" : (questions === orderQuestions ? "Build a sentence" : "Sentences and situations"), score, questions.length);
   elements.quizView.hidden = true;
   elements.results.hidden = false;
   elements.finalScore.textContent = score;
@@ -216,6 +217,7 @@ function showResults() {
 }
 
 function restartGame() {
+  CompletionResult.reset();
   currentQuestion = 0;
   score = 0;
   elements.score.textContent = "0";

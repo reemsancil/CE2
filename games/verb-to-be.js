@@ -282,6 +282,7 @@ function nextQuestion() {
 }
 
 function showResults() {
+  CompletionResult.show("Verb to Be", currentExercise, score, questions.length);
   elements.quizView.hidden = true;
   elements.results.hidden = false;
   elements.finalScore.textContent = score;
@@ -289,6 +290,7 @@ function showResults() {
 }
 
 function restartGame() {
+  CompletionResult.reset();
   currentQuestion = 0;
   score = 0;
   elements.score.textContent = "0";

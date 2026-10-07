@@ -1,0 +1,16 @@
+[hidden] { display: none !important; }
+.completion-form, .teacher-form { width: min(480px, 100%); margin: 28px auto; padding: 22px; border: 2px solid #d8dff1; border-radius: 18px; text-align: left; }
+.completion-form h3 { margin-top: 0; }
+.completion-form label, .teacher-form label { display: block; margin: 15px 0 6px; font-weight: 800; }
+input, select { width: 100%; min-height: 46px; padding: 10px; font: inherit; border: 2px solid #9a8bce; border-radius: 8px; }
+input:focus-visible, select:focus-visible { outline: 3px solid #f6c936; outline-offset: 2px; }
+.completion-form button, .teacher-form button { margin-top: 20px; }
+.results .completion-form p, .score-note, .submission-status { font-size: 1rem; margin: 12px 0; }
+button:disabled { cursor: default; opacity: .65; }
+.teacher-content { padding: 24px; }
+.teacher-toolbar { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; margin-bottom: 28px; }
+th, td { padding: 12px; border-bottom: 1px solid #d8dff1; text-align: left; }
+th { background: #f0ecff; }
+.teacher-status { min-height: 24px; }
