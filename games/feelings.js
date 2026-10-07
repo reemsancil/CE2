@@ -18,7 +18,6 @@ const sentenceQuestions = [
   { section: "Choose the correct feeling", sentence: "We are going on a field trip.", choices: ["excited", "angry", "cold"], answer: "excited" },
   { section: "Choose the correct feeling", sentence: "I take deep breaths and relax.", choices: ["calm", "worried", "hot"], answer: "calm" },
   { section: "Choose the correct feeling", sentence: "I miss my family.", choices: ["sad", "happy", "excited"], answer: "sad" },
-  { section: "Choose the correct feeling", sentence: "My friends shout \"Surprise!\" I did not know they were planning a party for me.", choices: ["tired", "surprised", "cold"], answer: "surprised" },
 ];
 
 const pictureQuestions = [
@@ -121,17 +120,12 @@ const pictureQuestions = [
       "hot"
     ],
     "answer": "sad"
-  },
-  {
-    "picture": "😲",
-    "description": "A face with raised eyebrows, wide eyes and a round open mouth",
-    "choices": [
-      "tired",
-      "cold",
-      "surprised"
-    ],
-    "answer": "surprised"
   }
+];
+const orderQuestions = [
+  { section: "Put the words in order", sentence: "The school trip is tomorrow. Build the sentence.", words: ["excited.", "am", "I"], answer: "I am excited." },
+  { section: "Put the words in order", sentence: "I take deep breaths. Build the sentence.", words: ["calm.", "I", "am"], answer: "I am calm." },
+  { section: "Put the words in order", sentence: "I need to sleep. Build the sentence.", words: ["am", "tired.", "I"], answer: "I am tired." },
 ];
 let questions = sentenceQuestions;
 
@@ -175,6 +169,8 @@ function renderQuestion() {
   elements.progressFill.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
   elements.progressBar.setAttribute("aria-valuenow", currentQuestion + 1);
   elements.progressLabel.textContent = currentQuestion === 0 ? "Let’s begin!" : (question.section ? "Choose the best answer!" : "Keep going!");
+  if (question.words) { renderWordOrder(question, elements.answers); return; }
+  elements.answers.classList.remove("word-order");
   elements.answers.replaceChildren(...question.choices.map((choice) => {
     const button = document.createElement("button");
     button.className = "answer-button";
@@ -234,12 +230,16 @@ elements.answers.addEventListener("click", (event) => {
 });
 elements.nextButton.addEventListener("click", nextQuestion);
 elements.playAgain.addEventListener("click", restartGame);
-function selectExercise(pictureMode) {
-  questions = pictureMode ? pictureQuestions : sentenceQuestions;
-  elements.sentenceMode.setAttribute("aria-pressed", String(!pictureMode));
+function selectExercise(mode) {
+  questions = mode === "order" ? orderQuestions : (mode === "picture" ? pictureQuestions : sentenceQuestions);
+  const pictureMode = mode === "picture";
+  document.querySelector("#order-mode").setAttribute("aria-pressed", String(mode === "order"));
+  elements.sentenceMode.setAttribute("aria-pressed", String(mode === "sentence"));
   elements.pictureMode.setAttribute("aria-pressed", String(pictureMode));
   restartGame();
 }
-elements.sentenceMode.addEventListener("click", () => selectExercise(false));
-elements.pictureMode.addEventListener("click", () => selectExercise(true));
+elements.sentenceMode.addEventListener("click", () => selectExercise("sentence"));
+elements.pictureMode.addEventListener("click", () => selectExercise("picture"));
 renderQuestion();
+
+document.querySelector("#order-mode").addEventListener("click", () => selectExercise("order"));

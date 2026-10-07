@@ -11,6 +11,13 @@ const questions = [
   { word: "MOON", choices: ["spoon", "cat", "tree"], answer: "spoon" },
 ];
 
+const pictures = ["🐱", "🎂", "⭐", "💡", "🔵", "🐝", "⛵", "💍", "🌞", "🌙"];
+let pictureMode = false;
+document.querySelector("#picture-mode").addEventListener("click", () => {
+  pictureMode = !pictureMode;
+  document.querySelector("#picture-mode").setAttribute("aria-pressed", String(pictureMode));
+  restartGame();
+});
 const positiveMessages = ["Great job!", "Excellent!", "You got it!", "Wonderful!"];
 let currentQuestion = 0;
 let score = 0;
@@ -30,7 +37,8 @@ function renderQuestion() {
   const question = questions[currentQuestion];
   questionSolved = false;
   elements.questionNumber.textContent = currentQuestion + 1;
-  elements.targetWord.textContent = question.word;
+  elements.targetWord.textContent = pictureMode ? `${pictures[currentQuestion]} ${question.word}` : question.word;
+  document.querySelector("#instruction").textContent = pictureMode ? "Say the picture's word. Choose a word that rhymes." : "Which word rhymes with...";
   elements.feedback.textContent = "";
   elements.feedback.className = "feedback";
   elements.nextButton.classList.remove("visible");

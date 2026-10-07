@@ -23,6 +23,9 @@
           <div class="score-pill">⭐ Score: <strong id="score">0</strong></div>
         </header>
 
+        <div class="exercise-picker">
+          <button class="secondary-button" id="picture-mode" type="button" aria-pressed="false">Picture clues</button>
+        </div>
         <div id="quiz-view">
           <div class="progress-info">
             <span>Question <strong id="question-number">1</strong> / 10</span>
@@ -33,7 +36,7 @@
           </div>
 
           <div class="question-area">
-            <p class="instruction">Which word rhymes with...</p>
+            <p class="instruction" id="instruction">Which word rhymes with...</p>
             <div class="target-word" id="target-word">CAT</div>
             <div class="answers" id="answers" aria-label="Answer choices"></div>
             <p class="feedback" id="feedback" aria-live="polite"></p>
@@ -43,7 +46,7 @@
 
         <div class="results" id="results" hidden>
           <div class="celebration" aria-hidden="true">🎉</div>
-          <h2>Great work!</h2>
+          <h2 tabindex="-1">Great work!</h2>
           <p>Your score: <strong><span id="final-score">0</span> / 10</strong></p>
           <div class="result-actions">
             <button class="primary-button" id="play-again" type="button">↻ Play Again</button>

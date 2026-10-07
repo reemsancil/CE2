@@ -27,11 +27,12 @@
           <button class="secondary-button" type="button" data-exercise="affirmative" aria-pressed="true">✓ Affirmative</button>
           <button class="secondary-button" type="button" data-exercise="negative" aria-pressed="false">✗ Negative</button>
           <button class="secondary-button" type="button" data-exercise="interrogative" aria-pressed="false">? Questions</button>
+          <button class="secondary-button" type="button" data-exercise="mixed" aria-pressed="false">🧩 Mixed activities</button>
         </nav>
         <p class="grammar-guide" id="grammar-guide">I am · You / We / They are · He / She / It is</p>
         <div id="quiz-view">
           <div class="progress-info">
-            <span>Question <strong id="question-number">1</strong> / 7</span>
+            <span>Question <strong id="question-number">1</strong> / <span class="question-total">7</span></span>
             <span id="progress-label">Let’s begin!</span>
           </div>
           <div class="progress-track" role="progressbar" aria-label="Game progress" aria-valuemin="0" aria-valuemax="7" aria-valuenow="1">
@@ -50,7 +51,7 @@
         <div class="results" id="results" hidden>
           <div class="celebration" aria-hidden="true">🎉</div>
           <h2 tabindex="-1">Great work!</h2>
-          <p>Your score: <strong><span id="final-score">0</span> / 7</strong></p>
+          <p>Your score: <strong><span id="final-score">0</span> / <span class="question-total">7</span></strong></p>
           <div class="result-actions">
             <button class="primary-button" id="play-again" type="button">↻ Play Again</button>
             <a class="secondary-button" href="../index.html#unit-1">← Back to Unit 1</a>
@@ -59,6 +60,7 @@
         </div>
       </section>
     </main>
+    <script src="word-order.js"></script>
     <script src="verb-to-be.js"></script>
   </body>
 </html>
