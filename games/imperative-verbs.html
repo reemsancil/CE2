@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="imperative-verbs.css" />
+    <link rel="stylesheet" href="../results.css" />
   </head>
   <body>
     <main class="game-page">
@@ -23,9 +24,13 @@
           <div class="score-pill">⭐ Score: <strong id="score">0</strong></div>
         </header>
 
+        <nav class="exercise-picker" aria-label="Choose an exercise">
+          <button class="secondary-button" type="button" data-exercise="sort" aria-pressed="true">Sort sentences</button>
+          <button class="secondary-button" type="button" data-exercise="choose" aria-pressed="false">Choose a sentence</button>
+        </nav>
         <div id="quiz-view">
           <div class="progress-info">
-            <span>Question <strong id="question-number">1</strong> / 10</span>
+            <span>Question <strong id="question-number">1</strong> / <span class="question-total">10</span></span>
             <span id="progress-label">Let’s begin!</span>
           </div>
           <div class="progress-track" role="progressbar" aria-label="Game progress" aria-valuemin="0" aria-valuemax="10" aria-valuenow="1">
@@ -33,7 +38,7 @@
           </div>
 
           <div class="question-area">
-            <p class="instruction">Is this a command or an instruction?</p>
+            <p class="instruction" id="instruction">Is this a command or an instruction?</p>
             <div class="sentence" id="sentence">Open your book.</div>
             <div class="answers" id="answers" aria-label="Answer choices">
               <button class="answer-button answer-button--command" type="button" data-answer="command"><span aria-hidden="true">💬</span> COMMAND</button>
@@ -47,7 +52,7 @@
         <div class="results" id="results" hidden>
           <div class="celebration" aria-hidden="true">🎉</div>
           <h2 tabindex="-1">Excellent work!</h2>
-          <p>Your score: <strong><span id="final-score">0</span> / 10</strong></p>
+          <p>Your score: <strong><span id="final-score">0</span> / <span class="question-total">10</span></strong></p>
           <div class="result-actions">
             <button class="primary-button" id="play-again" type="button">↻ Play Again</button>
             <a class="secondary-button" href="../index.html">⌂ Back to CE2 Homepage</a>
@@ -55,6 +60,8 @@
         </div>
       </section>
     </main>
+    <script src="../results-api.js"></script>
+    <script src="completion.js"></script>
     <script src="imperative-verbs.js"></script>
   </body>
 </html>

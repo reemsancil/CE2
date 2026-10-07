@@ -44,3 +44,6 @@ h1 { margin: 0; font-family: "Baloo 2", sans-serif; font-size: clamp(1.75rem, 4v
 @keyframes shake { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
 @media (max-width: 620px) { .game-page { width: min(100% - 20px, 920px); padding-top: 15px; } .game-panel { min-height: 630px; border-radius: 24px; } .game-header { padding: 20px 18px; } .music-icon { width: 50px; height: 50px; } .score-pill { padding: 9px 12px; font-size: .92rem; } .progress-info { padding: 22px 20px 8px; } .progress-track { margin: 0 20px; } .question-area { padding: 28px 18px 36px; } .answers { grid-template-columns: 1fr; gap: 13px; margin-top: 25px; } .answer-button { min-height: 62px; } }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+.exercise-picker { display: flex; justify-content: center; padding: 22px 18px 0; }
+.exercise-picker button[aria-pressed="true"] { color: white; background: #6750cf; border-color: #6750cf; }

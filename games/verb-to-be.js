@@ -195,6 +195,14 @@ const exercises = {
     }
   ]
 };
+exercises.mixed = [
+  { instruction: "Choose the correct sentence.", sentence: "Talk about yourself.", choices: ["I is eight years old.", "I am eight years old.", "I are eight years old."], answer: "I am eight years old." },
+  { instruction: "Put the words in order.", sentence: "Build an affirmative sentence.", words: ["happy.", "is", "He"], answer: "He is happy." },
+  { instruction: "Choose the correct sentence.", sentence: "Say that we are NOT sad.", choices: ["We are sad.", "We is not sad.", "We are not sad."], answer: "We are not sad." },
+  { instruction: "Put the words in order.", sentence: "Build a negative sentence.", words: ["tired.", "not", "I", "am"], answer: "I am not tired." },
+  { instruction: "Sort this sentence into a category.", sentence: "Are they at school?", choices: ["Affirmative", "Negative", "Question"], answer: "Question" },
+  { instruction: "Put the words in order.", sentence: "Build a question.", words: ["ready?", "you", "Are"], answer: "Are you ready?" },
+];
 const guides = {
   affirmative: "I am · You / We / They are · He / She / It is",
   negative: "I am not · You / We / They are not · He / She / It is not",
@@ -223,7 +231,10 @@ function renderQuestion() {
   const question = questions[currentQuestion];
   elements.questionNumber.textContent = currentQuestion + 1;
   elements.instruction.textContent = currentExercise === "interrogative" ? "Complete the question." : (currentExercise === "negative" ? "Complete the negative sentence." : "Complete the affirmative sentence.");
-  elements.guide.textContent = guides[currentExercise];
+  if (question.instruction) elements.instruction.textContent = question.instruction;
+  elements.guide.textContent = guides[currentExercise] || "Read, choose, sort and build sentences with am, is and are.";
+  document.querySelectorAll(".question-total").forEach(el => { el.textContent = questions.length; });
+  elements.progressBar.setAttribute("aria-valuemax", questions.length);
   elements.sentence.textContent = question.sentence;
   elements.feedback.textContent = "";
   elements.feedback.className = "feedback";
@@ -231,6 +242,8 @@ function renderQuestion() {
   elements.progressFill.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
   elements.progressBar.setAttribute("aria-valuenow", currentQuestion + 1);
   elements.progressLabel.textContent = currentQuestion === 0 ? "Let’s begin!" : (question.section ? "Choose the best answer!" : "Keep going!");
+  if (question.words) { renderWordOrder(question, elements.answers); return; }
+  elements.answers.classList.remove("word-order");
   elements.answers.replaceChildren(...question.choices.map((choice) => {
     const button = document.createElement("button");
     button.className = "answer-button";
@@ -269,6 +282,7 @@ function nextQuestion() {
 }
 
 function showResults() {
+  CompletionResult.show("Verb to Be", currentExercise, score, questions.length);
   elements.quizView.hidden = true;
   elements.results.hidden = false;
   elements.finalScore.textContent = score;
@@ -276,6 +290,7 @@ function showResults() {
 }
 
 function restartGame() {
+  CompletionResult.reset();
   currentQuestion = 0;
   score = 0;
   elements.score.textContent = "0";

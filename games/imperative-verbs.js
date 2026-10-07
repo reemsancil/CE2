@@ -1,4 +1,4 @@
-const questions = [
+const sortingQuestions = [
   { sentence: "Open your book.", answer: "command" },
   { sentence: "Turn left at the corner.", answer: "direction" },
   { sentence: "Sit down, please.", answer: "command" },
@@ -10,6 +10,20 @@ const questions = [
   { sentence: "Don't touch the computer.", answer: "command" },
   { sentence: "Walk past the park.", answer: "direction" },
 ];
+
+const sentenceQuestions = [
+  { sentence: "Ask someone to open their book.", choices: ["Open your book.", "Turn left at the corner.", "Go straight ahead."], answer: "Open your book." },
+  { sentence: "Tell someone which way to go at the corner.", choices: ["Sit down, please.", "Turn left at the corner.", "Listen to the teacher."], answer: "Turn left at the corner." },
+  { sentence: "Tell someone to stop running in class.", choices: ["Walk past the park.", "Cross the street carefully.", "Don't run in the classroom."], answer: "Don't run in the classroom." },
+  { sentence: "Tell someone to continue forward.", choices: ["Go straight ahead.", "Don't touch the computer.", "Open your book."], answer: "Go straight ahead." },
+];
+let questions = sortingQuestions;
+function selectExercise(mode) {
+  questions = mode === "sort" ? sortingQuestions : sentenceQuestions;
+  document.querySelectorAll("[data-exercise]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.exercise === mode)));
+  restartGame();
+}
+document.querySelectorAll("[data-exercise]").forEach(button => button.addEventListener("click", () => selectExercise(button.dataset.exercise)));
 
 const positiveMessages = ["Great job!", "Correct!", "Excellent!", "Well done!"];
 let currentQuestion = 0;
@@ -37,11 +51,18 @@ function renderQuestion() {
   elements.progressBar.setAttribute("aria-valuenow", currentQuestion + 1);
   elements.progressLabel.textContent = currentQuestion === 0 ? "Let’s begin!" : "Keep going!";
 
-  elements.answers.querySelectorAll("button").forEach((button) => {
-    button.disabled = false;
-    button.classList.remove("correct", "wrong");
-    button.removeAttribute("aria-label");
-  });
+  const question = questions[currentQuestion];
+  document.querySelector("#instruction").textContent = question.choices ? "Choose the correct sentence." : "Sort the sentence: command or direction?";
+  document.querySelectorAll(".question-total").forEach(el => { el.textContent = questions.length; });
+  elements.progressBar.setAttribute("aria-valuemax", questions.length);
+  elements.answers.replaceChildren(...(question.choices || ["command", "direction"]).map(choice => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "answer-button";
+    button.dataset.answer = choice;
+    button.textContent = choice === "direction" ? "Instruction / direction" : choice;
+    return button;
+  }));
 }
 
 function checkAnswer(button) {
@@ -72,6 +93,7 @@ function nextQuestion() {
 }
 
 function showResults() {
+  CompletionResult.show("Imperative Verbs", questions === sortingQuestions ? "Sort sentences" : "Choose a sentence", score, questions.length);
   elements.quizView.hidden = true;
   elements.results.hidden = false;
   elements.finalScore.textContent = score;
@@ -79,6 +101,7 @@ function showResults() {
 }
 
 function restartGame() {
+  CompletionResult.reset();
   currentQuestion = 0;
   score = 0;
   elements.score.textContent = "0";
