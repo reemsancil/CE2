@@ -24,7 +24,7 @@
   }
   function render() {
     sections.replaceChildren();
-    for (const section of ['CE2 A', 'CE2 D']) {
+    for (const section of ['CE2 A', 'CE2 D', 'CM1 A', 'CM1 D']) {
       const group = rows.filter(row => row.class_section === section);
       const heading = document.createElement('h2');
       heading.textContent = `${section} (${group.length} submissions)`;
@@ -35,11 +35,18 @@
         sections.append(empty);
         continue;
       }
+      const exerciseKeys = [...new Set(group.map(row => JSON.stringify([row.game, row.exercise])))].sort((a, b) => collator.compare(a, b));
+      for (const key of exerciseKeys) {
+      const [game, exercise] = JSON.parse(key);
+      const exerciseGroup = group.filter(row => row.game === game && row.exercise === exercise);
+      const exerciseHeading = document.createElement('h3');
+      exerciseHeading.textContent = `${game} · ${exercise} (${exerciseGroup.length} submissions)`;
+      sections.append(exerciseHeading);
       const wrap = document.createElement('div');
       wrap.className = 'table-wrap';
       const table = document.createElement('table');
       const caption = document.createElement('caption');
-      caption.textContent = `${section} student results`;
+      caption.textContent = `${section} · ${game} · ${exercise} results`;
       table.append(caption);
       const head = document.createElement('thead');
       const header = document.createElement('tr');
@@ -52,7 +59,7 @@
       head.append(header);
       table.append(head);
       const body = document.createElement('tbody');
-      for (const row of group) {
+      for (const row of exerciseGroup) {
         const tr = document.createElement('tr');
         for (const value of [row.student_name, row.game, row.exercise, `${row.score} / ${row.total}`, dateFormat.format(new Date(row.completed_at))]) {
           const td = document.createElement('td');
@@ -64,6 +71,7 @@
       table.append(body);
       wrap.append(table);
       sections.append(wrap);
+      }
     }
     download.disabled = !rows.length;
   }
@@ -143,7 +151,7 @@
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'ce2-student-results.csv';
+    link.download = 'english-class-student-results.csv';
     link.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   });
