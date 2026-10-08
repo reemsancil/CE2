@@ -24,7 +24,7 @@
   }
   function render() {
     sections.replaceChildren();
-    for (const section of ['CE2 A', 'CE2 D', 'CM1 A', 'CM1 D']) {
+    for (const section of ['CE2 A', 'CE2 D', 'CM1 A', 'CM1 D', 'CP C', 'CP F']) {
       const group = rows.filter(row => row.class_section === section);
       const heading = document.createElement('h2');
       heading.textContent = `${section} (${group.length} submissions)`;
