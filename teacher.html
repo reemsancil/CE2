@@ -20,10 +20,12 @@
         <input id="teacher-email" type="email" autocomplete="username" required>
         <label for="teacher-password">Password</label>
         <input id="teacher-password" type="password" autocomplete="current-password" required>
+        <label class="stay-signed-in"><input id="stay-signed-in" type="checkbox"> Stay signed in on this device</label>
         <button class="primary-button" type="submit">Sign in</button>
       </form>
       <p id="teacher-status" class="teacher-status" role="status" aria-live="polite"></p>
       <div id="teacher-results" hidden>
+        <p>Click a student’s name to show their results. Click again to hide them.</p>
         <p>CE2 and CP scores count questions or pairs solved, including retries. CM1 scores count answers correct on the first try. Dates use Qatar time (UTC+03:00).</p>
         <div class="teacher-toolbar">
           <button class="secondary-button" id="refresh-results" type="button">Refresh results</button>

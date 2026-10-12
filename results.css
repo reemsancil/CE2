@@ -14,3 +14,15 @@ table { width: 100%; border-collapse: collapse; margin-bottom: 28px; }
 th, td { padding: 12px; border-bottom: 1px solid #d8dff1; text-align: left; }
 th { background: #f0ecff; }
 .teacher-status { min-height: 24px; }
+
+.student-list { list-style: none; margin: 0 0 28px; padding: 0; }
+.student-results { border-bottom: 1px solid #d8dff1; }
+.student-results summary { padding: 12px; cursor: pointer; font-weight: 700; text-align: left; overflow-wrap: anywhere; }
+.student-results summary:hover { background: #f0ecff; }
+.student-results summary:focus-visible { outline: 3px solid #9a8bce; outline-offset: -3px; }
+.student-results[open] summary { background: #f0ecff; }
+.student-results .table-wrap { padding: 12px; }
+.student-results table { margin-bottom: 0; }
+
+.teacher-form .stay-signed-in { display: flex; align-items: center; gap: 10px; font-weight: 400; }
+.stay-signed-in input { width: 18px; height: 18px; min-height: 0; padding: 0; flex: 0 0 18px; }

@@ -5,7 +5,18 @@
   const sections = document.querySelector('#section-results');
   const download = document.querySelector('#download-csv');
   const refresh = document.querySelector('#refresh-results');
-  let session = null; // Kept in memory; closing/reloading this page requires sign-in.
+  let session = null;
+  let remember = false;
+  const storageKey = 'english-teacher-refresh-token';
+  function saveSession() {
+    try {
+      if (remember && session?.refresh_token) localStorage.setItem(storageKey, session.refresh_token);
+      else localStorage.removeItem(storageKey);
+    } catch {
+      remember = false;
+      status.textContent = 'This browser could not save your sign-in.';
+    }
+  }
   let rows = [];
   let generation = 0;
   const collator = new Intl.Collator('en', { sensitivity: 'base', numeric: true });
@@ -15,6 +26,8 @@
   function clear() {
     generation++;
     session = null;
+    remember = false;
+    saveSession();
     rows = [];
     sections.replaceChildren();
     download.disabled = true;
@@ -27,7 +40,7 @@
     for (const section of ['CP C', 'CP F', 'CE2 A', 'CE2 D', 'CM1 A', 'CM1 D']) {
       const group = rows.filter(row => row.class_section === section);
       const heading = document.createElement('h2');
-      heading.textContent = `${section} (${group.length} submissions)`;
+      heading.textContent = section;
       sections.append(heading);
       if (!group.length) {
         const empty = document.createElement('p');
@@ -35,43 +48,53 @@
         sections.append(empty);
         continue;
       }
-      const exerciseKeys = [...new Set(group.map(row => JSON.stringify([row.game, row.exercise])))].sort((a, b) => collator.compare(a, b));
-      for (const key of exerciseKeys) {
-      const [game, exercise] = JSON.parse(key);
-      const exerciseGroup = group.filter(row => row.game === game && row.exercise === exercise);
-      const exerciseHeading = document.createElement('h3');
-      exerciseHeading.textContent = `${game} · ${exercise} (${exerciseGroup.length} submissions)`;
-      sections.append(exerciseHeading);
-      const wrap = document.createElement('div');
-      wrap.className = 'table-wrap';
-      const table = document.createElement('table');
-      const caption = document.createElement('caption');
-      caption.textContent = `${section} · ${game} · ${exercise} results`;
-      table.append(caption);
-      const head = document.createElement('thead');
-      const header = document.createElement('tr');
-      for (const label of ['Student name', 'Game', 'Exercise', 'Score', 'Completed (UTC+03:00)']) {
-        const th = document.createElement('th');
-        th.scope = 'col';
-        th.textContent = label;
-        header.append(th);
+      const students = new Map();
+      for (const row of group) {
+        if (!students.has(row.student_name)) students.set(row.student_name, []);
+        students.get(row.student_name).push(row);
       }
-      head.append(header);
-      table.append(head);
-      const body = document.createElement('tbody');
-      for (const row of exerciseGroup) {
-        const tr = document.createElement('tr');
-        for (const value of [row.student_name, row.game, row.exercise, `${row.score} / ${row.total}`, dateFormat.format(new Date(row.completed_at))]) {
-          const td = document.createElement('td');
-          td.textContent = value;
-          tr.append(td);
+      const list = document.createElement('ul');
+      list.className = 'student-list';
+      for (const [studentName, attempts] of students) {
+        const item = document.createElement('li');
+        const details = document.createElement('details');
+        details.className = 'student-results';
+        const summary = document.createElement('summary');
+        summary.textContent = studentName;
+        details.append(summary);
+        const wrap = document.createElement('div');
+        wrap.className = 'table-wrap';
+        const table = document.createElement('table');
+        const caption = document.createElement('caption');
+        caption.textContent = `${studentName} · ${section} results`;
+        table.append(caption);
+        const head = document.createElement('thead');
+        const header = document.createElement('tr');
+        for (const label of ['Game', 'Exercise', 'Score', 'Completed (UTC+03:00)']) {
+          const th = document.createElement('th');
+          th.scope = 'col';
+          th.textContent = label;
+          header.append(th);
         }
-        body.append(tr);
+        head.append(header);
+        table.append(head);
+        const body = document.createElement('tbody');
+        for (const row of attempts) {
+          const tr = document.createElement('tr');
+          for (const value of [row.game, row.exercise, `${row.score} / ${row.total}`, dateFormat.format(new Date(row.completed_at))]) {
+            const td = document.createElement('td');
+            td.textContent = value;
+            tr.append(td);
+          }
+          body.append(tr);
+        }
+        table.append(body);
+        wrap.append(table);
+        details.append(wrap);
+        item.append(details);
+        list.append(item);
       }
-      table.append(body);
-      wrap.append(table);
-      sections.append(wrap);
-      }
+      sections.append(list);
     }
     download.disabled = !rows.length;
   }
@@ -87,6 +110,7 @@
         if (run !== generation) return;
         if (renewed.user?.id !== ResultsAPI.teacherId) throw Object.assign(new Error(), { status: 401 });
         session = { ...renewed, expires_at: Date.now() / 1000 + renewed.expires_in };
+        saveSession();
       }
       const loaded = await ResultsAPI.results(session.access_token);
       if (run !== generation) return;
@@ -119,6 +143,8 @@
         throw new Error('Unauthorized account');
       }
       session = { ...auth, expires_at: Date.now() / 1000 + auth.expires_in };
+      remember = document.querySelector('#stay-signed-in').checked;
+      saveSession();
       login.reset();
       login.hidden = true;
       view.hidden = false;
@@ -155,4 +181,31 @@
     link.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   });
+  async function restoreSession() {
+    let token;
+    try { token = localStorage.getItem(storageKey); } catch { return; }
+    if (!token) return;
+    const button = login.querySelector('button');
+    button.disabled = true;
+    status.textContent = 'Restoring your sign-in…';
+    try {
+      const auth = await ResultsAPI.refresh(token);
+      if (auth.user?.id !== ResultsAPI.teacherId) {
+        await ResultsAPI.signOut(auth.access_token).catch(() => {});
+        throw new Error('Unauthorized account');
+      }
+      session = { ...auth, expires_at: Date.now() / 1000 + auth.expires_in };
+      remember = true;
+      saveSession();
+      login.hidden = true;
+      view.hidden = false;
+      await load();
+    } catch {
+      clear();
+      status.textContent = 'Please sign in again to view results.';
+    } finally {
+      button.disabled = false;
+    }
+  }
+  restoreSession();
 })();
