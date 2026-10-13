@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
-  </head>
+  <link rel="stylesheet" href="gifts.css"><script src="gift-config.js" defer></script><script src="results-api.js" defer></script><script src="gifts.js" defer></script></head>
   <body>
     <div class="page-shell">
       <header class="hero">
@@ -21,7 +21,7 @@
         <p>Choose a game and have fun learning!</p>
       </header>
 
-      <main class="games" id="unit-1" aria-labelledby="games-heading">
+      <div class="gift-actions"><button type="button" data-gifts="gifts">Check my gifts 🎁</button><button type="button" data-gifts="certificates">My certificates 🏅</button></div><main class="games" id="unit-1" aria-labelledby="games-heading">
         <div class="section-title">
           <span aria-hidden="true">✨</span>
           <div>
@@ -75,7 +75,7 @@
         </div>
       </main>
 
-      <footer>Learn, play, and grow!</footer>
+      <footer>Learn, play, and grow! · <a href="teacher.html">Teacher results</a></footer>
     </div>
-  </body>
+  <dialog id="giftsDialog" aria-labelledby="giftsTitle"><div class="dialog-top"><h2 id="giftsTitle">Check my gifts 🎁</h2><button id="closeGifts" aria-label="Close gifts">✕</button></div><form id="giftLookup"><label for="giftName">Your name</label><input id="giftName" name="gift_name" maxlength="100" autocomplete="off" required><label for="giftSection">Your class</label><select id="giftSection" name="gift_section" required><option value="">Choose your class</option><option>CE2 A</option><option>CE2 D</option></select><button type="submit">Check →</button></form><p id="giftStatus" role="status" aria-live="polite"></p><div id="giftList"></div><section id="certificate" class="certificate" hidden><div class="seal" aria-hidden="true">🏅 ⭐ 🏅</div><h3 id="certificateHeading" tabindex="-1">Certificate of achievement</h3><p>Awarded to</p><p id="certificateName" class="certificate-name"></p><h3>Congratulations!</h3><p>You completed all <strong>Unit 1 games!</strong></p><p>CE2 · Unit 1</p><p>With love from <strong>Mrs. Reem</strong> 💜</p><p id="certificateDate"></p><div class="certificate-actions"><button id="collectionFromGift">My certificates 🏅</button><button id="printCertificate">Print / Save as PDF</button></div></section></dialog></body>
 </html>
