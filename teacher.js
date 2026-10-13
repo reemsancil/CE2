@@ -30,11 +30,14 @@
     saveSession();
     rows = [];
     sections.replaceChildren();
+    TeacherGifts.clear();
+    document.querySelector('#gift-students')?.replaceChildren();
     download.disabled = true;
     view.hidden = true;
     login.hidden = false;
     login.reset();
   }
+  async function giftToken(){if(!session)return null;const run=generation;if(session.expires_at<=Date.now()/1000+60){const renewed=await ResultsAPI.refresh(session.refresh_token);if(run!==generation)return null;if(renewed.user?.id!==ResultsAPI.teacherId)throw new Error('Sign in again');session={...renewed,expires_at:Date.now()/1000+renewed.expires_in};saveSession();}return session.access_token;}
   function render() {
     sections.replaceChildren();
     for (const section of ['CP C', 'CP F', 'CE2 A', 'CE2 D', 'CM1 A', 'CM1 D']) {
@@ -50,8 +53,8 @@
       }
       const students = new Map();
       for (const row of group) {
-        if (!students.has(row.student_name)) students.set(row.student_name, []);
-        students.get(row.student_name).push(row);
+        const known=[...students.keys()].find(name=>UnitProgress.normalize(name)===UnitProgress.normalize(row.student_name));
+        const name=known||row.student_name.trim();if(!students.has(name))students.set(name,[]);students.get(name).push(row);
       }
       const list = document.createElement('ul');
       list.className = 'student-list';
@@ -69,6 +72,7 @@
           badge.textContent = 'Completed all games';
           summary.append(' ', badge);
         }
+        const gift=TeacherGifts.button(studentName,section,rows,giftToken);if(gift)summary.append(' ',gift);
         details.append(summary);
         const wrap = document.createElement('div');
         wrap.className = 'table-wrap';
@@ -123,6 +127,8 @@
       const loaded = await ResultsAPI.results(session.access_token);
       if (run !== generation) return;
       rows = loaded.sort((a, b) => collator.compare(a.class_section, b.class_section) || collator.compare(a.student_name, b.student_name) || a.completed_at.localeCompare(b.completed_at));
+      await TeacherGifts.load(session.access_token);
+      if(run!==generation)return;
       render();
       status.textContent = '';
     } catch (error) {
@@ -131,7 +137,8 @@
         clear();
         status.textContent = 'Your session ended or access was denied. Please sign in again.';
       } else {
-        rows = [];
+        rows = [];TeacherGifts.clear();
+        document.querySelector('#gift-students')?.replaceChildren();
         sections.replaceChildren();
         status.textContent = 'Could not load results. Check your connection and press Refresh results.';
       }

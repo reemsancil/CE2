@@ -1,4 +1,4 @@
-// Required exercises for each class level; finishing an exercise counts regardless of score.
+// Frozen Unit 1 completion requirements.
 window.CompletionCatalog = {
   "CP": [
     {
@@ -7,19 +7,11 @@ window.CompletionCatalog = {
     },
     {
       "game": "School supplies",
-      "exercise": "Match the words"
-    },
-    {
-      "game": "School supplies",
       "exercise": "What’s missing?"
     },
     {
       "game": "My daily routine",
       "exercise": "Picture pairs"
-    },
-    {
-      "game": "My daily routine",
-      "exercise": "Match the words"
     },
     {
       "game": "My daily routine",

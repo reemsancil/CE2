@@ -14,7 +14,8 @@ for(const section of sections){
   rows.push(...exercises.map(row=>({...row,student_name:name,class_section:section,score:0,total:10,completed_at:'2026-10-13T16:00:00Z'})));
  }
 }
-w.ResultsAPI={teacherId:'teacher',signIn:async()=>({user:{id:'teacher'},access_token:'token',expires_in:3600}),results:async()=>rows,signOut:async()=>{}};
+w.ResultsAPI={teacherId:'teacher',signIn:async()=>({user:{id:'teacher'},access_token:'token',expires_in:3600}),results:async()=>rows,teacherGifts:async()=>[],signOut:async()=>{}};
+for(const file of ['gift-config.js','unit-progress.js','teacher-gifts.js'])w.eval(fs.readFileSync(file,'utf8'));
 w.eval(fs.readFileSync('teacher.js','utf8'));
 assert.equal(d.querySelectorAll('summary').length,0);
 d.querySelector('#teacher-login').dispatchEvent(new w.Event('submit',{cancelable:true}));
@@ -23,7 +24,7 @@ assert.deepEqual([...d.querySelectorAll('#section-results h2')].map(x=>x.textCon
 assert.equal(d.querySelectorAll('.all-games-completed').length,6);
 for(const badge of d.querySelectorAll('.all-games-completed')) {
  assert.equal(badge.tagName,'EM');assert.equal(badge.textContent,'Completed all games');
- assert.equal(badge.parentElement.textContent,'<Finisher> Completed all games');
+ assert.equal(badge.parentElement.textContent,'<Finisher> Completed all games Send gift 🎁');
 }
 assert.equal(d.querySelector('finisher'),null);
 assert.equal(d.querySelector('#teacher-status').textContent,'');

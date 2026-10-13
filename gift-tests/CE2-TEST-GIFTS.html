@@ -1,0 +1,807 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Fun, child-friendly learning games for CE2 students." />
+    <title>CE2 Learning Games</title>
+    
+    
+    
+    <style>:root {
+  --ink: #26345d;
+  --muted: #60709c;
+  --purple: #7056d9;
+  --purple-dark: #5941bf;
+  --yellow: #ffd65a;
+  --cream: #fffaf0;
+  --white: #ffffff;
+  font-family: "Nunito", system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--cream);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 8% 8%, rgba(255, 214, 90, .28) 0 70px, transparent 72px),
+    radial-gradient(circle at 92% 20%, rgba(111, 210, 190, .2) 0 100px, transparent 102px),
+    linear-gradient(180deg, #fffdf7 0%, #fff7e5 100%);
+}
+
+.page-shell { min-height: 100vh; display: flex; flex-direction: column; }
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 64px 24px 72px;
+  text-align: center;
+  color: white;
+  background: linear-gradient(125deg, #6750cf 0%, #866be6 58%, #9c78ed 100%);
+  border-radius: 0 0 48% 48% / 0 0 36px 36px;
+  box-shadow: 0 10px 28px rgba(79, 55, 164, .2);
+}
+
+.hero::before, .hero::after {
+  content: ""; position: absolute; border: 3px solid rgba(255,255,255,.22); border-radius: 50%;
+}
+.hero::before { width: 150px; height: 150px; left: -40px; top: -55px; }
+.hero::after { width: 210px; height: 210px; right: -60px; bottom: -130px; }
+
+.hero__badge {
+  display: grid; place-items: center; width: 64px; height: 64px; margin: 0 auto 14px;
+  font-size: 31px; background: var(--yellow); border: 4px solid rgba(255,255,255,.7);
+  border-radius: 20px; transform: rotate(-5deg); box-shadow: 0 7px 0 #d9a923;
+}
+
+.hero h1 {
+  margin: 0; font-family: "Baloo 2", sans-serif; font-size: clamp(2.35rem, 6vw, 4rem);
+  line-height: 1.05; letter-spacing: -.03em; text-shadow: 0 3px 0 rgba(48,31,110,.25);
+}
+
+.hero p { margin: 12px 0 0; font-size: clamp(1.05rem, 2.4vw, 1.35rem); font-weight: 700; color: #f2edff; }
+.hero__decor { position: absolute; opacity: .75; color: var(--yellow); }
+.hero__decor--star { left: 15%; top: 35%; font-size: 28px; transform: rotate(-15deg); }
+.hero__decor--note { right: 16%; top: 30%; font-size: 36px; transform: rotate(12deg); }
+
+.games { width: min(1080px, calc(100% - 40px)); margin: 50px auto 70px; flex: 1; }
+.section-title { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 25px; text-align: center; }
+.section-title__eyebrow { margin: 0 0 -3px; color: #75699a; font-size: .78rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+.section-title h2 { margin: 0; font-family: "Baloo 2", sans-serif; font-size: clamp(1.8rem, 4vw, 2.35rem); }
+.game-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 24px; }
+
+.game-card {
+  display: flex; align-items: center; gap: 20px; min-height: 190px; padding: 30px;
+  color: inherit; text-decoration: none; background: white; border: 3px solid #ece5ff;
+  border-radius: 30px; box-shadow: 0 12px 0 #ded4fb, 0 18px 34px rgba(69, 54, 121, .13);
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.game-card:hover { transform: translateY(-6px); border-color: #bcaaff; box-shadow: 0 16px 0 #ded4fb, 0 24px 38px rgba(69,54,121,.17); }
+.game-card:focus-visible { outline: 5px solid var(--yellow); outline-offset: 5px; }
+.game-card__icon { flex: 0 0 auto; display: grid; place-items: center; width: 92px; height: 92px; font-size: 50px; background: #fff2bb; border-radius: 27px; }
+.game-card__content { display: flex; flex-direction: column; }
+.game-card__eyebrow { width: max-content; margin-bottom: 3px; padding: 5px 11px; color: #6249cb; background: #eee9ff; border-radius: 20px; font-size: .78rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+.game-card__title { font-family: "Baloo 2", sans-serif; font-size: clamp(1.65rem, 4vw, 2.25rem); font-weight: 800; line-height: 1.15; }
+.game-card__description { color: var(--muted); font-size: 1.08rem; font-weight: 700; }
+.game-card__arrow { margin-left: auto; display: grid; place-items: center; min-width: 48px; height: 48px; color: white; background: var(--purple); border-radius: 50%; font-size: 26px; font-weight: 800; }
+.game-card--feelings .game-card__icon { background: #dff9ee; }
+.coming-soon { min-height: 190px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #8b86a1; border: 3px dashed #dcd5c9; border-radius: 30px; font-size: 1.05rem; }
+.coming-soon strong { color: #746d87; font-family: "Baloo 2", sans-serif; font-size: 1.55rem; }
+footer { padding: 22px; text-align: center; color: #70678a; font-weight: 800; }
+
+@media (max-width: 600px) {
+  .hero { padding: 48px 18px 58px; }
+  .hero__decor { display: none; }
+  .games { width: min(100% - 28px, 1080px); margin-top: 38px; }
+  .game-card { min-height: 0; padding: 22px 18px; gap: 15px; border-radius: 24px; }
+  .game-card__icon { width: 70px; height: 70px; font-size: 38px; border-radius: 20px; }
+  .game-card__arrow { min-width: 40px; height: 40px; }
+}
+
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; } }
+</style>
+  <style>.gift-actions{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin:25px 0}.gift-actions button,.gift-card,#giftLookup button,.certificate-actions button{border:0;border-radius:14px;padding:15px 22px;background:#6655c7;color:white;font:inherit;font-weight:800;cursor:pointer}#giftsDialog{width:min(800px,94vw)}#giftLookup{display:grid;gap:10px;margin:20px 0}#giftLookup input,#giftLookup select{width:100%;padding:12px;border:2px solid #d8d0ef;border-radius:10px;font:inherit;margin:0}#giftLookup button{justify-self:start}#giftList{display:flex;gap:15px;flex-wrap:wrap;margin:20px 0}.gift-card{min-height:115px;background:#fff0be;color:#5143a8;font-size:1.3rem;border:2px solid #e8c45e}.certificate{text-align:center;border:7px double #c79832;border-radius:12px;padding:30px 20px;background:#fffdf5}.certificate .seal{font-size:3rem}.certificate h3{font-size:clamp(1.5rem,4vw,2.3rem);color:#6655c7;margin:12px}.certificate-name{font-size:clamp(1.6rem,5vw,2.8rem);font-weight:900;overflow-wrap:anywhere}.certificate-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:22px}.confetti{position:fixed;inset:0;pointer-events:none;z-index:10000;overflow:hidden}.confetti i{position:absolute;left:var(--x);top:-20px;width:10px;height:17px;animation:confetti-fall 2.8s var(--delay) ease-in forwards}@keyframes confetti-fall{to{transform:translateY(105vh) rotate(var(--spin))}}@media print{body>*{display:none!important}#giftsDialog{display:block!important;position:static;max-height:none;width:100%;box-shadow:none;padding:0}#giftsDialog>*{display:none!important}#giftsDialog #certificate{display:block!important}#certificate .certificate-actions{display:none!important}dialog::backdrop{background:none}}
+
+#giftsDialog{max-height:92vh;overflow:auto;border:0;border-radius:26px;padding:28px;background:#fffaf1;color:#252352;font-family:Nunito,system-ui,sans-serif;box-shadow:0 20px 80px #25235244}#giftsDialog::backdrop{background:#25235299}#giftsDialog .dialog-top{display:flex;justify-content:space-between;align-items:center;gap:15px}#closeGifts{border:0;border-radius:50%;width:44px;height:44px;font-size:1.2rem;cursor:pointer}.gift-actions button:focus-visible,.gift-card:focus-visible,#giftsDialog button:focus-visible{outline:3px solid #c79832;outline-offset:4px}[hidden]{display:none!important}
+</style></head>
+  <body><div class="test-banner" style="background:#fff0be;padding:16px;text-align:center"><strong>CE2 GIFT TEST · Practice data stays in this browser. Nothing is sent to your live results.</strong><p>Finish every Unit 1 exercise using the same name and class. Open Test teacher results, click Open test results, then Send gift. Return to the games and Check my gifts.</p><button type="button" id="showTestTeacher">Test teacher results</button> <button type="button" id="showTestGames">Back to games</button></div><div id="studentSurface">
+    <div class="page-shell">
+      <header class="hero">
+        <div class="hero__decor hero__decor--star" aria-hidden="true">★</div>
+        <div class="hero__decor hero__decor--note" aria-hidden="true">♫</div>
+        <div class="hero__badge" aria-hidden="true">✏️</div>
+        <h1>CE2 Learning Games</h1>
+        <p>Mrs. Reem's English Class</p>
+        <p>Choose a game and have fun learning!</p>
+      </header>
+
+      <div class="gift-actions"><button type="button" data-gifts="gifts">Check my gifts 🎁</button><button type="button" data-gifts="certificates">My certificates 🏅</button></div><main class="games" id="unit-1" aria-labelledby="games-heading">
+        <div class="section-title">
+          <span aria-hidden="true">✨</span>
+          <div>
+            <p class="section-title__eyebrow">English games</p>
+            <h2 id="games-heading">UNIT 1</h2>
+          </div>
+          <span aria-hidden="true">✨</span>
+        </div>
+
+        <div class="game-grid">
+          <!-- Add future CE2 game cards to this grid. Each card can link to its own page. -->
+          <a class="game-card game-card--rhymes" href="games/rhyming-words.html">
+            <span class="game-card__icon" aria-hidden="true">🎵</span>
+            <span class="game-card__content">
+              <span class="game-card__eyebrow">Word game</span>
+              <span class="game-card__title">Rhyming Words</span>
+              <span class="game-card__description">Find the words that rhyme!</span>
+            </span>
+            <span class="game-card__arrow" aria-hidden="true">→</span>
+          </a>
+
+          <a class="game-card game-card--imperatives" href="games/imperative-verbs.html">
+            <span class="game-card__icon" aria-hidden="true">🚦</span>
+            <span class="game-card__content">
+              <span class="game-card__eyebrow">Sentence game</span>
+              <span class="game-card__title">Imperative Verbs</span>
+              <span class="game-card__description">Commands or Instructions?</span>
+            </span>
+            <span class="game-card__arrow" aria-hidden="true">→</span>
+          </a>
+
+          <a class="game-card game-card--feelings" href="games/feelings.html">
+            <span class="game-card__icon" aria-hidden="true">😊</span>
+            <span class="game-card__content">
+              <span class="game-card__eyebrow">Vocabulary game</span>
+              <span class="game-card__title">Feelings</span>
+              <span class="game-card__description">Choose how each person feels!</span>
+            </span>
+            <span class="game-card__arrow" aria-hidden="true">→</span>
+          </a>
+
+          <a class="game-card game-card--be" href="games/verb-to-be.html">
+            <span class="game-card__icon" aria-hidden="true">🧩</span>
+            <span class="game-card__content">
+              <span class="game-card__eyebrow">Grammar game</span>
+              <span class="game-card__title">Verb to Be</span>
+              <span class="game-card__description">Practise am, is and are: sentences, negatives and questions!</span>
+            </span>
+            <span class="game-card__arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </main>
+
+      <footer>Learn, play, and grow! · <a href="teacher.html">Teacher results</a></footer>
+    </div>
+  <dialog id="giftsDialog" aria-labelledby="giftsTitle"><div class="dialog-top"><h2 id="giftsTitle">Check my gifts 🎁</h2><button id="closeGifts" aria-label="Close gifts">✕</button></div><form id="giftLookup"><label for="giftName">Your name</label><input id="giftName" name="gift_name" maxlength="100" autocomplete="off" required><label for="giftSection">Your class</label><select id="giftSection" name="gift_section" required><option value="">Choose your class</option><option>CE2 A</option><option>CE2 D</option></select><button type="submit">Check →</button></form><p id="giftStatus" role="status" aria-live="polite"></p><div id="giftList"></div><section id="certificate" class="certificate" hidden><div class="seal" aria-hidden="true">🏅 ⭐ 🏅</div><h3 id="certificateHeading" tabindex="-1">Certificate of achievement</h3><p>Awarded to</p><p id="certificateName" class="certificate-name"></p><h3>Congratulations!</h3><p>You completed all <strong>Unit 1 games!</strong></p><p>CE2 · Unit 1</p><p>With love from <strong>Mrs. Reem</strong> 💜</p><p id="certificateDate"></p><div class="certificate-actions"><button id="collectionFromGift">My certificates 🏅</button><button id="printCertificate">Print / Save as PDF</button></div></section></dialog></div><main class="game-page" id="testTeacher" hidden>
+  <a class="home-link" href="index.html">← CE2 Homepage</a>
+  <section class="game-panel" aria-labelledby="teacher-title">
+    <header class="game-header"><h1 id="teacher-title">Teacher Results</h1></header>
+    <div class="teacher-content">
+      <form class="teacher-form" id="teacher-login">
+        <h2>Teacher sign-in</h2>
+        
+        <input id="teacher-email" type="email" value="test@example.com" hidden>
+        
+        <input id="teacher-password" type="password" value="demo" hidden><p>Practice dashboard. No teacher password needed.</p>
+        <label class="stay-signed-in"><input id="stay-signed-in" type="checkbox"> Stay signed in on this device</label>
+        <button class="primary-button" type="submit">Open test results</button>
+      </form>
+      <p id="teacher-status" class="teacher-status" role="status" aria-live="polite"></p>
+      <div id="teacher-results" hidden>
+        <div class="teacher-toolbar">
+          <button class="secondary-button" id="refresh-results" type="button">Refresh results</button>
+          <button class="primary-button" id="download-csv" type="button" disabled>Download CSV</button>
+          <button class="secondary-button" id="sign-out" type="button">Sign out</button>
+        </div>
+        <p id="gift-teacher-status" role="status" aria-live="polite"></p><div id="section-results"></div>
+      </div>
+    </div>
+  </section>
+</main><style>[hidden] { display: none !important; }
+.completion-form, .teacher-form { width: min(480px, 100%); margin: 28px auto; padding: 22px; border: 2px solid #d8dff1; border-radius: 18px; text-align: left; }
+.completion-form h3 { margin-top: 0; }
+.completion-form label, .teacher-form label { display: block; margin: 15px 0 6px; font-weight: 800; }
+input, select { width: 100%; min-height: 46px; padding: 10px; font: inherit; border: 2px solid #9a8bce; border-radius: 8px; }
+input:focus-visible, select:focus-visible { outline: 3px solid #f6c936; outline-offset: 2px; }
+.completion-form button, .teacher-form button { margin-top: 20px; }
+.results .completion-form p, .score-note, .submission-status { font-size: 1rem; margin: 12px 0; }
+button:disabled { cursor: default; opacity: .65; }
+.teacher-content { padding: 24px; }
+.teacher-toolbar { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; margin-bottom: 28px; }
+th, td { padding: 12px; border-bottom: 1px solid #d8dff1; text-align: left; }
+th { background: #f0ecff; }
+.teacher-status { min-height: 24px; }
+
+.student-list { list-style: none; margin: 0 0 28px; padding: 0; }
+.student-results { border-bottom: 1px solid #d8dff1; }
+.student-results summary { padding: 12px; cursor: pointer; font-weight: 700; text-align: left; overflow-wrap: anywhere; }
+.student-results summary:hover { background: #f0ecff; }
+.student-results summary:focus-visible { outline: 3px solid #9a8bce; outline-offset: -3px; }
+.student-results[open] summary { background: #f0ecff; }
+.student-results .table-wrap { padding: 12px; }
+.student-results table { margin-bottom: 0; }
+
+.teacher-form .stay-signed-in { display: flex; align-items: center; gap: 10px; font-weight: 400; }
+.stay-signed-in input { width: 18px; height: 18px; min-height: 0; padding: 0; flex: 0 0 18px; }
+
+.all-games-completed { display: inline-block; margin-left: 10px; color: #18733b; font-style: italic; font-weight: 500; }
+
+.teacher-gift{display:inline-flex;margin-left:12px;align-items:center;font-weight:700}.send-gift{border:0;background:#6655c7;color:white;font:inherit;font-weight:800;border-radius:12px;padding:10px 15px;cursor:pointer}.gift-student{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;padding:15px;border-bottom:1px solid #ddd}
+</style><script>window.GiftConfig = {
+  "level": "CE2",
+  "sections": [
+    "CE2 A",
+    "CE2 D"
+  ],
+  "allSections": [
+    "CP C",
+    "CP F",
+    "CE2 A",
+    "CE2 D",
+    "CM1 A",
+    "CM1 D"
+  ],
+  "catalog": {
+    "CP": [
+      {
+        "game": "School supplies",
+        "exercise": "Picture pairs"
+      },
+      {
+        "game": "School supplies",
+        "exercise": "What’s missing?"
+      },
+      {
+        "game": "My daily routine",
+        "exercise": "Picture pairs"
+      },
+      {
+        "game": "My daily routine",
+        "exercise": "What’s missing?"
+      },
+      {
+        "game": "There is / There are",
+        "exercise": "Choose the sentence"
+      }
+    ],
+    "CE2": [
+      {
+        "game": "Rhyming Words",
+        "exercise": "Rhyming words"
+      },
+      {
+        "game": "Rhyming Words",
+        "exercise": "Picture clues"
+      },
+      {
+        "game": "Imperative Verbs",
+        "exercise": "Sort sentences"
+      },
+      {
+        "game": "Imperative Verbs",
+        "exercise": "Choose a sentence"
+      },
+      {
+        "game": "Feelings",
+        "exercise": "Picture matching"
+      },
+      {
+        "game": "Feelings",
+        "exercise": "Build a sentence"
+      },
+      {
+        "game": "Feelings",
+        "exercise": "Sentences and situations"
+      },
+      {
+        "game": "Verb to Be",
+        "exercise": "affirmative"
+      },
+      {
+        "game": "Verb to Be",
+        "exercise": "negative"
+      },
+      {
+        "game": "Verb to Be",
+        "exercise": "interrogative"
+      },
+      {
+        "game": "Verb to Be",
+        "exercise": "mixed"
+      }
+    ],
+    "CM1": [
+      {
+        "game": "CM1 · Capitalization and Punctuation",
+        "exercise": "Capitalize and Punctuate"
+      },
+      {
+        "game": "CM1 · Capitalization and Punctuation",
+        "exercise": "Full Stop or Question Mark?"
+      },
+      {
+        "game": "CM1 · London Landmarks",
+        "exercise": "Guess the Landmark"
+      },
+      {
+        "game": "CM1 · London Landmarks",
+        "exercise": "Who or What Am I?"
+      },
+      {
+        "game": "CM1 · London Landmarks",
+        "exercise": "Match the Landmark"
+      },
+      {
+        "game": "CM1 · Family Tree",
+        "exercise": "Family Tree Quiz"
+      },
+      {
+        "game": "CM1 · Family Tree",
+        "exercise": "Choose the Relationship"
+      },
+      {
+        "game": "CM1 · Subject Pronouns",
+        "exercise": "Replace the Subject"
+      },
+      {
+        "game": "CM1 · Subject Pronouns",
+        "exercise": "Pronoun Challenge"
+      },
+      {
+        "game": "CM1 · Object Pronouns",
+        "exercise": "Replace the Object"
+      },
+      {
+        "game": "CM1 · Object Pronouns",
+        "exercise": "Subject or Object Pronoun?"
+      },
+      {
+        "game": "CM1 · Verb to Be",
+        "exercise": "Am / Is / Are"
+      },
+      {
+        "game": "CM1 · Verb to Be",
+        "exercise": "Make It Negative"
+      },
+      {
+        "game": "CM1 · Verb to Be",
+        "exercise": "Make a Question"
+      },
+      {
+        "game": "CM1 · Prepositions of Place",
+        "exercise": "Where is it?"
+      },
+      {
+        "game": "CM1 · Prepositions of Place",
+        "exercise": "Choose the Correct Sentence"
+      }
+    ]
+  }
+};
+
+window.UnitProgress = (() => {
+ const normalize=name=>String(name).trim().replace(/\s+/g,' ').toLowerCase();
+ const key=(name,section)=>JSON.stringify([normalize(name),section]);
+ const requiredFor=section=>GiftConfig.catalog[section.split(' ')[0]]||[];
+ function students(rows){const groups=new Map();for(const row of rows){if(!GiftConfig.allSections.includes(row.class_section))continue;const id=key(row.student_name,row.class_section);if(!groups.has(id))groups.set(id,{name:row.student_name.trim(),section:row.class_section,completed:new Set(),required:requiredFor(row.class_section)});const student=groups.get(id);const index=student.required.findIndex(r=>row.game===r.game&&row.exercise===r.exercise);if(index>=0&&Number(row.total)>0&&Number(row.score)>=0)student.completed.add(index);}return [...groups.values()].map(s=>({...s,count:s.completed.size,total:s.required.length,eligible:s.required.length>0&&s.completed.size===s.required.length}));}
+ return {normalize,key,requiredFor,students};
+})();
+
+window.ResultsAPI=(()=>{
+ const store='school-gift-test-oct2026-v2',teacherId='eb3a0fce-6c14-48df-bdd5-0b1bcdbee4c9';
+ function read(){return JSON.parse(localStorage.getItem(store)||'{"results":[],"gifts":[]}');}
+ function save(data){localStorage.setItem(store,JSON.stringify(data));}
+ function auth(){return {access_token:'demo',refresh_token:'demo',expires_in:3600,user:{id:teacherId}};}
+ return {teacherId,async submit(record){const d=read();if(!d.results.some(r=>r.id===record.id))d.results.push({...record,completed_at:new Date().toISOString()});save(d);},async signIn(){read();return auth();},async refresh(){return auth();},async signOut(){},async results(){return read().results;},async teacherGifts(){return read().gifts;},async sendGift(name,section){const d=read();const eligible=UnitProgress.students(d.results).find(s=>UnitProgress.key(s.name,s.section)===UnitProgress.key(name,section)&&s.eligible);if(!eligible)throw new Error('Incomplete');let gift=d.gifts.find(g=>UnitProgress.key(g.student_name,g.class_section)===UnitProgress.key(name,section));if(!gift){gift={id:crypto.randomUUID(),student_name:eligible.name,class_section:section,class_level:section.split(' ')[0],unit_id:'unit-1',awarded_at:new Date().toISOString(),opened_at:null};d.gifts.push(gift);save(d);}return gift;},async gifts(name,section){return read().gifts.filter(g=>g.class_level===GiftConfig.level&&UnitProgress.key(g.student_name,g.class_section)===UnitProgress.key(name,section));},async openGift(name,section,id){const d=read();const g=d.gifts.find(g=>g.id===id&&g.class_level===GiftConfig.level&&UnitProgress.key(g.student_name,g.class_section)===UnitProgress.key(name,section));if(!g)throw new Error('Unknown gift');g.opened_at||=new Date().toISOString();save(d);return g;}};
+})();
+
+(() => {
+ const dialog=document.querySelector('#giftsDialog'),form=document.querySelector('#giftLookup'),status=document.querySelector('#giftStatus'),list=document.querySelector('#giftList'),certificate=document.querySelector('#certificate');
+ let mode='gifts',identity=null,awards=[],generation=0;
+ function confetti(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const layer=document.createElement('div');layer.className='confetti';layer.setAttribute('aria-hidden','true');for(let i=0;i<65;i++){const bit=document.createElement('i');bit.style.setProperty('--x',Math.random()*100+'vw');bit.style.setProperty('--delay',Math.random()*.5+'s');bit.style.setProperty('--spin',Math.random()*720+'deg');bit.style.background=['#ffd55b','#6655c7','#df6d42','#46b890','#ed89b6'][i%5];layer.append(bit);}dialog.append(layer);setTimeout(()=>layer.remove(),3500);}
+ function render(){list.replaceChildren();certificate.hidden=true;const available=awards.filter(a=>mode==='gifts'?!a.opened_at:!!a.opened_at);status.textContent=available.length?(mode==='gifts'?'🎁 Gift from Mrs. Reem! Click your gift to open it.':'Your certificate collection'):(mode==='gifts'?'No new gifts yet. Any gift from Mrs. Reem will appear here.':'Your certificates will appear here after you open a gift.');for(const award of available){const b=document.createElement('button');b.className='gift-card';b.textContent=mode==='gifts'?'🎁 Open your Unit 1 gift':'🏅 Unit 1 certificate';b.onclick=async()=>{const run=generation;b.disabled=true;try{let current=award;if(!award.opened_at){current=await ResultsAPI.openGift(identity.name,identity.section,award.id);if(run!==generation)return;awards=awards.map(a=>a.id===current.id?current:a);}showCertificate(current);}catch{if(run===generation){status.textContent='Could not open your gift. Please try again.';b.disabled=false;}}};list.append(b);}}
+ function showCertificate(award){list.replaceChildren();status.textContent='';certificate.hidden=false;document.querySelector('#certificateName').textContent=award.student_name;document.querySelector('#certificateDate').textContent=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Qatar',dateStyle:'long'}).format(new Date(award.awarded_at));document.querySelector('#certificateHeading').focus();}
+ document.querySelectorAll('[data-gifts]').forEach(b=>b.onclick=()=>{generation++;mode=b.dataset.gifts;identity=null;awards=[];form.reset();form.querySelector('button').disabled=false;form.hidden=false;list.replaceChildren();certificate.hidden=true;status.textContent='';document.querySelector('#giftsTitle').textContent=mode==='gifts'?'Check my gifts 🎁':'My certificates 🏅';dialog.showModal();});
+ document.querySelector('#closeGifts').onclick=()=>dialog.close();dialog.addEventListener('close',()=>{dialog.querySelectorAll('.confetti').forEach(x=>x.remove());generation++;identity=null;awards=[];form.reset();list.replaceChildren();certificate.hidden=true;status.textContent='';});
+ form.onsubmit=async event=>{event.preventDefault();const name=form.elements.gift_name.value.trim().replace(/\s+/g,' '),section=form.elements.gift_section.value;if(!name){form.elements.gift_name.setCustomValidity('Please enter your name.');form.elements.gift_name.reportValidity();return;}const run=++generation;const b=form.querySelector('button');b.disabled=true;status.textContent='Checking…';list.replaceChildren();certificate.hidden=true;try{const loaded=await ResultsAPI.gifts(name,section);if(run!==generation)return;identity={name,section};awards=loaded;render();if(mode==='gifts'&&awards.some(a=>!a.opened_at))confetti();}catch{if(run===generation)status.textContent='Could not check gifts. Please try again.';}finally{if(run===generation)b.disabled=false;}};
+ form.elements.gift_name.oninput=()=>form.elements.gift_name.setCustomValidity('');
+ document.querySelector('#collectionFromGift').onclick=()=>{mode='certificates';document.querySelector('#giftsTitle').textContent='My certificates 🏅';render();};
+ document.querySelector('#printCertificate').onclick=()=>window.print();
+})();
+
+window.TeacherGifts=(()=>{
+ let awards=[],available=false,generation=0;
+ const status=()=>document.querySelector('#gift-teacher-status');
+ function clear(){generation++;awards=[];available=false;if(status())status().textContent='';}
+ async function load(token){const run=++generation;available=false;try{const data=await ResultsAPI.teacherGifts(token);if(run!==generation)return;awards=data;available=true;status().textContent='';}catch{if(run!==generation)return;awards=[];status().textContent='Gift service unavailable. The certificate database may still need setup.';}}
+ function button(name,section,rows,getToken){const student=UnitProgress.students(rows).find(s=>UnitProgress.key(s.name,s.section)===UnitProgress.key(name,section));if(!student?.eligible)return null;
+ const holder=document.createElement('span');holder.className='teacher-gift';
+ const award=awards.find(a=>UnitProgress.key(a.student_name,a.class_section)===UnitProgress.key(name,section));
+ if(award){holder.textContent=award.opened_at?'🏅 Certificate collected':'🎁 Gift sent';return holder;}
+ const b=document.createElement('button');b.type='button';b.className='send-gift';b.textContent='Send gift 🎁';b.disabled=!available;holder.append(b);
+ b.onclick=async event=>{event.preventDefault();event.stopPropagation();const run=generation;b.disabled=true;status().textContent='Sending gift…';try{const token=await getToken();if(run!==generation||!token)return;const sent=await ResultsAPI.sendGift(name,section,token);if(run!==generation)return;awards.push(sent);holder.textContent='🎁 Gift sent';status().textContent=`Gift sent to ${name}!`;}
+ catch{if(run===generation){b.disabled=false;status().textContent='Could not send the gift. Refresh results and try again.';}}};return holder;}
+ function renderList(rows,getToken){const list=document.querySelector('#gift-students');list.replaceChildren();for(const student of UnitProgress.students(rows)){const row=document.createElement('div');row.className='gift-student';const label=document.createElement('span');label.textContent=`${student.name} · ${student.section} · ${student.count} / ${student.total} games`;row.append(label);const action=button(student.name,student.section,rows,getToken);if(action)row.append(action);list.append(row);}}
+ return {load,clear,button,renderList};
+})();
+
+// Frozen Unit 1 completion requirements.
+window.CompletionCatalog = {
+  "CP": [
+    {
+      "game": "School supplies",
+      "exercise": "Picture pairs"
+    },
+    {
+      "game": "School supplies",
+      "exercise": "What’s missing?"
+    },
+    {
+      "game": "My daily routine",
+      "exercise": "Picture pairs"
+    },
+    {
+      "game": "My daily routine",
+      "exercise": "What’s missing?"
+    },
+    {
+      "game": "There is / There are",
+      "exercise": "Choose the sentence"
+    }
+  ],
+  "CE2": [
+    {
+      "game": "Rhyming Words",
+      "exercise": "Rhyming words"
+    },
+    {
+      "game": "Rhyming Words",
+      "exercise": "Picture clues"
+    },
+    {
+      "game": "Imperative Verbs",
+      "exercise": "Sort sentences"
+    },
+    {
+      "game": "Imperative Verbs",
+      "exercise": "Choose a sentence"
+    },
+    {
+      "game": "Feelings",
+      "exercise": "Picture matching"
+    },
+    {
+      "game": "Feelings",
+      "exercise": "Build a sentence"
+    },
+    {
+      "game": "Feelings",
+      "exercise": "Sentences and situations"
+    },
+    {
+      "game": "Verb to Be",
+      "exercise": "affirmative"
+    },
+    {
+      "game": "Verb to Be",
+      "exercise": "negative"
+    },
+    {
+      "game": "Verb to Be",
+      "exercise": "interrogative"
+    },
+    {
+      "game": "Verb to Be",
+      "exercise": "mixed"
+    }
+  ],
+  "CM1": [
+    {
+      "game": "CM1 · Capitalization and Punctuation",
+      "exercise": "Capitalize and Punctuate"
+    },
+    {
+      "game": "CM1 · Capitalization and Punctuation",
+      "exercise": "Full Stop or Question Mark?"
+    },
+    {
+      "game": "CM1 · London Landmarks",
+      "exercise": "Guess the Landmark"
+    },
+    {
+      "game": "CM1 · London Landmarks",
+      "exercise": "Who or What Am I?"
+    },
+    {
+      "game": "CM1 · London Landmarks",
+      "exercise": "Match the Landmark"
+    },
+    {
+      "game": "CM1 · Family Tree",
+      "exercise": "Family Tree Quiz"
+    },
+    {
+      "game": "CM1 · Family Tree",
+      "exercise": "Choose the Relationship"
+    },
+    {
+      "game": "CM1 · Subject Pronouns",
+      "exercise": "Replace the Subject"
+    },
+    {
+      "game": "CM1 · Subject Pronouns",
+      "exercise": "Pronoun Challenge"
+    },
+    {
+      "game": "CM1 · Object Pronouns",
+      "exercise": "Replace the Object"
+    },
+    {
+      "game": "CM1 · Object Pronouns",
+      "exercise": "Subject or Object Pronoun?"
+    },
+    {
+      "game": "CM1 · Verb to Be",
+      "exercise": "Am / Is / Are"
+    },
+    {
+      "game": "CM1 · Verb to Be",
+      "exercise": "Make It Negative"
+    },
+    {
+      "game": "CM1 · Verb to Be",
+      "exercise": "Make a Question"
+    },
+    {
+      "game": "CM1 · Prepositions of Place",
+      "exercise": "Where is it?"
+    },
+    {
+      "game": "CM1 · Prepositions of Place",
+      "exercise": "Choose the Correct Sentence"
+    }
+  ]
+};
+
+(() => {
+  const login = document.querySelector('#teacher-login');
+  const view = document.querySelector('#teacher-results');
+  const status = document.querySelector('#teacher-status');
+  const sections = document.querySelector('#section-results');
+  const download = document.querySelector('#download-csv');
+  const refresh = document.querySelector('#refresh-results');
+  let session = null;
+  let remember = false;
+  const storageKey = 'english-teacher-refresh-token';
+  function saveSession() {
+    try {
+      if (remember && session?.refresh_token) localStorage.setItem(storageKey, session.refresh_token);
+      else localStorage.removeItem(storageKey);
+    } catch {
+      remember = false;
+      status.textContent = 'This browser could not save your sign-in.';
+    }
+  }
+  let rows = [];
+  let generation = 0;
+  const collator = new Intl.Collator('en', { sensitivity: 'base', numeric: true });
+  const dateFormat = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Asia/Qatar', dateStyle: 'medium', timeStyle: 'medium',
+  });
+  function clear() {
+    generation++;
+    session = null;
+    remember = false;
+    saveSession();
+    rows = [];
+    sections.replaceChildren();
+    TeacherGifts.clear();
+    document.querySelector('#gift-students')?.replaceChildren();
+    download.disabled = true;
+    view.hidden = true;
+    login.hidden = false;
+    login.reset();
+  }
+  async function giftToken(){if(!session)return null;const run=generation;if(session.expires_at<=Date.now()/1000+60){const renewed=await ResultsAPI.refresh(session.refresh_token);if(run!==generation)return null;if(renewed.user?.id!==ResultsAPI.teacherId)throw new Error('Sign in again');session={...renewed,expires_at:Date.now()/1000+renewed.expires_in};saveSession();}return session.access_token;}
+  function render() {
+    sections.replaceChildren();
+    for (const section of ['CP C', 'CP F', 'CE2 A', 'CE2 D', 'CM1 A', 'CM1 D']) {
+      const group = rows.filter(row => row.class_section === section);
+      const heading = document.createElement('h2');
+      heading.textContent = section;
+      sections.append(heading);
+      if (!group.length) {
+        const empty = document.createElement('p');
+        empty.textContent = 'No submissions yet.';
+        sections.append(empty);
+        continue;
+      }
+      const students = new Map();
+      for (const row of group) {
+        const known=[...students.keys()].find(name=>UnitProgress.normalize(name)===UnitProgress.normalize(row.student_name));
+        const name=known||row.student_name.trim();if(!students.has(name))students.set(name,[]);students.get(name).push(row);
+      }
+      const list = document.createElement('ul');
+      list.className = 'student-list';
+      for (const [studentName, attempts] of students) {
+        const item = document.createElement('li');
+        const details = document.createElement('details');
+        details.className = 'student-results';
+        const summary = document.createElement('summary');
+        summary.textContent = studentName;
+        const required = CompletionCatalog[section.split(' ')[0]] || [];
+        const completed = new Set(attempts.map(row => JSON.stringify([row.game, row.exercise])));
+        if (required.length && required.every(row => completed.has(JSON.stringify([row.game, row.exercise])))) {
+          const badge = document.createElement('em');
+          badge.className = 'all-games-completed';
+          badge.textContent = 'Completed all games';
+          summary.append(' ', badge);
+        }
+        const gift=TeacherGifts.button(studentName,section,rows,giftToken);if(gift)summary.append(' ',gift);
+        details.append(summary);
+        const wrap = document.createElement('div');
+        wrap.className = 'table-wrap';
+        const table = document.createElement('table');
+        const caption = document.createElement('caption');
+        caption.textContent = `${studentName} · ${section} results`;
+        table.append(caption);
+        const head = document.createElement('thead');
+        const header = document.createElement('tr');
+        for (const label of ['Game', 'Exercise', 'Score', 'Completed (UTC+03:00)']) {
+          const th = document.createElement('th');
+          th.scope = 'col';
+          th.textContent = label;
+          header.append(th);
+        }
+        head.append(header);
+        table.append(head);
+        const body = document.createElement('tbody');
+        for (const row of attempts) {
+          const tr = document.createElement('tr');
+          for (const value of [row.game, row.exercise, `${row.score} / ${row.total}`, dateFormat.format(new Date(row.completed_at))]) {
+            const td = document.createElement('td');
+            td.textContent = value;
+            tr.append(td);
+          }
+          body.append(tr);
+        }
+        table.append(body);
+        wrap.append(table);
+        details.append(wrap);
+        item.append(details);
+        list.append(item);
+      }
+      sections.append(list);
+    }
+    download.disabled = !rows.length;
+  }
+  async function load() {
+    if (!session) return;
+    const run = ++generation;
+    refresh.disabled = true;
+    download.disabled = true;
+    status.textContent = 'Loading results…';
+    try {
+      if (session.expires_at <= Date.now() / 1000 + 60) {
+        const renewed = await ResultsAPI.refresh(session.refresh_token);
+        if (run !== generation) return;
+        if (renewed.user?.id !== ResultsAPI.teacherId) throw Object.assign(new Error(), { status: 401 });
+        session = { ...renewed, expires_at: Date.now() / 1000 + renewed.expires_in };
+        saveSession();
+      }
+      const loaded = await ResultsAPI.results(session.access_token);
+      if (run !== generation) return;
+      rows = loaded.sort((a, b) => collator.compare(a.class_section, b.class_section) || collator.compare(a.student_name, b.student_name) || a.completed_at.localeCompare(b.completed_at));
+      await TeacherGifts.load(session.access_token);
+      if(run!==generation)return;
+      render();
+      status.textContent = '';
+    } catch (error) {
+      if (run !== generation) return;
+      if (error.status === 401 || error.status === 403) {
+        clear();
+        status.textContent = 'Your session ended or access was denied. Please sign in again.';
+      } else {
+        rows = [];TeacherGifts.clear();
+        document.querySelector('#gift-students')?.replaceChildren();
+        sections.replaceChildren();
+        status.textContent = 'Could not load results. Check your connection and press Refresh results.';
+      }
+    } finally {
+      refresh.disabled = false;
+    }
+  }
+  login.addEventListener('submit', async event => {
+    event.preventDefault();
+    const button = login.querySelector('button');
+    button.disabled = true;
+    status.textContent = 'Signing in…';
+    try {
+      const auth = await ResultsAPI.signIn(document.querySelector('#teacher-email').value.trim(), document.querySelector('#teacher-password').value);
+      if (auth.user?.id !== ResultsAPI.teacherId) {
+        await ResultsAPI.signOut(auth.access_token).catch(() => {});
+        throw new Error('Unauthorized account');
+      }
+      session = { ...auth, expires_at: Date.now() / 1000 + auth.expires_in };
+      remember = document.querySelector('#stay-signed-in').checked;
+      saveSession();
+      login.reset();
+      login.hidden = true;
+      view.hidden = false;
+      await load();
+    } catch {
+      status.textContent = 'Sign-in failed. Check your teacher email and password, then try again.';
+      document.querySelector('#teacher-password').value = '';
+    } finally {
+      button.disabled = false;
+    }
+  });
+  refresh.addEventListener('click', load);
+  document.querySelector('#sign-out').addEventListener('click', () => {
+    const token = session?.access_token;
+    clear();
+    status.textContent = 'Signed out.';
+    if (token) ResultsAPI.signOut(token).catch(() => {});
+    document.querySelector('#teacher-email').focus();
+  });
+  function cell(value) {
+    let text = String(value);
+    if (/^[\s\uFEFF]*[=+@-]/u.test(text)) text = "'" + text;
+    return '"' + text.replaceAll('"', '""') + '"';
+  }
+  download.addEventListener('click', () => {
+    if (!session || !rows.length) return;
+    const lines = [['Student name', 'Class section', 'Game', 'Exercise', 'Score', 'Total', 'Completed at (UTC)'],
+      ...rows.map(row => [row.student_name, row.class_section, row.game, row.exercise, row.score, row.total, new Date(row.completed_at).toISOString()])];
+    const blob = new Blob(['\uFEFF' + lines.map(line => line.map(cell).join(',')).join('\r\n')], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'english-class-student-results.csv';
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
+  async function restoreSession() {
+    let token;
+    try { token = localStorage.getItem(storageKey); } catch { return; }
+    if (!token) return;
+    const button = login.querySelector('button');
+    button.disabled = true;
+    status.textContent = 'Restoring your sign-in…';
+    try {
+      const auth = await ResultsAPI.refresh(token);
+      if (auth.user?.id !== ResultsAPI.teacherId) {
+        await ResultsAPI.signOut(auth.access_token).catch(() => {});
+        throw new Error('Unauthorized account');
+      }
+      session = { ...auth, expires_at: Date.now() / 1000 + auth.expires_in };
+      remember = true;
+      saveSession();
+      login.hidden = true;
+      view.hidden = false;
+      await load();
+    } catch {
+      clear();
+      status.textContent = 'Please sign in again to view results.';
+    } finally {
+      button.disabled = false;
+    }
+  }
+  restoreSession();
+})();
+
+
+function testTeacher(){document.querySelector('#studentSurface').hidden=true;document.querySelector('#testTeacher').hidden=false;}
+ function testHome(){document.querySelector('#studentSurface').hidden=false;document.querySelector('#testTeacher').hidden=true;}
+ document.querySelector('#showTestTeacher').onclick=testTeacher;document.querySelector('#showTestGames').onclick=testHome;
+ document.querySelectorAll('a[href="teacher.html"]').forEach(a=>a.onclick=e=>{e.preventDefault();testTeacher();});
+ document.querySelectorAll('#testTeacher a[href="index.html"]').forEach(a=>a.onclick=e=>{e.preventDefault();testHome();});
+ document.querySelectorAll('a[href="./"]').forEach(a=>a.onclick=e=>{e.preventDefault();testHome();});
+const testPages={"games/feelings.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <meta name=\"description\" content=\"A fun feelings vocabulary game for CE2 English students.\" />\n    <title>Feelings | CE2 Learning Games</title>\n    \n    \n    \n    <style>:root { font-family: \"Nunito\", system-ui, sans-serif; color: #26345d; background: #f5f1ff; }\n* { box-sizing: border-box; }\nbody { margin: 0; min-width: 320px; min-height: 100vh; background: radial-gradient(circle at 10% 15%, #fff0a8 0 75px, transparent 77px), radial-gradient(circle at 90% 80%, #c4f1e6 0 110px, transparent 112px), linear-gradient(145deg, #f8f5ff, #fffaf0); }\nbutton, a { font: inherit; }\n.game-page { width: min(920px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 60px; }\n.home-link { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; color: #5c48bd; font-weight: 800; text-decoration: none; }\n.home-link:hover { text-decoration: underline; }\n.home-link:focus-visible, button:focus-visible, .secondary-button:focus-visible { outline: 4px solid #f6c936; outline-offset: 4px; }\n.game-panel { overflow: hidden; min-height: 650px; background: white; border: 3px solid #ebe5ff; border-radius: 32px; box-shadow: 0 18px 50px rgba(66, 48, 126, .16); }\n.game-header { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 24px 32px; color: white; background: linear-gradient(125deg, #6750cf, #8d6de4); }\n.title-wrap { display: flex; align-items: center; gap: 14px; }\n.game-icon { display: grid; place-items: center; width: 58px; height: 58px; font-size: 32px; background: #ffd65a; border-radius: 18px; box-shadow: 0 5px 0 #cfa322; }\n.kicker { margin: 0; color: #e8e1ff; font-size: .75rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }\nh1 { margin: 0; font-family: \"Baloo 2\", sans-serif; font-size: clamp(1.75rem, 4vw, 2.4rem); line-height: 1; }\n.score-pill { flex: 0 0 auto; padding: 10px 16px; color: #3e326f; background: white; border-radius: 30px; font-size: 1.05rem; }\n.progress-info { display: flex; justify-content: space-between; padding: 25px 34px 9px; color: #68759a; font-size: .96rem; font-weight: 800; }\n.progress-track { height: 12px; margin: 0 34px; overflow: hidden; background: #e9e5f3; border-radius: 20px; }\n.progress-fill { width: 8.33%; height: 100%; background: linear-gradient(90deg, #69d3b6, #49bd9e); border-radius: inherit; transition: width .35s ease; }\n.question-area { padding: 31px 32px 42px; text-align: center; }\n.instruction { margin: 0 0 13px; color: #667397; font-size: 1.18rem; font-weight: 800; }\n.sentence { display: grid; place-items: center; min-height: 115px; width: min(740px, 100%); margin: 0 auto; padding: 20px 34px; color: #5941bf; background: #f0ecff; border: 3px dashed #a896ed; border-radius: 22px; font-family: \"Baloo 2\", sans-serif; font-size: clamp(1.65rem, 4vw, 2.55rem); font-weight: 800; line-height: 1.2; }\n.answers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; width: min(740px, 100%); margin: 27px auto 0; }\n.answer-button { min-height: 76px; padding: 12px 16px; color: #344269; background: white; border: 3px solid #d8dff1; border-radius: 18px; cursor: pointer; font-size: clamp(1.1rem, 2.5vw, 1.35rem); font-weight: 800; text-transform: capitalize; box-shadow: 0 6px 0 #cbd3e8; transition: transform .15s ease, box-shadow .15s ease, background .15s ease; }\n.answer-button:hover:not(:disabled) { transform: translateY(-3px); border-color: #9d8be6; box-shadow: 0 9px 0 #d3caf5; }\n.answer-button.wrong { color: #a63e52; background: #ffe6e9; border-color: #f27d91; box-shadow: 0 5px 0 #dd697d; animation: shake .3s ease; }\n.answer-button.correct { color: #176a55; background: #dff9ee; border-color: #53c7a7; box-shadow: 0 5px 0 #3aa88a; }\n.answer-button:disabled { cursor: default; opacity: .65; }\n.answer-button.correct:disabled { opacity: 1; }\n.feedback { min-height: 32px; margin: 22px 0 8px; font-size: 1.3rem; font-weight: 800; }\n.feedback--correct { color: #19836a; }\n.feedback--wrong { color: #c14a5f; }\n.primary-button, .secondary-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; padding: 12px 25px; border-radius: 16px; font-weight: 800; text-decoration: none; cursor: pointer; }\n.primary-button { color: white; background: #6750cf; border: 0; box-shadow: 0 6px 0 #4935a8; }\n.primary-button:hover { background: #765fe0; transform: translateY(-1px); }\n.next-button { visibility: hidden; }\n.next-button.visible { visibility: visible; }\n.results { padding: 78px 30px; text-align: center; }\n.celebration { font-size: 75px; }\n.results h2 { margin: 10px 0 0; color: #5941bf; font-family: \"Baloo 2\", sans-serif; font-size: clamp(2.5rem, 7vw, 4rem); }\n.results p { margin: 5px 0 30px; color: #68759a; font-size: 1.45rem; }\n.results p strong { color: #26345d; }\n.result-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; }\n.secondary-button { color: #5941bf; background: white; border: 3px solid #c9bcf6; }\n@keyframes shake { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }\n@media (max-width: 620px) { .game-page { width: min(100% - 20px, 920px); padding-top: 15px; } .game-panel { min-height: 630px; border-radius: 24px; } .game-header { padding: 20px 18px; } .game-icon { width: 50px; height: 50px; } .score-pill { padding: 9px 12px; font-size: .92rem; } .progress-info { padding: 22px 20px 8px; } .progress-track { margin: 0 20px; } .question-area { padding: 26px 18px 36px; } .sentence { min-height: 105px; padding: 18px; } .answers { grid-template-columns: 1fr; gap: 12px; margin-top: 23px; } .answer-button { min-height: 60px; } }\n@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }\n\n[hidden] { display: none !important; }\n.exercise-picker { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; padding: 22px 18px 0; }\n.exercise-picker button[aria-pressed=\"true\"] { color: white; background: #6750cf; border-color: #6750cf; }\n.feeling-picture { display: grid; place-items: center; width: min(350px, 100%); min-height: 200px; margin: 0 auto; padding: 20px; background: #fff6d6; border: 3px dashed #e7c75e; border-radius: 24px; font-size: clamp(6rem, 20vw, 9rem); line-height: 1.2; }\n.word-order { grid-template-columns: 1fr; }\n.built-sentence { margin: 0; min-height: 48px; font-size: 1.4rem; }\n.word-bank { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }\n.word-bank button:disabled { opacity: .5; }\n</style>\n    <style>[hidden] { display: none !important; }\n.completion-form, .teacher-form { width: min(480px, 100%); margin: 28px auto; padding: 22px; border: 2px solid #d8dff1; border-radius: 18px; text-align: left; }\n.completion-form h3 { margin-top: 0; }\n.completion-form label, .teacher-form label { display: block; margin: 15px 0 6px; font-weight: 800; }\ninput, select { width: 100%; min-height: 46px; padding: 10px; font: inherit; border: 2px solid #9a8bce; border-radius: 8px; }\ninput:focus-visible, select:focus-visible { outline: 3px solid #f6c936; outline-offset: 2px; }\n.completion-form button, .teacher-form button { margin-top: 20px; }\n.results .completion-form p, .score-note, .submission-status { font-size: 1rem; margin: 12px 0; }\nbutton:disabled { cursor: default; opacity: .65; }\n.teacher-content { padding: 24px; }\n.teacher-toolbar { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0; }\n.table-wrap { overflow-x: auto; }\ntable { width: 100%; border-collapse: collapse; margin-bottom: 28px; }\nth, td { padding: 12px; border-bottom: 1px solid #d8dff1; text-align: left; }\nth { background: #f0ecff; }\n.teacher-status { min-height: 24px; }\n\n.student-list { list-style: none; margin: 0 0 28px; padding: 0; }\n.student-results { border-bottom: 1px solid #d8dff1; }\n.student-results summary { padding: 12px; cursor: pointer; font-weight: 700; text-align: left; overflow-wrap: anywhere; }\n.student-results summary:hover { background: #f0ecff; }\n.student-results summary:focus-visible { outline: 3px solid #9a8bce; outline-offset: -3px; }\n.student-results[open] summary { background: #f0ecff; }\n.student-results .table-wrap { padding: 12px; }\n.student-results table { margin-bottom: 0; }\n\n.teacher-form .stay-signed-in { display: flex; align-items: center; gap: 10px; font-weight: 400; }\n.stay-signed-in input { width: 18px; height: 18px; min-height: 0; padding: 0; flex: 0 0 18px; }\n\n.all-games-completed { display: inline-block; margin-left: 10px; color: #18733b; font-style: italic; font-weight: 500; }\n\n.teacher-gift{display:inline-flex;margin-left:12px;align-items:center;font-weight:700}.send-gift{border:0;background:#6655c7;color:white;font:inherit;font-weight:800;border-radius:12px;padding:10px 15px;cursor:pointer}.gift-student{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;padding:15px;border-bottom:1px solid #ddd}\n</style>\n  </head>\n  <body>\n    <main class=\"game-page\">\n      <a class=\"home-link\" href=\"../index.html#unit-1\"><span aria-hidden=\"true\">←</span> Back to Unit 1</a>\n\n      <section class=\"game-panel\" aria-labelledby=\"game-title\">\n        <header class=\"game-header\">\n          <div class=\"title-wrap\">\n            <span class=\"game-icon\" aria-hidden=\"true\">😊</span>\n            <div><p class=\"kicker\">Vocabulary game</p><h1 id=\"game-title\">Feelings</h1></div>\n          </div>\n          <div class=\"score-pill\">⭐ Score: <strong id=\"score\">0</strong></div>\n        </header>\n\n        <nav class=\"exercise-picker\" aria-label=\"Choose an exercise\">\n          <button class=\"secondary-button\" id=\"sentence-mode\" type=\"button\" aria-pressed=\"true\">📝 Sentences</button>\n          <button class=\"secondary-button\" id=\"picture-mode\" type=\"button\" aria-pressed=\"false\">🖼️ Picture matching</button>\n          <button class=\"secondary-button\" id=\"order-mode\" type=\"button\" aria-pressed=\"false\">🧩 Build a sentence</button>\n        </nav>\n        <div id=\"quiz-view\">\n          <div class=\"progress-info\">\n            <span>Question <strong id=\"question-number\">1</strong> / <span id=\"question-total\">18</span></span>\n            <span id=\"progress-label\">Let’s begin!</span>\n          </div>\n          <div class=\"progress-track\" role=\"progressbar\" aria-label=\"Game progress\" aria-valuemin=\"0\" aria-valuemax=\"18\" aria-valuenow=\"1\">\n            <div class=\"progress-fill\" id=\"progress-fill\"></div>\n          </div>\n\n          <div class=\"question-area\">\n            <p class=\"instruction\" id=\"instruction\">How do I feel?</p>\n            <div class=\"sentence\" id=\"sentence\">I feel _____ when it's really sunny outside.</div>\n            <div class=\"feeling-picture\" id=\"feeling-picture\" role=\"img\" hidden></div>\n            <div class=\"answers\" id=\"answers\" aria-label=\"Answer choices\"></div>\n            <p class=\"feedback\" id=\"feedback\" aria-live=\"polite\"></p>\n            <button class=\"primary-button next-button\" id=\"next-button\" type=\"button\">Next Question <span aria-hidden=\"true\">→</span></button>\n          </div>\n        </div>\n\n        <div class=\"results\" id=\"results\" hidden>\n          <div class=\"celebration\" aria-hidden=\"true\">🎉</div>\n          <h2 tabindex=\"-1\">Great work!</h2>\n          <p>Your score: <strong><span id=\"final-score\">0</span> / <span id=\"final-total\">18</span></strong></p>\n          <div class=\"result-actions\">\n            <button class=\"primary-button\" id=\"play-again\" type=\"button\">↻ Play Again</button>\n            <a class=\"secondary-button\" href=\"../index.html#unit-1\">← Back to Unit 1</a>\n            <a class=\"secondary-button\" href=\"../index.html\">⌂ Back to CE2 Homepage</a>\n          </div>\n        </div>\n      </section>\n    </main>\n    <script>// Uses the game's existing answer handler and retry-friendly scoring.\nfunction renderWordOrder(question, container) {\n  container.replaceChildren();\n  container.classList.add(\"word-order\");\n  const built = document.createElement(\"p\");\n  built.className = \"built-sentence\";\n  built.setAttribute(\"aria-live\", \"polite\");\n  const bank = document.createElement(\"div\");\n  bank.className = \"word-bank\";\n  const selected = [];\n  const check = document.createElement(\"button\");\n  check.type = \"button\";\n  check.className = \"answer-button\";\n  check.textContent = \"Check sentence\";\n  check.dataset.answer = \"\";\n  check.disabled = true;\n  const clear = document.createElement(\"button\");\n  clear.type = \"button\";\n  clear.className = \"secondary-button\";\n  clear.textContent = \"Start sentence again\";\n  question.words.forEach(word => {\n    const button = document.createElement(\"button\");\n    button.type = \"button\";\n    button.className = \"secondary-button\";\n    button.textContent = word;\n    button.addEventListener(\"click\", () => {\n      selected.push(word);\n      button.disabled = true;\n      built.textContent = selected.join(\" \");\n      check.dataset.answer = built.textContent;\n      check.disabled = selected.length !== question.words.length;\n    });\n    bank.append(button);\n  });\n  clear.addEventListener(\"click\", () => {\n    selected.length = 0;\n    built.textContent = \"Choose the words below.\";\n    check.dataset.answer = \"\";\n    check.disabled = true;\n    check.classList.remove(\"wrong\");\n    check.removeAttribute(\"aria-label\");\n    bank.querySelectorAll(\"button\").forEach(button => { button.disabled = false; });\n    bank.querySelector(\"button\").focus();\n  });\n  built.textContent = \"Choose the words below.\";\n  container.append(built, bank, check, clear);\n}\n<\/script>\n    <script>window.ResultsAPI=parent.ResultsAPI;<\/script>\n    <script>window.CompletionResult = (() => {\n  const host = document.querySelector('#results');\n  const form = document.createElement('form');\n  form.className = 'completion-form';\n  form.innerHTML = `\n    <h3>Send your result to your teacher</h3>\n    <p class=\"score-note\">Your score counts questions you solved, including retries.</p>\n    <label for=\"student-name\">Student name</label>\n    <input id=\"student-name\" name=\"student_name\" required maxlength=\"100\" autocomplete=\"off\">\n    <label for=\"class-section\">Class section</label>\n    <select id=\"class-section\" name=\"class_section\" required>\n      <option value=\"\">Choose your section</option>\n      <option>CE2 A</option><option>CE2 D</option>\n    </select>\n    <button class=\"primary-button\" type=\"submit\">Submit result</button>\n    <p class=\"submission-status\" role=\"status\" aria-live=\"polite\"></p>`;\n  host.insertBefore(form, host.querySelector('.result-actions'));\n  const status = form.querySelector('.submission-status');\n  const controls = [...form.querySelectorAll('input, select, button')];\n  let completion = null;\n  let sending = false;\n  let saved = false;\n  let record = null;\n  function reset() {\n    completion = null;\n    record = null;\n    saved = false;\n    form.reset();\n    status.textContent = '';\n    controls.forEach(control => { control.disabled = false; });\n  }\n  form.addEventListener('submit', async event => {\n    event.preventDefault();\n    if (!completion || sending || saved) return;\n    const name = form.elements.student_name.value.trim();\n    if (!name) {\n      form.elements.student_name.setCustomValidity('Please enter your name.');\n      form.elements.student_name.reportValidity();\n      return;\n    }\n    record ||= { ...completion, student_name: name, class_section: form.elements.class_section.value };\n    // Keep the same payload and ID on retry, even if the network response was lost.\n    const submitted = record;\n    sending = true;\n    controls.forEach(control => { control.disabled = true; });\n    status.textContent = 'Sending… Please wait.';\n    try {\n      await ResultsAPI.submit(submitted);\n      if (record === submitted) {\n        saved = true;\n        status.textContent = 'Practice result saved in this browser!';\n      }\n    } catch {\n      if (record === submitted) {\n        status.textContent = 'Your result could not be confirmed. Check your connection and press Submit result to retry.';\n        // Freeze identity while retrying this same completion.\n        form.querySelector('button').disabled = false;\n      }\n    } finally {\n      sending = false;\n    }\n  });\n  form.elements.student_name.addEventListener('input', () => form.elements.student_name.setCustomValidity(''));\n  return {\n    reset,\n    show(game, exercise, score, total) {\n      reset();\n      completion = { id: crypto.randomUUID(), game, exercise, score, total };\n    },\n  };\n})();\n<\/script>\n    <script>const sentenceQuestions = [\n  { sentence: \"I feel _____ when it's really sunny outside.\", choices: [\"hot\", \"cold\", \"sad\"], answer: \"hot\" },\n  { sentence: \"I feel _____ when I have a big test coming up.\", choices: [\"worried\", \"excited\", \"calm\"], answer: \"worried\" },\n  { sentence: \"I feel _____ when it's snowing outside.\", choices: [\"cold\", \"hot\", \"happy\"], answer: \"cold\" },\n  { sentence: \"I feel _____ when I'm playing with my favorite toy.\", choices: [\"happy\", \"scared\", \"worried\"], answer: \"happy\" },\n  { sentence: \"I feel _____ after a long day at school.\", choices: [\"tired\", \"excited\", \"angry\"], answer: \"tired\" },\n  { sentence: \"I feel _____ when I watch a scary movie.\", choices: [\"scared\", \"happy\", \"calm\"], answer: \"scared\" },\n  { sentence: \"I feel _____ when someone takes my things without asking.\", choices: [\"angry\", \"sad\", \"cold\"], answer: \"angry\" },\n  { sentence: \"I feel _____ when I know we're going on a field trip.\", choices: [\"excited\", \"tired\", \"happy\"], answer: \"excited\" },\n  { sentence: \"I feel _____ when I take deep breaths and relax.\", choices: [\"calm\", \"worried\", \"angry\"], answer: \"calm\" },\n  { sentence: \"I feel _____ when I miss my family.\", choices: [\"sad\", \"happy\", \"excited\"], answer: \"sad\" },\n  { sentence: \"I feel _____ when I run outside on a very warm day.\", choices: [\"hot\", \"cold\", \"tired\"], answer: \"hot\" },\n  { sentence: \"I feel _____ when I hear a strange noise at night.\", choices: [\"scared\", \"calm\", \"happy\"], answer: \"scared\" },\n\n  { section: \"Choose the correct feeling\", sentence: \"It is really sunny outside.\", choices: [\"hot\", \"cold\", \"sad\"], answer: \"hot\" },\n  { section: \"Choose the correct feeling\", sentence: \"I have a big test coming up.\", choices: [\"worried\", \"happy\", \"calm\"], answer: \"worried\" },\n  { section: \"Choose the correct feeling\", sentence: \"I watch a scary movie.\", choices: [\"scared\", \"excited\", \"tired\"], answer: \"scared\" },\n  { section: \"Choose the correct feeling\", sentence: \"We are going on a field trip.\", choices: [\"excited\", \"angry\", \"cold\"], answer: \"excited\" },\n  { section: \"Choose the correct feeling\", sentence: \"I take deep breaths and relax.\", choices: [\"calm\", \"worried\", \"hot\"], answer: \"calm\" },\n  { section: \"Choose the correct feeling\", sentence: \"I miss my family.\", choices: [\"sad\", \"happy\", \"excited\"], answer: \"sad\" },\n];\n\nconst pictureQuestions = [\n  {\n    \"picture\": \"🥵\",\n    \"description\": \"A face sweating in the heat\",\n    \"choices\": [\n      \"hot\",\n      \"cold\",\n      \"sad\"\n    ],\n    \"answer\": \"hot\"\n  },\n  {\n    \"picture\": \"😟\",\n    \"description\": \"A face with raised eyebrows and an uneasy mouth\",\n    \"choices\": [\n      \"calm\",\n      \"happy\",\n      \"worried\"\n    ],\n    \"answer\": \"worried\"\n  },\n  {\n    \"picture\": \"🥶\",\n    \"description\": \"A blue face with chattering teeth and ice\",\n    \"choices\": [\n      \"angry\",\n      \"cold\",\n      \"hot\"\n    ],\n    \"answer\": \"cold\"\n  },\n  {\n    \"picture\": \"😊\",\n    \"description\": \"A face with a big smile\",\n    \"choices\": [\n      \"happy\",\n      \"sad\",\n      \"scared\"\n    ],\n    \"answer\": \"happy\"\n  },\n  {\n    \"picture\": \"😴\",\n    \"description\": \"A face with closed eyes and sleep symbols\",\n    \"choices\": [\n      \"excited\",\n      \"angry\",\n      \"tired\"\n    ],\n    \"answer\": \"tired\"\n  },\n  {\n    \"picture\": \"😨\",\n    \"description\": \"A face with wide eyes and a frightened open mouth\",\n    \"choices\": [\n      \"happy\",\n      \"scared\",\n      \"calm\"\n    ],\n    \"answer\": \"scared\"\n  },\n  {\n    \"picture\": \"😠\",\n    \"description\": \"A face with a frown and eyebrows pointing down\",\n    \"choices\": [\n      \"angry\",\n      \"happy\",\n      \"cold\"\n    ],\n    \"answer\": \"angry\"\n  },\n  {\n    \"picture\": \"🤩\",\n    \"description\": \"A smiling face with stars in its eyes\",\n    \"choices\": [\n      \"tired\",\n      \"sad\",\n      \"excited\"\n    ],\n    \"answer\": \"excited\"\n  },\n  {\n    \"picture\": \"😌\",\n    \"description\": \"A face with gently closed eyes and a relaxed smile\",\n    \"choices\": [\n      \"angry\",\n      \"calm\",\n      \"worried\"\n    ],\n    \"answer\": \"calm\"\n  },\n  {\n    \"picture\": \"😢\",\n    \"description\": \"A face with a frown and a tear\",\n    \"choices\": [\n      \"sad\",\n      \"happy\",\n      \"hot\"\n    ],\n    \"answer\": \"sad\"\n  }\n];\nconst orderQuestions = [\n  { section: \"Put the words in order\", sentence: \"The school trip is tomorrow. Build the sentence.\", words: [\"excited.\", \"am\", \"I\"], answer: \"I am excited.\" },\n  { section: \"Put the words in order\", sentence: \"I take deep breaths. Build the sentence.\", words: [\"calm.\", \"I\", \"am\"], answer: \"I am calm.\" },\n  { section: \"Put the words in order\", sentence: \"I need to sleep. Build the sentence.\", words: [\"am\", \"tired.\", \"I\"], answer: \"I am tired.\" },\n];\nlet questions = sentenceQuestions;\n\nconst positiveMessages = [\"Great job!\", \"Correct!\", \"Excellent!\", \"Well done!\"];\nlet currentQuestion = 0;\nlet score = 0;\nlet questionSolved = false;\n\nconst elements = {\n  quizView: document.querySelector(\"#quiz-view\"), results: document.querySelector(\"#results\"),\n  questionNumber: document.querySelector(\"#question-number\"), sentence: document.querySelector(\"#sentence\"),\n  instruction: document.querySelector(\"#instruction\"), answers: document.querySelector(\"#answers\"),\n  picture: document.querySelector(\"#feeling-picture\"),\n  questionTotal: document.querySelector(\"#question-total\"), finalTotal: document.querySelector(\"#final-total\"),\n  sentenceMode: document.querySelector(\"#sentence-mode\"), pictureMode: document.querySelector(\"#picture-mode\"),\n  feedback: document.querySelector(\"#feedback\"),\n  score: document.querySelector(\"#score\"), nextButton: document.querySelector(\"#next-button\"),\n  progressFill: document.querySelector(\"#progress-fill\"), progressBar: document.querySelector(\"[role='progressbar']\"),\n  progressLabel: document.querySelector(\"#progress-label\"), finalScore: document.querySelector(\"#final-score\"),\n  playAgain: document.querySelector(\"#play-again\"),\n};\n\nfunction renderQuestion() {\n  questionSolved = false;\n  const question = questions[currentQuestion];\n  elements.questionNumber.textContent = currentQuestion + 1;\n  elements.instruction.textContent = question.section || \"How do I feel?\";\n  const isPicture = Boolean(question.picture);\n  elements.instruction.textContent = isPicture ? \"Match the picture to the correct word.\" : (question.section || \"How do I feel?\");\n  elements.sentence.hidden = isPicture;\n  elements.picture.hidden = !isPicture;\n  elements.sentence.textContent = question.sentence || \"\";\n  elements.picture.textContent = question.picture || \"\";\n  elements.picture.setAttribute(\"aria-label\", question.description || \"\");\n  elements.questionTotal.textContent = questions.length;\n  elements.finalTotal.textContent = questions.length;\n  elements.progressBar.setAttribute(\"aria-valuemax\", questions.length);\n  elements.feedback.textContent = \"\";\n  elements.feedback.className = \"feedback\";\n  elements.nextButton.classList.remove(\"visible\");\n  elements.progressFill.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;\n  elements.progressBar.setAttribute(\"aria-valuenow\", currentQuestion + 1);\n  elements.progressLabel.textContent = currentQuestion === 0 ? \"Let’s begin!\" : (question.section ? \"Choose the best answer!\" : \"Keep going!\");\n  if (question.words) { renderWordOrder(question, elements.answers); return; }\n  elements.answers.classList.remove(\"word-order\");\n  elements.answers.replaceChildren(...question.choices.map((choice) => {\n    const button = document.createElement(\"button\");\n    button.className = \"answer-button\";\n    button.type = \"button\";\n    button.dataset.answer = choice;\n    button.textContent = choice;\n    return button;\n  }));\n}\n\nfunction checkAnswer(button) {\n  if (questionSolved) return;\n  if (button.dataset.answer === questions[currentQuestion].answer) {\n    questionSolved = true;\n    score += 1;\n    button.classList.add(\"correct\");\n    button.setAttribute(\"aria-label\", `${button.textContent}, correct answer`);\n    elements.answers.querySelectorAll(\"button\").forEach((answer) => { answer.disabled = true; });\n    elements.score.textContent = score;\n    elements.feedback.textContent = positiveMessages[currentQuestion % positiveMessages.length];\n    elements.feedback.className = \"feedback feedback--correct\";\n    elements.nextButton.classList.add(\"visible\");\n    elements.nextButton.focus();\n  } else {\n    button.classList.add(\"wrong\");\n    button.disabled = true;\n    elements.feedback.textContent = \"Try again!\";\n    elements.feedback.className = \"feedback feedback--wrong\";\n  }\n}\n\nfunction nextQuestion() {\n  currentQuestion += 1;\n  if (currentQuestion < questions.length) renderQuestion();\n  else showResults();\n}\n\nfunction showResults() {\n  CompletionResult.show(\"Feelings\", questions === pictureQuestions ? \"Picture matching\" : (questions === orderQuestions ? \"Build a sentence\" : \"Sentences and situations\"), score, questions.length);\n  elements.quizView.hidden = true;\n  elements.results.hidden = false;\n  elements.finalScore.textContent = score;\n  elements.results.querySelector(\"h2\").focus();\n}\n\nfunction restartGame() {\n  CompletionResult.reset();\n  currentQuestion = 0;\n  score = 0;\n  elements.score.textContent = \"0\";\n  elements.results.hidden = true;\n  elements.quizView.hidden = false;\n  renderQuestion();\n}\n\nelements.answers.addEventListener(\"click\", (event) => {\n  const button = event.target.closest(\"button[data-answer]\");\n  if (button) checkAnswer(button);\n});\nelements.nextButton.addEventListener(\"click\", nextQuestion);\nelements.playAgain.addEventListener(\"click\", restartGame);\nfunction selectExercise(mode) {\n  questions = mode === \"order\" ? orderQuestions : (mode === \"picture\" ? pictureQuestions : sentenceQuestions);\n  const pictureMode = mode === \"picture\";\n  document.querySelector(\"#order-mode\").setAttribute(\"aria-pressed\", String(mode === \"order\"));\n  elements.sentenceMode.setAttribute(\"aria-pressed\", String(mode === \"sentence\"));\n  elements.pictureMode.setAttribute(\"aria-pressed\", String(pictureMode));\n  restartGame();\n}\nelements.sentenceMode.addEventListener(\"click\", () => selectExercise(\"sentence\"));\nelements.pictureMode.addEventListener(\"click\", () => selectExercise(\"picture\"));\nrenderQuestion();\n\ndocument.querySelector(\"#order-mode\").addEventListener(\"click\", () => selectExercise(\"order\"));\n<\/script>\n  <script>document.querySelectorAll('a[href=\"../index.html\"]').forEach(a=>a.onclick=e=>{e.preventDefault();parent.closeTestGame();});<\/script></body>\n</html>\n", "games/imperative-verbs.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <meta name=\"description\" content=\"A fun imperative verbs game for CE2 English students.\" />\n    <title>Imperative Verbs | CE2 Learning Games</title>\n    \n    \n    \n    <style>:root { font-family: \"Nunito\", system-ui, sans-serif; color: #26345d; background: #f5f1ff; }\n* { box-sizing: border-box; }\nbody { margin: 0; min-width: 320px; min-height: 100vh; background: radial-gradient(circle at 10% 15%, #fff0a8 0 75px, transparent 77px), radial-gradient(circle at 90% 80%, #c4f1e6 0 110px, transparent 112px), linear-gradient(145deg, #f8f5ff, #fffaf0); }\nbutton, a { font: inherit; }\n.game-page { width: min(920px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 60px; }\n.home-link { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; color: #5c48bd; font-weight: 800; text-decoration: none; }\n.home-link:hover { text-decoration: underline; }\n.home-link:focus-visible, button:focus-visible, .secondary-button:focus-visible { outline: 4px solid #f6c936; outline-offset: 4px; }\n.game-panel { overflow: hidden; min-height: 650px; background: white; border: 3px solid #ebe5ff; border-radius: 32px; box-shadow: 0 18px 50px rgba(66, 48, 126, .16); }\n.game-header { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 24px 32px; color: white; background: linear-gradient(125deg, #6750cf, #8d6de4); }\n.title-wrap { display: flex; align-items: center; gap: 14px; }\n.game-icon { display: grid; place-items: center; width: 58px; height: 58px; font-size: 32px; background: #ffd65a; border-radius: 18px; box-shadow: 0 5px 0 #cfa322; }\n.kicker { margin: 0; color: #e8e1ff; font-size: .75rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }\nh1 { margin: 0; font-family: \"Baloo 2\", sans-serif; font-size: clamp(1.75rem, 4vw, 2.4rem); line-height: 1; }\n.score-pill { flex: 0 0 auto; padding: 10px 16px; color: #3e326f; background: white; border-radius: 30px; font-size: 1.05rem; }\n.progress-info { display: flex; justify-content: space-between; padding: 25px 34px 9px; color: #68759a; font-size: .96rem; font-weight: 800; }\n.progress-track { height: 12px; margin: 0 34px; overflow: hidden; background: #e9e5f3; border-radius: 20px; }\n.progress-fill { width: 10%; height: 100%; background: linear-gradient(90deg, #69d3b6, #49bd9e); border-radius: inherit; transition: width .35s ease; }\n.question-area { padding: 35px 32px 42px; text-align: center; }\n.instruction { margin: 0 0 13px; color: #667397; font-size: 1.18rem; font-weight: 800; }\n.sentence { display: grid; place-items: center; min-height: 125px; width: min(700px, 100%); margin: 0 auto; padding: 20px 34px; color: #5941bf; background: #f0ecff; border: 3px dashed #a896ed; border-radius: 22px; font-family: \"Baloo 2\", sans-serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.15; }\n.answers { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; width: min(700px, 100%); margin: 30px auto 0; }\n.answer-button { min-height: 84px; padding: 12px 18px; color: #344269; background: white; border: 3px solid #d8dff1; border-radius: 18px; cursor: pointer; font-size: clamp(1rem, 2.3vw, 1.25rem); font-weight: 800; box-shadow: 0 6px 0 #cbd3e8; transition: transform .15s ease, box-shadow .15s ease, background .15s ease; }\n.answer-button span { display: inline-block; margin-right: 7px; font-size: 1.45rem; }\n.answer-button:hover:not(:disabled) { transform: translateY(-3px); border-color: #9d8be6; box-shadow: 0 9px 0 #d3caf5; }\n.answer-button.wrong { color: #a63e52; background: #ffe6e9; border-color: #f27d91; box-shadow: 0 5px 0 #dd697d; animation: shake .3s ease; }\n.answer-button.correct { color: #176a55; background: #dff9ee; border-color: #53c7a7; box-shadow: 0 5px 0 #3aa88a; }\n.answer-button:disabled { cursor: default; opacity: .65; }\n.answer-button.correct:disabled { opacity: 1; }\n.feedback { min-height: 32px; margin: 22px 0 8px; font-size: 1.3rem; font-weight: 800; }\n.feedback--correct { color: #19836a; }\n.feedback--wrong { color: #c14a5f; }\n.primary-button, .secondary-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; padding: 12px 25px; border-radius: 16px; font-weight: 800; text-decoration: none; cursor: pointer; }\n.primary-button { color: white; background: #6750cf; border: 0; box-shadow: 0 6px 0 #4935a8; }\n.primary-button:hover { background: #765fe0; transform: translateY(-1px); }\n.next-button { visibility: hidden; }\n.next-button.visible { visibility: visible; }\n.results { padding: 78px 30px; text-align: center; }\n.celebration { font-size: 75px; }\n.results h2 { margin: 10px 0 0; color: #5941bf; font-family: \"Baloo 2\", sans-serif; font-size: clamp(2.5rem, 7vw, 4rem); }\n.results p { margin: 5px 0 30px; color: #68759a; font-size: 1.45rem; }\n.results p strong { color: #26345d; }\n.result-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; }\n.secondary-button { color: #5941bf; background: white; border: 3px solid #c9bcf6; }\n@keyframes shake { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }\n@media (max-width: 620px) { .game-page { width: min(100% - 20px, 920px); padding-top: 15px; } .game-panel { min-height: 630px; border-radius: 24px; } .game-header { padding: 20px 18px; } .game-icon { width: 50px; height: 50px; } .score-pill { padding: 9px 12px; font-size: .92rem; } .progress-info { padding: 22px 20px 8px; } .progress-track { margin: 0 20px; } .question-area { padding: 28px 18px 36px; } .sentence { min-height: 105px; padding: 18px; } .answers { grid-template-columns: 1fr; gap: 13px; margin-top: 25px; } .answer-button { min-height: 64px; } }\n@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }\n\n.exercise-picker { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; padding: 22px 18px 0; }\n.exercise-picker button[aria-pressed=\"true\"] { color: white; background: #6750cf; border-color: #6750cf; }\n.answer-button { text-transform: none; }\n</style>\n    <style>[hidden] { display: none !important; }\n.completion-form, .teacher-form { width: min(480px, 100%); margin: 28px auto; padding: 22px; border: 2px solid #d8dff1; border-radius: 18px; text-align: left; }\n.completion-form h3 { margin-top: 0; }\n.completion-form label, .teacher-form label { display: block; margin: 15px 0 6px; font-weight: 800; }\ninput, select { width: 100%; min-height: 46px; padding: 10px; font: inherit; border: 2px solid #9a8bce; border-radius: 8px; }\ninput:focus-visible, select:focus-visible { outline: 3px solid #f6c936; outline-offset: 2px; }\n.completion-form button, .teacher-form button { margin-top: 20px; }\n.results .completion-form p, .score-note, .submission-status { font-size: 1rem; margin: 12px 0; }\nbutton:disabled { cursor: default; opacity: .65; }\n.teacher-content { padding: 24px; }\n.teacher-toolbar { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0; }\n.table-wrap { overflow-x: auto; }\ntable { width: 100%; border-collapse: collapse; margin-bottom: 28px; }\nth, td { padding: 12px; border-bottom: 1px solid #d8dff1; text-align: left; }\nth { background: #f0ecff; }\n.teacher-status { min-height: 24px; }\n\n.student-list { list-style: none; margin: 0 0 28px; padding: 0; }\n.student-results { border-bottom: 1px solid #d8dff1; }\n.student-results summary { padding: 12px; cursor: pointer; font-weight: 700; text-align: left; overflow-wrap: anywhere; }\n.student-results summary:hover { background: #f0ecff; }\n.student-results summary:focus-visible { outline: 3px solid #9a8bce; outline-offset: -3px; }\n.student-results[open] summary { background: #f0ecff; }\n.student-results .table-wrap { padding: 12px; }\n.student-results table { margin-bottom: 0; }\n\n.teacher-form .stay-signed-in { display: flex; align-items: center; gap: 10px; font-weight: 400; }\n.stay-signed-in input { width: 18px; height: 18px; min-height: 0; padding: 0; flex: 0 0 18px; }\n\n.all-games-completed { display: inline-block; margin-left: 10px; color: #18733b; font-style: italic; font-weight: 500; }\n\n.teacher-gift{display:inline-flex;margin-left:12px;align-items:center;font-weight:700}.send-gift{border:0;background:#6655c7;color:white;font:inherit;font-weight:800;border-radius:12px;padding:10px 15px;cursor:pointer}.gift-student{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;padding:15px;border-bottom:1px solid #ddd}\n</style>\n  </head>\n  <body>\n    <main class=\"game-page\">\n      <a class=\"home-link\" href=\"../index.html\"><span aria-hidden=\"true\">←</span> CE2 Homepage</a>\n\n      <section class=\"game-panel\" aria-labelledby=\"game-title\">\n        <header class=\"game-header\">\n          <div class=\"title-wrap\">\n            <span class=\"game-icon\" aria-hidden=\"true\">🚦</span>\n            <div><p class=\"kicker\">Sentence game</p><h1 id=\"game-title\">Imperative Verbs</h1></div>\n          </div>\n          <div class=\"score-pill\">⭐ Score: <strong id=\"score\">0</strong></div>\n        </header>\n\n        <nav class=\"exercise-picker\" aria-label=\"Choose an exercise\">\n          <button class=\"secondary-button\" type=\"button\" data-exercise=\"sort\" aria-pressed=\"true\">Sort sentences</button>\n          <button class=\"secondary-button\" type=\"button\" data-exercise=\"choose\" aria-pressed=\"false\">Choose a sentence</button>\n        </nav>\n        <div id=\"quiz-view\">\n          <div class=\"progress-info\">\n            <span>Question <strong id=\"question-number\">1</strong> / <span class=\"question-total\">10</span></span>\n            <span id=\"progress-label\">Let’s begin!</span>\n          </div>\n          <div class=\"progress-track\" role=\"progressbar\" aria-label=\"Game progress\" aria-valuemin=\"0\" aria-valuemax=\"10\" aria-valuenow=\"1\">\n            <div class=\"progress-fill\" id=\"progress-fill\"></div>\n          </div>\n\n          <div class=\"question-area\">\n            <p class=\"instruction\" id=\"instruction\">Is this a command or an instruction?</p>\n            <div class=\"sentence\" id=\"sentence\">Open your book.</div>\n            <div class=\"answers\" id=\"answers\" aria-label=\"Answer choices\">\n              <button class=\"answer-button answer-button--command\" type=\"button\" data-answer=\"command\"><span aria-hidden=\"true\">💬</span> COMMAND</button>\n              <button class=\"answer-button answer-button--direction\" type=\"button\" data-answer=\"direction\"><span aria-hidden=\"true\">🧭</span> INSTRUCTION / DIRECTION</button>\n            </div>\n            <p class=\"feedback\" id=\"feedback\" aria-live=\"polite\"></p>\n            <button class=\"primary-button next-button\" id=\"next-button\" type=\"button\">Next Question <span aria-hidden=\"true\">→</span></button>\n          </div>\n        </div>\n\n        <div class=\"results\" id=\"results\" hidden>\n          <div class=\"celebration\" aria-hidden=\"true\">🎉</div>\n          <h2 tabindex=\"-1\">Excellent work!</h2>\n          <p>Your score: <strong><span id=\"final-score\">0</span> / <span class=\"question-total\">10</span></strong></p>\n          <div class=\"result-actions\">\n            <button class=\"primary-button\" id=\"play-again\" type=\"button\">↻ Play Again</button>\n            <a class=\"secondary-button\" href=\"../index.html\">⌂ Back to CE2 Homepage</a>\n          </div>\n        </div>\n      </section>\n    </main>\n    <script>window.ResultsAPI=parent.ResultsAPI;<\/script>\n    <script>window.CompletionResult = (() => {\n  const host = document.querySelector('#results');\n  const form = document.createElement('form');\n  form.className = 'completion-form';\n  form.innerHTML = `\n    <h3>Send your result to your teacher</h3>\n    <p class=\"score-note\">Your score counts questions you solved, including retries.</p>\n    <label for=\"student-name\">Student name</label>\n    <input id=\"student-name\" name=\"student_name\" required maxlength=\"100\" autocomplete=\"off\">\n    <label for=\"class-section\">Class section</label>\n    <select id=\"class-section\" name=\"class_section\" required>\n      <option value=\"\">Choose your section</option>\n      <option>CE2 A</option><option>CE2 D</option>\n    </select>\n    <button class=\"primary-button\" type=\"submit\">Submit result</button>\n    <p class=\"submission-status\" role=\"status\" aria-live=\"polite\"></p>`;\n  host.insertBefore(form, host.querySelector('.result-actions'));\n  const status = form.querySelector('.submission-status');\n  const controls = [...form.querySelectorAll('input, select, button')];\n  let completion = null;\n  let sending = false;\n  let saved = false;\n  let record = null;\n  function reset() {\n    completion = null;\n    record = null;\n    saved = false;\n    form.reset();\n    status.textContent = '';\n    controls.forEach(control => { control.disabled = false; });\n  }\n  form.addEventListener('submit', async event => {\n    event.preventDefault();\n    if (!completion || sending || saved) return;\n    const name = form.elements.student_name.value.trim();\n    if (!name) {\n      form.elements.student_name.setCustomValidity('Please enter your name.');\n      form.elements.student_name.reportValidity();\n      return;\n    }\n    record ||= { ...completion, student_name: name, class_section: form.elements.class_section.value };\n    // Keep the same payload and ID on retry, even if the network response was lost.\n    const submitted = record;\n    sending = true;\n    controls.forEach(control => { control.disabled = true; });\n    status.textContent = 'Sending… Please wait.';\n    try {\n      await ResultsAPI.submit(submitted);\n      if (record === submitted) {\n        saved = true;\n        status.textContent = 'Practice result saved in this browser!';\n      }\n    } catch {\n      if (record === submitted) {\n        status.textContent = 'Your result could not be confirmed. Check your connection and press Submit result to retry.';\n        // Freeze identity while retrying this same completion.\n        form.querySelector('button').disabled = false;\n      }\n    } finally {\n      sending = false;\n    }\n  });\n  form.elements.student_name.addEventListener('input', () => form.elements.student_name.setCustomValidity(''));\n  return {\n    reset,\n    show(game, exercise, score, total) {\n      reset();\n      completion = { id: crypto.randomUUID(), game, exercise, score, total };\n    },\n  };\n})();\n<\/script>\n    <script>const sortingQuestions = [\n  { sentence: \"Open your book.\", answer: \"command\" },\n  { sentence: \"Turn left at the corner.\", answer: \"direction\" },\n  { sentence: \"Sit down, please.\", answer: \"command\" },\n  { sentence: \"Go straight ahead.\", answer: \"direction\" },\n  { sentence: \"Don't run in the classroom.\", answer: \"command\" },\n  { sentence: \"Turn right after the school.\", answer: \"direction\" },\n  { sentence: \"Listen to the teacher.\", answer: \"command\" },\n  { sentence: \"Cross the street carefully.\", answer: \"direction\" },\n  { sentence: \"Don't touch the computer.\", answer: \"command\" },\n  { sentence: \"Walk past the park.\", answer: \"direction\" },\n];\n\nconst sentenceQuestions = [\n  { sentence: \"Ask someone to open their book.\", choices: [\"Open your book.\", \"Turn left at the corner.\", \"Go straight ahead.\"], answer: \"Open your book.\" },\n  { sentence: \"Tell someone which way to go at the corner.\", choices: [\"Sit down, please.\", \"Turn left at the corner.\", \"Listen to the teacher.\"], answer: \"Turn left at the corner.\" },\n  { sentence: \"Tell someone to stop running in class.\", choices: [\"Walk past the park.\", \"Cross the street carefully.\", \"Don't run in the classroom.\"], answer: \"Don't run in the classroom.\" },\n  { sentence: \"Tell someone to continue forward.\", choices: [\"Go straight ahead.\", \"Don't touch the computer.\", \"Open your book.\"], answer: \"Go straight ahead.\" },\n];\nlet questions = sortingQuestions;\nfunction selectExercise(mode) {\n  questions = mode === \"sort\" ? sortingQuestions : sentenceQuestions;\n  document.querySelectorAll(\"[data-exercise]\").forEach(button => button.setAttribute(\"aria-pressed\", String(button.dataset.exercise === mode)));\n  restartGame();\n}\ndocument.querySelectorAll(\"[data-exercise]\").forEach(button => button.addEventListener(\"click\", () => selectExercise(button.dataset.exercise)));\n\nconst positiveMessages = [\"Great job!\", \"Correct!\", \"Excellent!\", \"Well done!\"];\nlet currentQuestion = 0;\nlet score = 0;\nlet questionSolved = false;\n\nconst elements = {\n  quizView: document.querySelector(\"#quiz-view\"), results: document.querySelector(\"#results\"),\n  questionNumber: document.querySelector(\"#question-number\"), sentence: document.querySelector(\"#sentence\"),\n  answers: document.querySelector(\"#answers\"), feedback: document.querySelector(\"#feedback\"),\n  score: document.querySelector(\"#score\"), nextButton: document.querySelector(\"#next-button\"),\n  progressFill: document.querySelector(\"#progress-fill\"), progressBar: document.querySelector(\"[role='progressbar']\"),\n  progressLabel: document.querySelector(\"#progress-label\"), finalScore: document.querySelector(\"#final-score\"),\n  playAgain: document.querySelector(\"#play-again\"),\n};\n\nfunction renderQuestion() {\n  questionSolved = false;\n  elements.questionNumber.textContent = currentQuestion + 1;\n  elements.sentence.textContent = questions[currentQuestion].sentence;\n  elements.feedback.textContent = \"\";\n  elements.feedback.className = \"feedback\";\n  elements.nextButton.classList.remove(\"visible\");\n  elements.progressFill.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;\n  elements.progressBar.setAttribute(\"aria-valuenow\", currentQuestion + 1);\n  elements.progressLabel.textContent = currentQuestion === 0 ? \"Let’s begin!\" : \"Keep going!\";\n\n  const question = questions[currentQuestion];\n  document.querySelector(\"#instruction\").textContent = question.choices ? \"Choose the correct sentence.\" : \"Sort the sentence: command or direction?\";\n  document.querySelectorAll(\".question-total\").forEach(el => { el.textContent = questions.length; });\n  elements.progressBar.setAttribute(\"aria-valuemax\", questions.length);\n  elements.answers.replaceChildren(...(question.choices || [\"command\", \"direction\"]).map(choice => {\n    const button = document.createElement(\"button\");\n    button.type = \"button\";\n    button.className = \"answer-button\";\n    button.dataset.answer = choice;\n    button.textContent = choice === \"direction\" ? \"Instruction / direction\" : choice;\n    return button;\n  }));\n}\n\nfunction checkAnswer(button) {\n  if (questionSolved) return;\n  if (button.dataset.answer === questions[currentQuestion].answer) {\n    questionSolved = true;\n    score += 1;\n    button.classList.add(\"correct\");\n    button.setAttribute(\"aria-label\", `${button.textContent.trim()}, correct answer`);\n    elements.answers.querySelectorAll(\"button\").forEach((answer) => { answer.disabled = true; });\n    elements.score.textContent = score;\n    elements.feedback.textContent = positiveMessages[currentQuestion % positiveMessages.length];\n    elements.feedback.className = \"feedback feedback--correct\";\n    elements.nextButton.classList.add(\"visible\");\n    elements.nextButton.focus();\n  } else {\n    button.classList.add(\"wrong\");\n    button.disabled = true;\n    elements.feedback.textContent = \"Try again!\";\n    elements.feedback.className = \"feedback feedback--wrong\";\n  }\n}\n\nfunction nextQuestion() {\n  currentQuestion += 1;\n  if (currentQuestion < questions.length) renderQuestion();\n  else showResults();\n}\n\nfunction showResults() {\n  CompletionResult.show(\"Imperative Verbs\", questions === sortingQuestions ? \"Sort sentences\" : \"Choose a sentence\", score, questions.length);\n  elements.quizView.hidden = true;\n  elements.results.hidden = false;\n  elements.finalScore.textContent = score;\n  elements.results.querySelector(\"h2\").focus();\n}\n\nfunction restartGame() {\n  CompletionResult.reset();\n  currentQuestion = 0;\n  score = 0;\n  elements.score.textContent = \"0\";\n  elements.results.hidden = true;\n  elements.quizView.hidden = false;\n  renderQuestion();\n}\n\nelements.answers.addEventListener(\"click\", (event) => {\n  const button = event.target.closest(\"button[data-answer]\");\n  if (button) checkAnswer(button);\n});\nelements.nextButton.addEventListener(\"click\", nextQuestion);\nelements.playAgain.addEventListener(\"click\", restartGame);\nrenderQuestion();\n<\/script>\n  <script>document.querySelectorAll('a[href=\"../index.html\"]').forEach(a=>a.onclick=e=>{e.preventDefault();parent.closeTestGame();});<\/script></body>\n</html>\n", "games/verb-to-be.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <meta name=\"description\" content=\"Practise am, is and are in affirmative, negative and question forms for CE2 students.\" />\n    <title>Verb to Be | CE2 Learning Games</title>\n    \n    \n    \n    <style>:root { font-family: \"Nunito\", system-ui, sans-serif; color: #26345d; background: #f5f1ff; }\n* { box-sizing: border-box; }\nbody { margin: 0; min-width: 320px; min-height: 100vh; background: radial-gradient(circle at 10% 15%, #fff0a8 0 75px, transparent 77px), radial-gradient(circle at 90% 80%, #c4f1e6 0 110px, transparent 112px), linear-gradient(145deg, #f8f5ff, #fffaf0); }\nbutton, a { font: inherit; }\n.game-page { width: min(920px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 60px; }\n.home-link { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; color: #5c48bd; font-weight: 800; text-decoration: none; }\n.home-link:hover { text-decoration: underline; }\n.home-link:focus-visible, button:focus-visible, .secondary-button:focus-visible { outline: 4px solid #f6c936; outline-offset: 4px; }\n.game-panel { overflow: hidden; min-height: 650px; background: white; border: 3px solid #ebe5ff; border-radius: 32px; box-shadow: 0 18px 50px rgba(66, 48, 126, .16); }\n.game-header { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 24px 32px; color: white; background: linear-gradient(125deg, #6750cf, #8d6de4); }\n.title-wrap { display: flex; align-items: center; gap: 14px; }\n.game-icon { display: grid; place-items: center; width: 58px; height: 58px; font-size: 32px; background: #ffd65a; border-radius: 18px; box-shadow: 0 5px 0 #cfa322; }\n.kicker { margin: 0; color: #e8e1ff; font-size: .75rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }\nh1 { margin: 0; font-family: \"Baloo 2\", sans-serif; font-size: clamp(1.75rem, 4vw, 2.4rem); line-height: 1; }\n.score-pill { flex: 0 0 auto; padding: 10px 16px; color: #3e326f; background: white; border-radius: 30px; font-size: 1.05rem; }\n.progress-info { display: flex; justify-content: space-between; padding: 25px 34px 9px; color: #68759a; font-size: .96rem; font-weight: 800; }\n.progress-track { height: 12px; margin: 0 34px; overflow: hidden; background: #e9e5f3; border-radius: 20px; }\n.progress-fill { width: 8.33%; height: 100%; background: linear-gradient(90deg, #69d3b6, #49bd9e); border-radius: inherit; transition: width .35s ease; }\n.question-area { padding: 31px 32px 42px; text-align: center; }\n.instruction { margin: 0 0 13px; color: #667397; font-size: 1.18rem; font-weight: 800; }\n.sentence { display: grid; place-items: center; min-height: 115px; width: min(740px, 100%); margin: 0 auto; padding: 20px 34px; color: #5941bf; background: #f0ecff; border: 3px dashed #a896ed; border-radius: 22px; font-family: \"Baloo 2\", sans-serif; font-size: clamp(1.65rem, 4vw, 2.55rem); font-weight: 800; line-height: 1.2; }\n.answers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; width: min(740px, 100%); margin: 27px auto 0; }\n.answer-button { min-height: 76px; padding: 12px 16px; color: #344269; background: white; border: 3px solid #d8dff1; border-radius: 18px; cursor: pointer; font-size: clamp(1.1rem, 2.5vw, 1.35rem); font-weight: 800; text-transform: capitalize; box-shadow: 0 6px 0 #cbd3e8; transition: transform .15s ease, box-shadow .15s ease, background .15s ease; }\n.answer-button:hover:not(:disabled) { transform: translateY(-3px); border-color: #9d8be6; box-shadow: 0 9px 0 #d3caf5; }\n.answer-button.wrong { color: #a63e52; background: #ffe6e9; border-color: #f27d91; box-shadow: 0 5px 0 #dd697d; animation: shake .3s ease; }\n.answer-button.correct { color: #176a55; background: #dff9ee; border-color: #53c7a7; box-shadow: 0 5px 0 #3aa88a; }\n.answer-button:disabled { cursor: default; opacity: .65; }\n.answer-button.correct:disabled { opacity: 1; }\n.feedback { min-height: 32px; margin: 22px 0 8px; font-size: 1.3rem; font-weight: 800; }\n.feedback--correct { color: #19836a; }\n.feedback--wrong { color: #c14a5f; }\n.primary-button, .secondary-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; padding: 12px 25px; border-radius: 16px; font-weight: 800; text-decoration: none; cursor: pointer; }\n.primary-button { color: white; background: #6750cf; border: 0; box-shadow: 0 6px 0 #4935a8; }\n.primary-button:hover { background: #765fe0; transform: translateY(-1px); }\n.next-button { visibility: hidden; }\n.next-button.visible { visibility: visible; }\n.results { padding: 78px 30px; text-align: center; }\n.celebration { font-size: 75px; }\n.results h2 { margin: 10px 0 0; color: #5941bf; font-family: \"Baloo 2\", sans-serif; font-size: clamp(2.5rem, 7vw, 4rem); }\n.results p { margin: 5px 0 30px; color: #68759a; font-size: 1.45rem; }\n.results p strong { color: #26345d; }\n.result-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; }\n.secondary-button { color: #5941bf; background: white; border: 3px solid #c9bcf6; }\n@keyframes shake { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }\n@media (max-width: 620px) { .game-page { width: min(100% - 20px, 920px); padding-top: 15px; } .game-panel { min-height: 630px; border-radius: 24px; } .game-header { padding: 20px 18px; } .game-icon { width: 50px; height: 50px; } .score-pill { padding: 9px 12px; font-size: .92rem; } .progress-info { padding: 22px 20px 8px; } .progress-track { margin: 0 20px; } .question-area { padding: 26px 18px 36px; } .sentence { min-height: 105px; padding: 18px; } .answers { grid-template-columns: 1fr; gap: 12px; margin-top: 23px; } .answer-button { min-height: 60px; } }\n@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }\n\n[hidden] { display: none !important; }\n.exercise-picker { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; padding: 22px 18px 0; }\n.exercise-picker button[aria-pressed=\"true\"] { color: white; background: #6750cf; border-color: #6750cf; }\n.feeling-picture { display: grid; place-items: center; width: min(350px, 100%); min-height: 200px; margin: 0 auto; padding: 20px; background: #fff6d6; border: 3px dashed #e7c75e; border-radius: 24px; font-size: clamp(6rem, 20vw, 9rem); line-height: 1.2; }\n.word-order { grid-template-columns: 1fr; }\n.built-sentence { margin: 0; min-height: 48px; font-size: 1.4rem; }\n.word-bank { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }\n.word-bank button:disabled { opacity: .5; }\n\n.grammar-guide { margin: 20px 20px 0; padding: 16px; color: #5941bf; background: #f0ecff; border-radius: 16px; text-align: center; font-weight: 800; line-height: 1.6; }\n.answer-button { text-transform: none; }\n@media (max-width: 620px) { .exercise-picker { gap: 10px; } .exercise-picker button { padding: 10px 14px; } }\n</style>\n    <style>[hidden] { display: none !important; }\n.completion-form, .teacher-form { width: min(480px, 100%); margin: 28px auto; padding: 22px; border: 2px solid #d8dff1; border-radius: 18px; text-align: left; }\n.completion-form h3 { margin-top: 0; }\n.completion-form label, .teacher-form label { display: block; margin: 15px 0 6px; font-weight: 800; }\ninput, select { width: 100%; min-height: 46px; padding: 10px; font: inherit; border: 2px solid #9a8bce; border-radius: 8px; }\ninput:focus-visible, select:focus-visible { outline: 3px solid #f6c936; outline-offset: 2px; }\n.completion-form button, .teacher-form button { margin-top: 20px; }\n.results .completion-form p, .score-note, .submission-status { font-size: 1rem; margin: 12px 0; }\nbutton:disabled { cursor: default; opacity: .65; }\n.teacher-content { padding: 24px; }\n.teacher-toolbar { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0; }\n.table-wrap { overflow-x: auto; }\ntable { width: 100%; border-collapse: collapse; margin-bottom: 28px; }\nth, td { padding: 12px; border-bottom: 1px solid #d8dff1; text-align: left; }\nth { background: #f0ecff; }\n.teacher-status { min-height: 24px; }\n\n.student-list { list-style: none; margin: 0 0 28px; padding: 0; }\n.student-results { border-bottom: 1px solid #d8dff1; }\n.student-results summary { padding: 12px; cursor: pointer; font-weight: 700; text-align: left; overflow-wrap: anywhere; }\n.student-results summary:hover { background: #f0ecff; }\n.student-results summary:focus-visible { outline: 3px solid #9a8bce; outline-offset: -3px; }\n.student-results[open] summary { background: #f0ecff; }\n.student-results .table-wrap { padding: 12px; }\n.student-results table { margin-bottom: 0; }\n\n.teacher-form .stay-signed-in { display: flex; align-items: center; gap: 10px; font-weight: 400; }\n.stay-signed-in input { width: 18px; height: 18px; min-height: 0; padding: 0; flex: 0 0 18px; }\n\n.all-games-completed { display: inline-block; margin-left: 10px; color: #18733b; font-style: italic; font-weight: 500; }\n\n.teacher-gift{display:inline-flex;margin-left:12px;align-items:center;font-weight:700}.send-gift{border:0;background:#6655c7;color:white;font:inherit;font-weight:800;border-radius:12px;padding:10px 15px;cursor:pointer}.gift-student{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;padding:15px;border-bottom:1px solid #ddd}\n</style>\n  </head>\n  <body>\n    <main class=\"game-page\">\n      <a class=\"home-link\" href=\"../index.html#unit-1\"><span aria-hidden=\"true\">←</span> Back to Unit 1</a>\n\n      <section class=\"game-panel\" aria-labelledby=\"game-title\">\n        <header class=\"game-header\">\n          <div class=\"title-wrap\">\n            <span class=\"game-icon\" aria-hidden=\"true\">🧩</span>\n            <div><p class=\"kicker\">Grammar game</p><h1 id=\"game-title\">Verb to Be</h1></div>\n          </div>\n          <div class=\"score-pill\">⭐ Score: <strong id=\"score\">0</strong></div>\n        </header>\n\n        <nav class=\"exercise-picker\" aria-label=\"Choose a verb to be exercise\">\n          <button class=\"secondary-button\" type=\"button\" data-exercise=\"affirmative\" aria-pressed=\"true\">✓ Affirmative</button>\n          <button class=\"secondary-button\" type=\"button\" data-exercise=\"negative\" aria-pressed=\"false\">✗ Negative</button>\n          <button class=\"secondary-button\" type=\"button\" data-exercise=\"interrogative\" aria-pressed=\"false\">? Questions</button>\n          <button class=\"secondary-button\" type=\"button\" data-exercise=\"mixed\" aria-pressed=\"false\">🧩 Mixed activities</button>\n        </nav>\n        <p class=\"grammar-guide\" id=\"grammar-guide\">I am · You / We / They are · He / She / It is</p>\n        <div id=\"quiz-view\">\n          <div class=\"progress-info\">\n            <span>Question <strong id=\"question-number\">1</strong> / <span class=\"question-total\">7</span></span>\n            <span id=\"progress-label\">Let’s begin!</span>\n          </div>\n          <div class=\"progress-track\" role=\"progressbar\" aria-label=\"Game progress\" aria-valuemin=\"0\" aria-valuemax=\"7\" aria-valuenow=\"1\">\n            <div class=\"progress-fill\" id=\"progress-fill\"></div>\n          </div>\n\n          <div class=\"question-area\">\n            <p class=\"instruction\" id=\"instruction\">Complete the affirmative sentence.</p>\n            <div class=\"sentence\" id=\"sentence\">I _____ eight years old.</div>\n            <div class=\"answers\" id=\"answers\" aria-label=\"Answer choices\"></div>\n            <p class=\"feedback\" id=\"feedback\" aria-live=\"polite\"></p>\n            <button class=\"primary-button next-button\" id=\"next-button\" type=\"button\">Next Question <span aria-hidden=\"true\">→</span></button>\n          </div>\n        </div>\n\n        <div class=\"results\" id=\"results\" hidden>\n          <div class=\"celebration\" aria-hidden=\"true\">🎉</div>\n          <h2 tabindex=\"-1\">Great work!</h2>\n          <p>Your score: <strong><span id=\"final-score\">0</span> / <span class=\"question-total\">7</span></strong></p>\n          <div class=\"result-actions\">\n            <button class=\"primary-button\" id=\"play-again\" type=\"button\">↻ Play Again</button>\n            <a class=\"secondary-button\" href=\"../index.html#unit-1\">← Back to Unit 1</a>\n            <a class=\"secondary-button\" href=\"../index.html\">⌂ Back to CE2 Homepage</a>\n          </div>\n        </div>\n      </section>\n    </main>\n    <script>// Uses the game's existing answer handler and retry-friendly scoring.\nfunction renderWordOrder(question, container) {\n  container.replaceChildren();\n  container.classList.add(\"word-order\");\n  const built = document.createElement(\"p\");\n  built.className = \"built-sentence\";\n  built.setAttribute(\"aria-live\", \"polite\");\n  const bank = document.createElement(\"div\");\n  bank.className = \"word-bank\";\n  const selected = [];\n  const check = document.createElement(\"button\");\n  check.type = \"button\";\n  check.className = \"answer-button\";\n  check.textContent = \"Check sentence\";\n  check.dataset.answer = \"\";\n  check.disabled = true;\n  const clear = document.createElement(\"button\");\n  clear.type = \"button\";\n  clear.className = \"secondary-button\";\n  clear.textContent = \"Start sentence again\";\n  question.words.forEach(word => {\n    const button = document.createElement(\"button\");\n    button.type = \"button\";\n    button.className = \"secondary-button\";\n    button.textContent = word;\n    button.addEventListener(\"click\", () => {\n      selected.push(word);\n      button.disabled = true;\n      built.textContent = selected.join(\" \");\n      check.dataset.answer = built.textContent;\n      check.disabled = selected.length !== question.words.length;\n    });\n    bank.append(button);\n  });\n  clear.addEventListener(\"click\", () => {\n    selected.length = 0;\n    built.textContent = \"Choose the words below.\";\n    check.dataset.answer = \"\";\n    check.disabled = true;\n    check.classList.remove(\"wrong\");\n    check.removeAttribute(\"aria-label\");\n    bank.querySelectorAll(\"button\").forEach(button => { button.disabled = false; });\n    bank.querySelector(\"button\").focus();\n  });\n  built.textContent = \"Choose the words below.\";\n  container.append(built, bank, check, clear);\n}\n<\/script>\n    <script>window.ResultsAPI=parent.ResultsAPI;<\/script>\n    <script>window.CompletionResult = (() => {\n  const host = document.querySelector('#results');\n  const form = document.createElement('form');\n  form.className = 'completion-form';\n  form.innerHTML = `\n    <h3>Send your result to your teacher</h3>\n    <p class=\"score-note\">Your score counts questions you solved, including retries.</p>\n    <label for=\"student-name\">Student name</label>\n    <input id=\"student-name\" name=\"student_name\" required maxlength=\"100\" autocomplete=\"off\">\n    <label for=\"class-section\">Class section</label>\n    <select id=\"class-section\" name=\"class_section\" required>\n      <option value=\"\">Choose your section</option>\n      <option>CE2 A</option><option>CE2 D</option>\n    </select>\n    <button class=\"primary-button\" type=\"submit\">Submit result</button>\n    <p class=\"submission-status\" role=\"status\" aria-live=\"polite\"></p>`;\n  host.insertBefore(form, host.querySelector('.result-actions'));\n  const status = form.querySelector('.submission-status');\n  const controls = [...form.querySelectorAll('input, select, button')];\n  let completion = null;\n  let sending = false;\n  let saved = false;\n  let record = null;\n  function reset() {\n    completion = null;\n    record = null;\n    saved = false;\n    form.reset();\n    status.textContent = '';\n    controls.forEach(control => { control.disabled = false; });\n  }\n  form.addEventListener('submit', async event => {\n    event.preventDefault();\n    if (!completion || sending || saved) return;\n    const name = form.elements.student_name.value.trim();\n    if (!name) {\n      form.elements.student_name.setCustomValidity('Please enter your name.');\n      form.elements.student_name.reportValidity();\n      return;\n    }\n    record ||= { ...completion, student_name: name, class_section: form.elements.class_section.value };\n    // Keep the same payload and ID on retry, even if the network response was lost.\n    const submitted = record;\n    sending = true;\n    controls.forEach(control => { control.disabled = true; });\n    status.textContent = 'Sending… Please wait.';\n    try {\n      await ResultsAPI.submit(submitted);\n      if (record === submitted) {\n        saved = true;\n        status.textContent = 'Practice result saved in this browser!';\n      }\n    } catch {\n      if (record === submitted) {\n        status.textContent = 'Your result could not be confirmed. Check your connection and press Submit result to retry.';\n        // Freeze identity while retrying this same completion.\n        form.querySelector('button').disabled = false;\n      }\n    } finally {\n      sending = false;\n    }\n  });\n  form.elements.student_name.addEventListener('input', () => form.elements.student_name.setCustomValidity(''));\n  return {\n    reset,\n    show(game, exercise, score, total) {\n      reset();\n      completion = { id: crypto.randomUUID(), game, exercise, score, total };\n    },\n  };\n})();\n<\/script>\n    <script>const exercises = {\n  \"affirmative\": [\n    {\n      \"sentence\": \"I _____ eight years old.\",\n      \"answer\": \"am\",\n      \"choices\": [\n        \"am\",\n        \"is\",\n        \"are\"\n      ]\n    },\n    {\n      \"sentence\": \"You _____ my friend.\",\n      \"answer\": \"are\",\n      \"choices\": [\n        \"am\",\n        \"is\",\n        \"are\"\n      ]\n    },\n    {\n      \"sentence\": \"He _____ happy.\",\n      \"answer\": \"is\",\n      \"choices\": [\n        \"am\",\n        \"is\",\n        \"are\"\n      ]\n    },\n    {\n      \"sentence\": \"She _____ at school.\",\n      \"answer\": \"is\",\n      \"choices\": [\n        \"is\",\n        \"am\",\n        \"are\"\n      ]\n    },\n    {\n      \"sentence\": \"It _____ a cat.\",\n      \"answer\": \"is\",\n      \"choices\": [\n        \"are\",\n        \"am\",\n        \"is\"\n      ]\n    },\n    {\n      \"sentence\": \"We _____ in Grade 3.\",\n      \"answer\": \"are\",\n      \"choices\": [\n        \"am\",\n        \"are\",\n        \"is\"\n      ]\n    },\n    {\n      \"sentence\": \"They _____ ready to play.\",\n      \"answer\": \"are\",\n      \"choices\": [\n        \"are\",\n        \"am\",\n        \"is\"\n      ]\n    }\n  ],\n  \"negative\": [\n    {\n      \"sentence\": \"I _____ tired. (negative)\",\n      \"answer\": \"am not\",\n      \"choices\": [\n        \"am not\",\n        \"is not\",\n        \"are not\"\n      ]\n    },\n    {\n      \"sentence\": \"You _____ late. (negative)\",\n      \"answer\": \"are not\",\n      \"choices\": [\n        \"am not\",\n        \"is not\",\n        \"are not\"\n      ]\n    },\n    {\n      \"sentence\": \"He _____ cold. (negative)\",\n      \"answer\": \"is not\",\n      \"choices\": [\n        \"am not\",\n        \"is not\",\n        \"are not\"\n      ]\n    },\n    {\n      \"sentence\": \"She _____ angry. (negative)\",\n      \"answer\": \"is not\",\n      \"choices\": [\n        \"is not\",\n        \"am not\",\n        \"are not\"\n      ]\n    },\n    {\n      \"sentence\": \"It _____ a dog. (negative)\",\n      \"answer\": \"is not\",\n      \"choices\": [\n        \"are not\",\n        \"am not\",\n        \"is not\"\n      ]\n    },\n    {\n      \"sentence\": \"We _____ sad. (negative)\",\n      \"answer\": \"are not\",\n      \"choices\": [\n        \"am not\",\n        \"are not\",\n        \"is not\"\n      ]\n    },\n    {\n      \"sentence\": \"They _____ at home. (negative)\",\n      \"answer\": \"are not\",\n      \"choices\": [\n        \"are not\",\n        \"am not\",\n        \"is not\"\n      ]\n    }\n  ],\n  \"interrogative\": [\n    {\n      \"sentence\": \"_____ I in your team?\",\n      \"answer\": \"Am\",\n      \"choices\": [\n        \"Am\",\n        \"Is\",\n        \"Are\"\n      ]\n    },\n    {\n      \"sentence\": \"_____ you ready?\",\n      \"answer\": \"Are\",\n      \"choices\": [\n        \"Am\",\n        \"Is\",\n        \"Are\"\n      ]\n    },\n    {\n      \"sentence\": \"_____ he your brother?\",\n      \"answer\": \"Is\",\n      \"choices\": [\n        \"Am\",\n        \"Is\",\n        \"Are\"\n      ]\n    },\n    {\n      \"sentence\": \"_____ she happy?\",\n      \"answer\": \"Is\",\n      \"choices\": [\n        \"Is\",\n        \"Am\",\n        \"Are\"\n      ]\n    },\n    {\n      \"sentence\": \"_____ it your pencil?\",\n      \"answer\": \"Is\",\n      \"choices\": [\n        \"Are\",\n        \"Am\",\n        \"Is\"\n      ]\n    },\n    {\n      \"sentence\": \"_____ we late?\",\n      \"answer\": \"Are\",\n      \"choices\": [\n        \"Am\",\n        \"Are\",\n        \"Is\"\n      ]\n    },\n    {\n      \"sentence\": \"_____ they at school?\",\n      \"answer\": \"Are\",\n      \"choices\": [\n        \"Are\",\n        \"Am\",\n        \"Is\"\n      ]\n    }\n  ]\n};\nexercises.mixed = [\n  { instruction: \"Choose the correct sentence.\", sentence: \"Talk about yourself.\", choices: [\"I is eight years old.\", \"I am eight years old.\", \"I are eight years old.\"], answer: \"I am eight years old.\" },\n  { instruction: \"Put the words in order.\", sentence: \"Build an affirmative sentence.\", words: [\"happy.\", \"is\", \"He\"], answer: \"He is happy.\" },\n  { instruction: \"Choose the correct sentence.\", sentence: \"Say that we are NOT sad.\", choices: [\"We are sad.\", \"We is not sad.\", \"We are not sad.\"], answer: \"We are not sad.\" },\n  { instruction: \"Put the words in order.\", sentence: \"Build a negative sentence.\", words: [\"tired.\", \"not\", \"I\", \"am\"], answer: \"I am not tired.\" },\n  { instruction: \"Sort this sentence into a category.\", sentence: \"Are they at school?\", choices: [\"Affirmative\", \"Negative\", \"Question\"], answer: \"Question\" },\n  { instruction: \"Put the words in order.\", sentence: \"Build a question.\", words: [\"ready?\", \"you\", \"Are\"], answer: \"Are you ready?\" },\n];\nconst guides = {\n  affirmative: \"I am · You / We / They are · He / She / It is\",\n  negative: \"I am not · You / We / They are not · He / She / It is not\",\n  interrogative: \"Put Am, Is or Are first: Are you happy?\"\n};\nlet currentExercise = \"affirmative\";\nlet questions = exercises[currentExercise];\nconst positiveMessages = [\"Great job!\", \"Correct!\", \"Excellent!\", \"Well done!\"];\nlet currentQuestion = 0;\nlet score = 0;\nlet questionSolved = false;\n\nconst elements = {\n  quizView: document.querySelector(\"#quiz-view\"), results: document.querySelector(\"#results\"),\n  questionNumber: document.querySelector(\"#question-number\"), sentence: document.querySelector(\"#sentence\"),\n  instruction: document.querySelector(\"#instruction\"), guide: document.querySelector(\"#grammar-guide\"), answers: document.querySelector(\"#answers\"),\n  feedback: document.querySelector(\"#feedback\"),\n  score: document.querySelector(\"#score\"), nextButton: document.querySelector(\"#next-button\"),\n  progressFill: document.querySelector(\"#progress-fill\"), progressBar: document.querySelector(\"[role='progressbar']\"),\n  progressLabel: document.querySelector(\"#progress-label\"), finalScore: document.querySelector(\"#final-score\"),\n  playAgain: document.querySelector(\"#play-again\"),\n};\n\nfunction renderQuestion() {\n  questionSolved = false;\n  const question = questions[currentQuestion];\n  elements.questionNumber.textContent = currentQuestion + 1;\n  elements.instruction.textContent = currentExercise === \"interrogative\" ? \"Complete the question.\" : (currentExercise === \"negative\" ? \"Complete the negative sentence.\" : \"Complete the affirmative sentence.\");\n  if (question.instruction) elements.instruction.textContent = question.instruction;\n  elements.guide.textContent = guides[currentExercise] || \"Read, choose, sort and build sentences with am, is and are.\";\n  document.querySelectorAll(\".question-total\").forEach(el => { el.textContent = questions.length; });\n  elements.progressBar.setAttribute(\"aria-valuemax\", questions.length);\n  elements.sentence.textContent = question.sentence;\n  elements.feedback.textContent = \"\";\n  elements.feedback.className = \"feedback\";\n  elements.nextButton.classList.remove(\"visible\");\n  elements.progressFill.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;\n  elements.progressBar.setAttribute(\"aria-valuenow\", currentQuestion + 1);\n  elements.progressLabel.textContent = currentQuestion === 0 ? \"Let’s begin!\" : (question.section ? \"Choose the best answer!\" : \"Keep going!\");\n  if (question.words) { renderWordOrder(question, elements.answers); return; }\n  elements.answers.classList.remove(\"word-order\");\n  elements.answers.replaceChildren(...question.choices.map((choice) => {\n    const button = document.createElement(\"button\");\n    button.className = \"answer-button\";\n    button.type = \"button\";\n    button.dataset.answer = choice;\n    button.textContent = choice;\n    return button;\n  }));\n}\n\nfunction checkAnswer(button) {\n  if (questionSolved) return;\n  if (button.dataset.answer === questions[currentQuestion].answer) {\n    questionSolved = true;\n    score += 1;\n    button.classList.add(\"correct\");\n    button.setAttribute(\"aria-label\", `${button.textContent}, correct answer`);\n    elements.answers.querySelectorAll(\"button\").forEach((answer) => { answer.disabled = true; });\n    elements.score.textContent = score;\n    elements.feedback.textContent = positiveMessages[currentQuestion % positiveMessages.length];\n    elements.feedback.className = \"feedback feedback--correct\";\n    elements.nextButton.classList.add(\"visible\");\n    elements.nextButton.focus();\n  } else {\n    button.classList.add(\"wrong\");\n    button.disabled = true;\n    elements.feedback.textContent = \"Try again!\";\n    elements.feedback.className = \"feedback feedback--wrong\";\n  }\n}\n\nfunction nextQuestion() {\n  currentQuestion += 1;\n  if (currentQuestion < questions.length) renderQuestion();\n  else showResults();\n}\n\nfunction showResults() {\n  CompletionResult.show(\"Verb to Be\", currentExercise, score, questions.length);\n  elements.quizView.hidden = true;\n  elements.results.hidden = false;\n  elements.finalScore.textContent = score;\n  elements.results.querySelector(\"h2\").focus();\n}\n\nfunction restartGame() {\n  CompletionResult.reset();\n  currentQuestion = 0;\n  score = 0;\n  elements.score.textContent = \"0\";\n  elements.results.hidden = true;\n  elements.quizView.hidden = false;\n  renderQuestion();\n}\n\nelements.answers.addEventListener(\"click\", (event) => {\n  const button = event.target.closest(\"button[data-answer]\");\n  if (button) checkAnswer(button);\n});\nelements.nextButton.addEventListener(\"click\", nextQuestion);\nelements.playAgain.addEventListener(\"click\", restartGame);\nfunction selectExercise(name) {\n  currentExercise = name;\n  questions = exercises[name];\n  document.querySelectorAll(\"[data-exercise]\").forEach(button => {\n    button.setAttribute(\"aria-pressed\", String(button.dataset.exercise === name));\n  });\n  restartGame();\n}\ndocument.querySelectorAll(\"[data-exercise]\").forEach(button => {\n  button.addEventListener(\"click\", () => selectExercise(button.dataset.exercise));\n});\nrenderQuestion();\n<\/script>\n  <script>document.querySelectorAll('a[href=\"../index.html\"]').forEach(a=>a.onclick=e=>{e.preventDefault();parent.closeTestGame();});<\/script></body>\n</html>\n", "games/rhyming-words.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <meta name=\"description\" content=\"A fun rhyming words game for CE2 students.\" />\n    <title>Rhyming Words | CE2 Learning Games</title>\n    \n    \n    \n    <style>:root { font-family: \"Nunito\", system-ui, sans-serif; color: #26345d; background: #f5f1ff; }\n* { box-sizing: border-box; }\nbody { margin: 0; min-width: 320px; min-height: 100vh; background: radial-gradient(circle at 10% 15%, #fff0a8 0 75px, transparent 77px), radial-gradient(circle at 90% 80%, #c4f1e6 0 110px, transparent 112px), linear-gradient(145deg, #f8f5ff, #fffaf0); }\nbutton, a { font: inherit; }\n.game-page { width: min(920px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 60px; }\n.home-link { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; color: #5c48bd; font-weight: 800; text-decoration: none; }\n.home-link:hover { text-decoration: underline; }\n.home-link:focus-visible, button:focus-visible, .secondary-button:focus-visible { outline: 4px solid #f6c936; outline-offset: 4px; }\n.game-panel { overflow: hidden; min-height: 650px; background: white; border: 3px solid #ebe5ff; border-radius: 32px; box-shadow: 0 18px 50px rgba(66, 48, 126, .16); }\n.game-header { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 24px 32px; color: white; background: linear-gradient(125deg, #6750cf, #8d6de4); }\n.title-wrap { display: flex; align-items: center; gap: 14px; }\n.music-icon { display: grid; place-items: center; width: 58px; height: 58px; font-size: 32px; background: #ffd65a; border-radius: 18px; box-shadow: 0 5px 0 #cfa322; }\n.kicker { margin: 0; color: #e8e1ff; font-size: .75rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }\nh1 { margin: 0; font-family: \"Baloo 2\", sans-serif; font-size: clamp(1.75rem, 4vw, 2.4rem); line-height: 1; }\n.score-pill { flex: 0 0 auto; padding: 10px 16px; color: #3e326f; background: white; border-radius: 30px; font-size: 1.05rem; }\n.progress-info { display: flex; justify-content: space-between; padding: 25px 34px 9px; color: #68759a; font-size: .96rem; font-weight: 800; }\n.progress-track { height: 12px; margin: 0 34px; overflow: hidden; background: #e9e5f3; border-radius: 20px; }\n.progress-fill { width: 10%; height: 100%; background: linear-gradient(90deg, #69d3b6, #49bd9e); border-radius: inherit; transition: width .35s ease; }\n.question-area { padding: 35px 32px 42px; text-align: center; }\n.instruction { margin: 0 0 13px; color: #667397; font-size: 1.18rem; font-weight: 800; }\n.target-word { display: inline-block; min-width: 220px; padding: 10px 34px; color: #5941bf; background: #f0ecff; border: 3px dashed #a896ed; border-radius: 22px; font-family: \"Baloo 2\", sans-serif; font-size: clamp(2.8rem, 8vw, 4.7rem); font-weight: 800; line-height: 1.2; letter-spacing: .05em; }\n.answers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; width: min(680px, 100%); margin: 32px auto 0; }\n.answer-button { min-height: 78px; padding: 12px; color: #344269; background: white; border: 3px solid #d8dff1; border-radius: 18px; cursor: pointer; font-size: 1.45rem; font-weight: 800; box-shadow: 0 6px 0 #cbd3e8; transition: transform .15s ease, box-shadow .15s ease, background .15s ease; }\n.answer-button:hover:not(:disabled) { transform: translateY(-3px); border-color: #9d8be6; box-shadow: 0 9px 0 #d3caf5; }\n.answer-button.wrong { color: #a63e52; background: #ffe6e9; border-color: #f27d91; box-shadow: 0 5px 0 #dd697d; animation: shake .3s ease; }\n.answer-button.correct { color: #176a55; background: #dff9ee; border-color: #53c7a7; box-shadow: 0 5px 0 #3aa88a; }\n.answer-button:disabled { cursor: default; opacity: .65; }\n.answer-button.correct:disabled { opacity: 1; }\n.feedback { min-height: 32px; margin: 24px 0 10px; font-size: 1.3rem; font-weight: 800; }\n.feedback--correct { color: #19836a; }\n.feedback--wrong { color: #c14a5f; }\n.primary-button, .secondary-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; padding: 12px 25px; border-radius: 16px; font-weight: 800; text-decoration: none; cursor: pointer; }\n.primary-button { color: white; background: #6750cf; border: 0; box-shadow: 0 6px 0 #4935a8; }\n.primary-button:hover { background: #765fe0; transform: translateY(-1px); }\n.next-button { visibility: hidden; }\n.next-button.visible { visibility: visible; }\n.results { padding: 78px 30px; text-align: center; }\n.celebration { font-size: 75px; }\n.results h2 { margin: 10px 0 0; color: #5941bf; font-family: \"Baloo 2\", sans-serif; font-size: clamp(2.5rem, 7vw, 4rem); }\n.results p { margin: 5px 0 30px; color: #68759a; font-size: 1.45rem; }\n.results p strong { color: #26345d; }\n.result-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; }\n.secondary-button { color: #5941bf; background: white; border: 3px solid #c9bcf6; }\n@keyframes shake { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }\n@media (max-width: 620px) { .game-page { width: min(100% - 20px, 920px); padding-top: 15px; } .game-panel { min-height: 630px; border-radius: 24px; } .game-header { padding: 20px 18px; } .music-icon { width: 50px; height: 50px; } .score-pill { padding: 9px 12px; font-size: .92rem; } .progress-info { padding: 22px 20px 8px; } .progress-track { margin: 0 20px; } .question-area { padding: 28px 18px 36px; } .answers { grid-template-columns: 1fr; gap: 13px; margin-top: 25px; } .answer-button { min-height: 62px; } }\n@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }\n\n.exercise-picker { display: flex; justify-content: center; padding: 22px 18px 0; }\n.exercise-picker button[aria-pressed=\"true\"] { color: white; background: #6750cf; border-color: #6750cf; }\n</style>\n    <style>[hidden] { display: none !important; }\n.completion-form, .teacher-form { width: min(480px, 100%); margin: 28px auto; padding: 22px; border: 2px solid #d8dff1; border-radius: 18px; text-align: left; }\n.completion-form h3 { margin-top: 0; }\n.completion-form label, .teacher-form label { display: block; margin: 15px 0 6px; font-weight: 800; }\ninput, select { width: 100%; min-height: 46px; padding: 10px; font: inherit; border: 2px solid #9a8bce; border-radius: 8px; }\ninput:focus-visible, select:focus-visible { outline: 3px solid #f6c936; outline-offset: 2px; }\n.completion-form button, .teacher-form button { margin-top: 20px; }\n.results .completion-form p, .score-note, .submission-status { font-size: 1rem; margin: 12px 0; }\nbutton:disabled { cursor: default; opacity: .65; }\n.teacher-content { padding: 24px; }\n.teacher-toolbar { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0; }\n.table-wrap { overflow-x: auto; }\ntable { width: 100%; border-collapse: collapse; margin-bottom: 28px; }\nth, td { padding: 12px; border-bottom: 1px solid #d8dff1; text-align: left; }\nth { background: #f0ecff; }\n.teacher-status { min-height: 24px; }\n\n.student-list { list-style: none; margin: 0 0 28px; padding: 0; }\n.student-results { border-bottom: 1px solid #d8dff1; }\n.student-results summary { padding: 12px; cursor: pointer; font-weight: 700; text-align: left; overflow-wrap: anywhere; }\n.student-results summary:hover { background: #f0ecff; }\n.student-results summary:focus-visible { outline: 3px solid #9a8bce; outline-offset: -3px; }\n.student-results[open] summary { background: #f0ecff; }\n.student-results .table-wrap { padding: 12px; }\n.student-results table { margin-bottom: 0; }\n\n.teacher-form .stay-signed-in { display: flex; align-items: center; gap: 10px; font-weight: 400; }\n.stay-signed-in input { width: 18px; height: 18px; min-height: 0; padding: 0; flex: 0 0 18px; }\n\n.all-games-completed { display: inline-block; margin-left: 10px; color: #18733b; font-style: italic; font-weight: 500; }\n\n.teacher-gift{display:inline-flex;margin-left:12px;align-items:center;font-weight:700}.send-gift{border:0;background:#6655c7;color:white;font:inherit;font-weight:800;border-radius:12px;padding:10px 15px;cursor:pointer}.gift-student{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;padding:15px;border-bottom:1px solid #ddd}\n</style>\n  </head>\n  <body>\n    <main class=\"game-page\">\n      <a class=\"home-link\" href=\"../index.html\"><span aria-hidden=\"true\">←</span> CE2 Homepage</a>\n\n      <section class=\"game-panel\" aria-labelledby=\"game-title\">\n        <header class=\"game-header\">\n          <div class=\"title-wrap\">\n            <span class=\"music-icon\" aria-hidden=\"true\">🎵</span>\n            <div><p class=\"kicker\">Word game</p><h1 id=\"game-title\">Rhyming Words</h1></div>\n          </div>\n          <div class=\"score-pill\">⭐ Score: <strong id=\"score\">0</strong></div>\n        </header>\n\n        <div class=\"exercise-picker\">\n          <button class=\"secondary-button\" id=\"picture-mode\" type=\"button\" aria-pressed=\"false\">Picture clues</button>\n        </div>\n        <div id=\"quiz-view\">\n          <div class=\"progress-info\">\n            <span>Question <strong id=\"question-number\">1</strong> / 10</span>\n            <span id=\"progress-label\">Let’s begin!</span>\n          </div>\n          <div class=\"progress-track\" role=\"progressbar\" aria-label=\"Game progress\" aria-valuemin=\"0\" aria-valuemax=\"10\" aria-valuenow=\"1\">\n            <div class=\"progress-fill\" id=\"progress-fill\"></div>\n          </div>\n\n          <div class=\"question-area\">\n            <p class=\"instruction\" id=\"instruction\">Which word rhymes with...</p>\n            <div class=\"target-word\" id=\"target-word\">CAT</div>\n            <div class=\"answers\" id=\"answers\" aria-label=\"Answer choices\"></div>\n            <p class=\"feedback\" id=\"feedback\" aria-live=\"polite\"></p>\n            <button class=\"primary-button next-button\" id=\"next-button\" type=\"button\">Next Question <span aria-hidden=\"true\">→</span></button>\n          </div>\n        </div>\n\n        <div class=\"results\" id=\"results\" hidden>\n          <div class=\"celebration\" aria-hidden=\"true\">🎉</div>\n          <h2 tabindex=\"-1\">Great work!</h2>\n          <p>Your score: <strong><span id=\"final-score\">0</span> / 10</strong></p>\n          <div class=\"result-actions\">\n            <button class=\"primary-button\" id=\"play-again\" type=\"button\">↻ Play Again</button>\n            <a class=\"secondary-button\" href=\"../index.html\">⌂ Back to CE2 Homepage</a>\n          </div>\n        </div>\n      </section>\n    </main>\n    <script>window.ResultsAPI=parent.ResultsAPI;<\/script>\n    <script>window.CompletionResult = (() => {\n  const host = document.querySelector('#results');\n  const form = document.createElement('form');\n  form.className = 'completion-form';\n  form.innerHTML = `\n    <h3>Send your result to your teacher</h3>\n    <p class=\"score-note\">Your score counts questions you solved, including retries.</p>\n    <label for=\"student-name\">Student name</label>\n    <input id=\"student-name\" name=\"student_name\" required maxlength=\"100\" autocomplete=\"off\">\n    <label for=\"class-section\">Class section</label>\n    <select id=\"class-section\" name=\"class_section\" required>\n      <option value=\"\">Choose your section</option>\n      <option>CE2 A</option><option>CE2 D</option>\n    </select>\n    <button class=\"primary-button\" type=\"submit\">Submit result</button>\n    <p class=\"submission-status\" role=\"status\" aria-live=\"polite\"></p>`;\n  host.insertBefore(form, host.querySelector('.result-actions'));\n  const status = form.querySelector('.submission-status');\n  const controls = [...form.querySelectorAll('input, select, button')];\n  let completion = null;\n  let sending = false;\n  let saved = false;\n  let record = null;\n  function reset() {\n    completion = null;\n    record = null;\n    saved = false;\n    form.reset();\n    status.textContent = '';\n    controls.forEach(control => { control.disabled = false; });\n  }\n  form.addEventListener('submit', async event => {\n    event.preventDefault();\n    if (!completion || sending || saved) return;\n    const name = form.elements.student_name.value.trim();\n    if (!name) {\n      form.elements.student_name.setCustomValidity('Please enter your name.');\n      form.elements.student_name.reportValidity();\n      return;\n    }\n    record ||= { ...completion, student_name: name, class_section: form.elements.class_section.value };\n    // Keep the same payload and ID on retry, even if the network response was lost.\n    const submitted = record;\n    sending = true;\n    controls.forEach(control => { control.disabled = true; });\n    status.textContent = 'Sending… Please wait.';\n    try {\n      await ResultsAPI.submit(submitted);\n      if (record === submitted) {\n        saved = true;\n        status.textContent = 'Practice result saved in this browser!';\n      }\n    } catch {\n      if (record === submitted) {\n        status.textContent = 'Your result could not be confirmed. Check your connection and press Submit result to retry.';\n        // Freeze identity while retrying this same completion.\n        form.querySelector('button').disabled = false;\n      }\n    } finally {\n      sending = false;\n    }\n  });\n  form.elements.student_name.addEventListener('input', () => form.elements.student_name.setCustomValidity(''));\n  return {\n    reset,\n    show(game, exercise, score, total) {\n      reset();\n      completion = { id: crypto.randomUUID(), game, exercise, score, total };\n    },\n  };\n})();\n<\/script>\n    <script>const questions = [\n  { word: \"CAT\", choices: [\"hat\", \"dog\", \"sun\"], answer: \"hat\" },\n  { word: \"CAKE\", choices: [\"fish\", \"lake\", \"car\"], answer: \"lake\" },\n  { word: \"STAR\", choices: [\"car\", \"tree\", \"book\"], answer: \"car\" },\n  { word: \"LIGHT\", choices: [\"night\", \"pen\", \"ball\"], answer: \"night\" },\n  { word: \"BLUE\", choices: [\"shoe\", \"cat\", \"bed\"], answer: \"shoe\" },\n  { word: \"BEE\", choices: [\"tree\", \"mouse\", \"book\"], answer: \"tree\" },\n  { word: \"BOAT\", choices: [\"coat\", \"fish\", \"cake\"], answer: \"coat\" },\n  { word: \"RING\", choices: [\"king\", \"dog\", \"chair\"], answer: \"king\" },\n  { word: \"DAY\", choices: [\"play\", \"book\", \"fish\"], answer: \"play\" },\n  { word: \"MOON\", choices: [\"spoon\", \"cat\", \"tree\"], answer: \"spoon\" },\n];\n\nconst pictures = [\"🐱\", \"🎂\", \"⭐\", \"💡\", \"🔵\", \"🐝\", \"⛵\", \"💍\", \"🌞\", \"🌙\"];\nlet pictureMode = false;\ndocument.querySelector(\"#picture-mode\").addEventListener(\"click\", () => {\n  pictureMode = !pictureMode;\n  document.querySelector(\"#picture-mode\").setAttribute(\"aria-pressed\", String(pictureMode));\n  restartGame();\n});\nconst positiveMessages = [\"Great job!\", \"Excellent!\", \"You got it!\", \"Wonderful!\"];\nlet currentQuestion = 0;\nlet score = 0;\nlet questionSolved = false;\n\nconst elements = {\n  quizView: document.querySelector(\"#quiz-view\"), results: document.querySelector(\"#results\"),\n  questionNumber: document.querySelector(\"#question-number\"), targetWord: document.querySelector(\"#target-word\"),\n  answers: document.querySelector(\"#answers\"), feedback: document.querySelector(\"#feedback\"),\n  score: document.querySelector(\"#score\"), nextButton: document.querySelector(\"#next-button\"),\n  progressFill: document.querySelector(\"#progress-fill\"), progressBar: document.querySelector(\"[role='progressbar']\"),\n  progressLabel: document.querySelector(\"#progress-label\"), finalScore: document.querySelector(\"#final-score\"),\n  playAgain: document.querySelector(\"#play-again\"),\n};\n\nfunction renderQuestion() {\n  const question = questions[currentQuestion];\n  questionSolved = false;\n  elements.questionNumber.textContent = currentQuestion + 1;\n  elements.targetWord.textContent = pictureMode ? `${pictures[currentQuestion]} ${question.word}` : question.word;\n  document.querySelector(\"#instruction\").textContent = pictureMode ? \"Say the picture's word. Choose a word that rhymes.\" : \"Which word rhymes with...\";\n  elements.feedback.textContent = \"\";\n  elements.feedback.className = \"feedback\";\n  elements.nextButton.classList.remove(\"visible\");\n  elements.progressFill.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;\n  elements.progressBar.setAttribute(\"aria-valuenow\", currentQuestion + 1);\n  elements.progressLabel.textContent = currentQuestion === 0 ? \"Let’s begin!\" : \"Keep going!\";\n  elements.answers.replaceChildren();\n\n  question.choices.forEach((choice) => {\n    const button = document.createElement(\"button\");\n    button.type = \"button\";\n    button.className = \"answer-button\";\n    button.textContent = choice;\n    button.addEventListener(\"click\", () => checkAnswer(button, choice));\n    elements.answers.append(button);\n  });\n}\n\nfunction checkAnswer(button, choice) {\n  if (questionSolved) return;\n  if (choice === questions[currentQuestion].answer) {\n    questionSolved = true;\n    score += 1;\n    button.classList.add(\"correct\");\n    button.setAttribute(\"aria-label\", `${choice}, correct answer`);\n    elements.answers.querySelectorAll(\"button\").forEach((answer) => { answer.disabled = true; });\n    elements.score.textContent = score;\n    elements.feedback.textContent = positiveMessages[currentQuestion % positiveMessages.length];\n    elements.feedback.className = \"feedback feedback--correct\";\n    elements.nextButton.classList.add(\"visible\");\n    elements.nextButton.focus();\n  } else {\n    button.classList.add(\"wrong\");\n    button.disabled = true;\n    elements.feedback.textContent = \"Try again!\";\n    elements.feedback.className = \"feedback feedback--wrong\";\n  }\n}\n\nfunction nextQuestion() {\n  currentQuestion += 1;\n  if (currentQuestion < questions.length) renderQuestion();\n  else showResults();\n}\n\nfunction showResults() {\n  CompletionResult.show(\"Rhyming Words\", pictureMode ? \"Picture clues\" : \"Rhyming words\", score, questions.length);\n  elements.quizView.hidden = true;\n  elements.results.hidden = false;\n  elements.finalScore.textContent = score;\n  elements.results.querySelector(\"h2\").focus?.();\n}\n\nfunction restartGame() {\n  CompletionResult.reset();\n  currentQuestion = 0;\n  score = 0;\n  elements.score.textContent = \"0\";\n  elements.results.hidden = true;\n  elements.quizView.hidden = false;\n  renderQuestion();\n}\n\nelements.nextButton.addEventListener(\"click\", nextQuestion);\nelements.playAgain.addEventListener(\"click\", restartGame);\nrenderQuestion();\n<\/script>\n  <script>document.querySelectorAll('a[href=\"../index.html\"]').forEach(a=>a.onclick=e=>{e.preventDefault();parent.closeTestGame();});<\/script></body>\n</html>\n"};
+window.closeTestGame=()=>{document.querySelector('#testGameFrame')?.remove();document.querySelector('#studentSurface').hidden=false;};document.querySelectorAll('a[href^="games/"]').forEach(a=>a.onclick=e=>{e.preventDefault();closeTestGame();const frame=document.createElement('iframe');frame.id='testGameFrame';frame.title='CE2 practice game';frame.style='display:block;width:100%;height:90vh;border:0';frame.srcdoc=testPages[a.getAttribute('href')];document.querySelector('#studentSurface').hidden=true;document.body.append(frame);});document.querySelector('#showTestTeacher').onclick=()=>{closeTestGame();testTeacher();};document.querySelector('#showTestGames').onclick=()=>{closeTestGame();testHome();};</script></body>
+</html>
