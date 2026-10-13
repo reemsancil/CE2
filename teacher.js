@@ -64,9 +64,7 @@
         details.className = 'student-results';
         const summary = document.createElement('summary');
         summary.textContent = studentName;
-        const required = CompletionCatalog[section.split(' ')[0]] || [];
-        const completed = new Set(attempts.map(row => JSON.stringify([row.game, row.exercise])));
-        if (required.length && required.every(row => completed.has(JSON.stringify([row.game, row.exercise])))) {
+        if (UnitProgress.students(attempts)[0]?.eligible) {
           const badge = document.createElement('em');
           badge.className = 'all-games-completed';
           badge.textContent = 'Completed all games';
