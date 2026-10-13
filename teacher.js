@@ -61,6 +61,14 @@
         details.className = 'student-results';
         const summary = document.createElement('summary');
         summary.textContent = studentName;
+        const required = CompletionCatalog[section.split(' ')[0]] || [];
+        const completed = new Set(attempts.map(row => JSON.stringify([row.game, row.exercise])));
+        if (required.length && required.every(row => completed.has(JSON.stringify([row.game, row.exercise])))) {
+          const badge = document.createElement('em');
+          badge.className = 'all-games-completed';
+          badge.textContent = 'Completed all games';
+          summary.append(' ', badge);
+        }
         details.append(summary);
         const wrap = document.createElement('div');
         wrap.className = 'table-wrap';
@@ -116,7 +124,7 @@
       if (run !== generation) return;
       rows = loaded.sort((a, b) => collator.compare(a.class_section, b.class_section) || collator.compare(a.student_name, b.student_name) || a.completed_at.localeCompare(b.completed_at));
       render();
-      status.textContent = `${rows.length} submissions loaded.`;
+      status.textContent = '';
     } catch (error) {
       if (run !== generation) return;
       if (error.status === 401 || error.status === 403) {

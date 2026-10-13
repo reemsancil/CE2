@@ -26,3 +26,5 @@ th { background: #f0ecff; }
 
 .teacher-form .stay-signed-in { display: flex; align-items: center; gap: 10px; font-weight: 400; }
 .stay-signed-in input { width: 18px; height: 18px; min-height: 0; padding: 0; flex: 0 0 18px; }
+
+.all-games-completed { display: inline-block; margin-left: 10px; color: #18733b; font-style: italic; font-weight: 500; }
