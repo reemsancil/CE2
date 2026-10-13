@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="imperative-verbs.css" />
     <link rel="stylesheet" href="../results.css" />
-  </head>
+  <link rel="stylesheet" href="../progress.css"></head>
   <body>
     <main class="game-page">
       <a class="home-link" href="../index.html"><span aria-hidden="true">←</span> CE2 Homepage</a>
@@ -25,8 +25,8 @@
         </header>
 
         <nav class="exercise-picker" aria-label="Choose an exercise">
-          <button class="secondary-button" type="button" data-exercise="sort" aria-pressed="true">Sort sentences</button>
-          <button class="secondary-button" type="button" data-exercise="choose" aria-pressed="false">Choose a sentence</button>
+          <button class="secondary-button" type="button" data-exercise="sort" data-progress="imperatives-sort" aria-pressed="true">Sort sentences</button>
+          <button class="secondary-button" type="button" data-exercise="choose" data-progress="imperatives-choose" aria-pressed="false">Choose a sentence</button>
         </nav>
         <div id="quiz-view">
           <div class="progress-info">
@@ -61,7 +61,7 @@
       </section>
     </main>
     <script src="../results-api.js"></script>
-    <script src="completion.js"></script>
+    <script src="../progress-config.js"></script><script src="../game-progress.js"></script><script src="completion.js"></script>
     <script src="imperative-verbs.js"></script>
   </body>
 </html>

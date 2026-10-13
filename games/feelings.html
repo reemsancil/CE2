@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="feelings.css" />
     <link rel="stylesheet" href="../results.css" />
-  </head>
+  <link rel="stylesheet" href="../progress.css"></head>
   <body>
     <main class="game-page">
       <a class="home-link" href="../index.html#unit-1"><span aria-hidden="true">←</span> Back to Unit 1</a>
@@ -25,9 +25,9 @@
         </header>
 
         <nav class="exercise-picker" aria-label="Choose an exercise">
-          <button class="secondary-button" id="sentence-mode" type="button" aria-pressed="true">📝 Sentences</button>
-          <button class="secondary-button" id="picture-mode" type="button" aria-pressed="false">🖼️ Picture matching</button>
-          <button class="secondary-button" id="order-mode" type="button" aria-pressed="false">🧩 Build a sentence</button>
+          <button class="secondary-button" id="sentence-mode" data-progress="feelings-sentences" type="button" aria-pressed="true">📝 Sentences</button>
+          <button class="secondary-button" id="picture-mode" data-progress="feelings-pictures" type="button" aria-pressed="false">🖼️ Picture matching</button>
+          <button class="secondary-button" id="order-mode" data-progress="feelings-order" type="button" aria-pressed="false">🧩 Build a sentence</button>
         </nav>
         <div id="quiz-view">
           <div class="progress-info">
@@ -62,7 +62,7 @@
     </main>
     <script src="word-order.js"></script>
     <script src="../results-api.js"></script>
-    <script src="completion.js"></script>
+    <script src="../progress-config.js"></script><script src="../game-progress.js"></script><script src="completion.js"></script>
     <script src="feelings.js"></script>
   </body>
 </html>

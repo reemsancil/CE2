@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="verb-to-be.css" />
     <link rel="stylesheet" href="../results.css" />
-  </head>
+  <link rel="stylesheet" href="../progress.css"></head>
   <body>
     <main class="game-page">
       <a class="home-link" href="../index.html#unit-1"><span aria-hidden="true">←</span> Back to Unit 1</a>
@@ -25,10 +25,10 @@
         </header>
 
         <nav class="exercise-picker" aria-label="Choose a verb to be exercise">
-          <button class="secondary-button" type="button" data-exercise="affirmative" aria-pressed="true">✓ Affirmative</button>
-          <button class="secondary-button" type="button" data-exercise="negative" aria-pressed="false">✗ Negative</button>
-          <button class="secondary-button" type="button" data-exercise="interrogative" aria-pressed="false">? Questions</button>
-          <button class="secondary-button" type="button" data-exercise="mixed" aria-pressed="false">🧩 Mixed activities</button>
+          <button class="secondary-button" type="button" data-exercise="affirmative" data-progress="be-affirmative" aria-pressed="true">✓ Affirmative</button>
+          <button class="secondary-button" type="button" data-exercise="negative" data-progress="be-negative" aria-pressed="false">✗ Negative</button>
+          <button class="secondary-button" type="button" data-exercise="interrogative" data-progress="be-interrogative" aria-pressed="false">? Questions</button>
+          <button class="secondary-button" type="button" data-exercise="mixed" data-progress="be-mixed" aria-pressed="false">🧩 Mixed activities</button>
         </nav>
         <p class="grammar-guide" id="grammar-guide">I am · You / We / They are · He / She / It is</p>
         <div id="quiz-view">
@@ -63,7 +63,7 @@
     </main>
     <script src="word-order.js"></script>
     <script src="../results-api.js"></script>
-    <script src="completion.js"></script>
+    <script src="../progress-config.js"></script><script src="../game-progress.js"></script><script src="completion.js"></script>
     <script src="verb-to-be.js"></script>
   </body>
 </html>

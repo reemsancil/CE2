@@ -64,6 +64,7 @@ window.CompletionResult = (() => {
   return {
     reset,
     show(game, exercise, score, total) {
+      GameProgress.save(game, exercise, score, total);
       reset();
       completion = { id: crypto.randomUUID(), game, exercise, score, total };
     },

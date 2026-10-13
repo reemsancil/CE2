@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="rhyming-words.css" />
     <link rel="stylesheet" href="../results.css" />
-  </head>
+  <link rel="stylesheet" href="../progress.css"></head>
   <body>
     <main class="game-page">
       <a class="home-link" href="../index.html"><span aria-hidden="true">←</span> CE2 Homepage</a>
@@ -25,9 +25,9 @@
         </header>
 
         <div class="exercise-picker">
-          <button class="secondary-button" id="picture-mode" type="button" aria-pressed="false">Picture clues</button>
+          <button class="secondary-button" id="picture-mode" data-progress="rhymes-pictures" type="button" aria-pressed="false">Picture clues</button>
         </div>
-        <div id="quiz-view">
+        <p class="exercise-progress" data-progress="rhymes-words">Rhyming words</p><div id="quiz-view">
           <div class="progress-info">
             <span>Question <strong id="question-number">1</strong> / 10</span>
             <span id="progress-label">Let’s begin!</span>
@@ -57,7 +57,7 @@
       </section>
     </main>
     <script src="../results-api.js"></script>
-    <script src="completion.js"></script>
+    <script src="../progress-config.js"></script><script src="../game-progress.js"></script><script src="completion.js"></script>
     <script src="rhyming-words.js"></script>
   </body>
 </html>
