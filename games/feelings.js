@@ -129,6 +129,21 @@ const orderQuestions = [
 ];
 let questions = sentenceQuestions;
 
+function shuffled(items) {
+  const result = [...items];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
+// Spread correct answers evenly across the three positions, then mix their order.
+function mixedAnswerPositions(count) {
+  return shuffled(Array.from({ length: count }, (_, index) => index % 3));
+}
+let answerPositions = mixedAnswerPositions(questions.length);
+
 const positiveMessages = ["Great job!", "Correct!", "Excellent!", "Well done!"];
 let currentQuestion = 0;
 let score = 0;
@@ -171,7 +186,9 @@ function renderQuestion() {
   elements.progressLabel.textContent = currentQuestion === 0 ? "Let’s begin!" : (question.section ? "Choose the best answer!" : "Keep going!");
   if (question.words) { renderWordOrder(question, elements.answers); return; }
   elements.answers.classList.remove("word-order");
-  elements.answers.replaceChildren(...question.choices.map((choice) => {
+  const choices = shuffled(question.choices.filter(choice => choice !== question.answer));
+  choices.splice(answerPositions[currentQuestion], 0, question.answer);
+  elements.answers.replaceChildren(...choices.map((choice) => {
     const button = document.createElement("button");
     button.className = "answer-button";
     button.type = "button";
@@ -219,6 +236,7 @@ function showResults() {
 function restartGame() {
   CompletionResult.reset();
   currentQuestion = 0;
+  answerPositions = mixedAnswerPositions(questions.length);
   score = 0;
   elements.score.textContent = "0";
   elements.results.hidden = true;
@@ -245,3 +263,4 @@ elements.pictureMode.addEventListener("click", () => selectExercise("picture"));
 renderQuestion();
 
 document.querySelector("#order-mode").addEventListener("click", () => selectExercise("order"));
+

@@ -6,7 +6,7 @@ window.CompletionResult = (() => {
     <h3>Send your result to your teacher</h3>
     <p class="score-note">Your score counts questions you solved, including retries.</p>
     <label for="student-name">Student name</label>
-    <input id="student-name" name="student_name" required maxlength="100" autocomplete="off">
+    <select id="student-name" name="student_name" required><option value="">Choose your class first</option></select>
     <label for="class-section">Class section</label>
     <select id="class-section" name="class_section" required>
       <option value="">Choose your section</option>
@@ -15,6 +15,7 @@ window.CompletionResult = (() => {
     <button class="primary-button" type="submit">Submit result</button>
     <p class="submission-status" role="status" aria-live="polite"></p>`;
   host.insertBefore(form, host.querySelector('.result-actions'));
+  StudentRoster.bind(form, 'student_name', 'class_section');
   const status = form.querySelector('.submission-status');
   const controls = [...form.querySelectorAll('input, select, button')];
   let completion = null;
@@ -70,3 +71,4 @@ window.CompletionResult = (() => {
     },
   };
 })();
+
