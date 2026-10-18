@@ -1,0 +1,826 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A fun feelings vocabulary game for CE2 English students." />
+    <title>Feelings | CE2 Learning Games</title>
+    
+    
+    
+    
+    
+  <style>:root { font-family: "Nunito", system-ui, sans-serif; color: #26345d; background: #f5f1ff; }
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; min-height: 100vh; background: radial-gradient(circle at 10% 15%, #fff0a8 0 75px, transparent 77px), radial-gradient(circle at 90% 80%, #c4f1e6 0 110px, transparent 112px), linear-gradient(145deg, #f8f5ff, #fffaf0); }
+button, a { font: inherit; }
+.game-page { width: min(920px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 60px; }
+.home-link { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; color: #5c48bd; font-weight: 800; text-decoration: none; }
+.home-link:hover { text-decoration: underline; }
+.home-link:focus-visible, button:focus-visible, .secondary-button:focus-visible { outline: 4px solid #f6c936; outline-offset: 4px; }
+.game-panel { overflow: hidden; min-height: 650px; background: white; border: 3px solid #ebe5ff; border-radius: 32px; box-shadow: 0 18px 50px rgba(66, 48, 126, .16); }
+.game-header { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 24px 32px; color: white; background: linear-gradient(125deg, #6750cf, #8d6de4); }
+.title-wrap { display: flex; align-items: center; gap: 14px; }
+.game-icon { display: grid; place-items: center; width: 58px; height: 58px; font-size: 32px; background: #ffd65a; border-radius: 18px; box-shadow: 0 5px 0 #cfa322; }
+.kicker { margin: 0; color: #e8e1ff; font-size: .75rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+h1 { margin: 0; font-family: "Baloo 2", sans-serif; font-size: clamp(1.75rem, 4vw, 2.4rem); line-height: 1; }
+.score-pill { flex: 0 0 auto; padding: 10px 16px; color: #3e326f; background: white; border-radius: 30px; font-size: 1.05rem; }
+.progress-info { display: flex; justify-content: space-between; padding: 25px 34px 9px; color: #68759a; font-size: .96rem; font-weight: 800; }
+.progress-track { height: 12px; margin: 0 34px; overflow: hidden; background: #e9e5f3; border-radius: 20px; }
+.progress-fill { width: 8.33%; height: 100%; background: linear-gradient(90deg, #69d3b6, #49bd9e); border-radius: inherit; transition: width .35s ease; }
+.question-area { padding: 31px 32px 42px; text-align: center; }
+.instruction { margin: 0 0 13px; color: #667397; font-size: 1.18rem; font-weight: 800; }
+.sentence { display: grid; place-items: center; min-height: 115px; width: min(740px, 100%); margin: 0 auto; padding: 20px 34px; color: #5941bf; background: #f0ecff; border: 3px dashed #a896ed; border-radius: 22px; font-family: "Baloo 2", sans-serif; font-size: clamp(1.65rem, 4vw, 2.55rem); font-weight: 800; line-height: 1.2; }
+.answers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; width: min(740px, 100%); margin: 27px auto 0; }
+.answer-button { min-height: 76px; padding: 12px 16px; color: #344269; background: white; border: 3px solid #d8dff1; border-radius: 18px; cursor: pointer; font-size: clamp(1.1rem, 2.5vw, 1.35rem); font-weight: 800; text-transform: capitalize; box-shadow: 0 6px 0 #cbd3e8; transition: transform .15s ease, box-shadow .15s ease, background .15s ease; }
+.answer-button:hover:not(:disabled) { transform: translateY(-3px); border-color: #9d8be6; box-shadow: 0 9px 0 #d3caf5; }
+.answer-button.wrong { color: #a63e52; background: #ffe6e9; border-color: #f27d91; box-shadow: 0 5px 0 #dd697d; animation: shake .3s ease; }
+.answer-button.correct { color: #176a55; background: #dff9ee; border-color: #53c7a7; box-shadow: 0 5px 0 #3aa88a; }
+.answer-button:disabled { cursor: default; opacity: .65; }
+.answer-button.correct:disabled { opacity: 1; }
+.feedback { min-height: 32px; margin: 22px 0 8px; font-size: 1.3rem; font-weight: 800; }
+.feedback--correct { color: #19836a; }
+.feedback--wrong { color: #c14a5f; }
+.primary-button, .secondary-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; padding: 12px 25px; border-radius: 16px; font-weight: 800; text-decoration: none; cursor: pointer; }
+.primary-button { color: white; background: #6750cf; border: 0; box-shadow: 0 6px 0 #4935a8; }
+.primary-button:hover { background: #765fe0; transform: translateY(-1px); }
+.next-button { visibility: hidden; }
+.next-button.visible { visibility: visible; }
+.results { padding: 78px 30px; text-align: center; }
+.celebration { font-size: 75px; }
+.results h2 { margin: 10px 0 0; color: #5941bf; font-family: "Baloo 2", sans-serif; font-size: clamp(2.5rem, 7vw, 4rem); }
+.results p { margin: 5px 0 30px; color: #68759a; font-size: 1.45rem; }
+.results p strong { color: #26345d; }
+.result-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; }
+.secondary-button { color: #5941bf; background: white; border: 3px solid #c9bcf6; }
+@keyframes shake { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+@media (max-width: 620px) { .game-page { width: min(100% - 20px, 920px); padding-top: 15px; } .game-panel { min-height: 630px; border-radius: 24px; } .game-header { padding: 20px 18px; } .game-icon { width: 50px; height: 50px; } .score-pill { padding: 9px 12px; font-size: .92rem; } .progress-info { padding: 22px 20px 8px; } .progress-track { margin: 0 20px; } .question-area { padding: 26px 18px 36px; } .sentence { min-height: 105px; padding: 18px; } .answers { grid-template-columns: 1fr; gap: 12px; margin-top: 23px; } .answer-button { min-height: 60px; } }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+[hidden] { display: none !important; }
+.exercise-picker { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; padding: 22px 18px 0; }
+.exercise-picker button[aria-pressed="true"] { color: white; background: #6750cf; border-color: #6750cf; }
+.feeling-picture { display: grid; place-items: center; width: min(350px, 100%); min-height: 200px; margin: 0 auto; padding: 20px; background: #fff6d6; border: 3px dashed #e7c75e; border-radius: 24px; font-size: clamp(6rem, 20vw, 9rem); line-height: 1.2; }
+.word-order { grid-template-columns: 1fr; }
+.built-sentence { margin: 0; min-height: 48px; font-size: 1.4rem; }
+.word-bank { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.word-bank button:disabled { opacity: .5; }
+
+
+[hidden] { display: none !important; }
+.completion-form, .teacher-form { width: min(480px, 100%); margin: 28px auto; padding: 22px; border: 2px solid #d8dff1; border-radius: 18px; text-align: left; }
+.completion-form h3 { margin-top: 0; }
+.completion-form label, .teacher-form label { display: block; margin: 15px 0 6px; font-weight: 800; }
+input, select { width: 100%; min-height: 46px; padding: 10px; font: inherit; border: 2px solid #9a8bce; border-radius: 8px; }
+input:focus-visible, select:focus-visible { outline: 3px solid #f6c936; outline-offset: 2px; }
+.completion-form button, .teacher-form button { margin-top: 20px; }
+.results .completion-form p, .score-note, .submission-status { font-size: 1rem; margin: 12px 0; }
+button:disabled { cursor: default; opacity: .65; }
+.teacher-content { padding: 24px; }
+.teacher-toolbar { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; margin-bottom: 28px; }
+th, td { padding: 12px; border-bottom: 1px solid #d8dff1; text-align: left; }
+th { background: #f0ecff; }
+.teacher-status { min-height: 24px; }
+
+.student-list { list-style: none; margin: 0 0 28px; padding: 0; }
+.student-results { border-bottom: 1px solid #d8dff1; }
+.student-results summary { padding: 12px; cursor: pointer; font-weight: 700; text-align: left; overflow-wrap: anywhere; }
+.student-results summary:hover { background: #f0ecff; }
+.student-results summary:focus-visible { outline: 3px solid #9a8bce; outline-offset: -3px; }
+.student-results[open] summary { background: #f0ecff; }
+.student-results .table-wrap { padding: 12px; }
+.student-results table { margin-bottom: 0; }
+
+.teacher-form .stay-signed-in { display: flex; align-items: center; gap: 10px; font-weight: 400; }
+.stay-signed-in input { width: 18px; height: 18px; min-height: 0; padding: 0; flex: 0 0 18px; }
+
+.all-games-completed { display: inline-block; margin-left: 10px; color: #18733b; font-style: italic; font-weight: 500; }
+
+.teacher-gift{display:inline-flex;margin-left:12px;align-items:center;font-weight:700}.send-gift{border:0;background:#6655c7;color:white;font:inherit;font-weight:800;border-radius:12px;padding:10px 15px;cursor:pointer}.gift-student{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;padding:15px;border-bottom:1px solid #ddd}
+
+
+.gift-actions{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin:25px 0}.gift-actions button,.gift-card,#giftLookup button,.certificate-actions button{border:0;border-radius:14px;padding:15px 22px;background:#6655c7;color:white;font:inherit;font-weight:800;cursor:pointer}#giftsDialog{width:min(800px,94vw)}#giftLookup{display:grid;gap:10px;margin:20px 0}#giftLookup input,#giftLookup select{width:100%;padding:12px;border:2px solid #d8d0ef;border-radius:10px;font:inherit;margin:0}#giftLookup button{justify-self:start}#giftList{display:flex;gap:15px;flex-wrap:wrap;margin:20px 0}.gift-card{min-height:115px;background:#fff0be;color:#5143a8;font-size:1.3rem;border:2px solid #e8c45e}.certificate{text-align:center;border:7px double #c79832;border-radius:12px;padding:30px 20px;background:#fffdf5}.certificate .seal{font-size:3rem}.certificate h3{font-size:clamp(1.5rem,4vw,2.3rem);color:#6655c7;margin:12px}.certificate-name{font-size:clamp(1.6rem,5vw,2.8rem);font-weight:900;overflow-wrap:anywhere}.certificate-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:22px}.confetti{position:fixed;inset:0;pointer-events:none;z-index:10000;overflow:hidden}.confetti i{position:absolute;left:var(--x);top:-20px;width:10px;height:17px;animation:confetti-fall 2.8s var(--delay) ease-in forwards}@keyframes confetti-fall{to{transform:translateY(105vh) rotate(var(--spin))}}@media print{body>*{display:none!important}#giftsDialog{display:block!important;position:static;max-height:none;width:100%;box-shadow:none;padding:0}#giftsDialog>*{display:none!important}#giftsDialog #certificate{display:block!important}#certificate .certificate-actions{display:none!important}dialog::backdrop{background:none}}
+
+#giftsDialog{max-height:92vh;overflow:auto;border:0;border-radius:26px;padding:28px;background:#fffaf1;color:#252352;font-family:Nunito,system-ui,sans-serif;box-shadow:0 20px 80px #25235244}#giftsDialog::backdrop{background:#25235299}#giftsDialog .dialog-top{display:flex;justify-content:space-between;align-items:center;gap:15px}#closeGifts{border:0;border-radius:50%;width:44px;height:44px;font-size:1.2rem;cursor:pointer}.gift-actions button:focus-visible,.gift-card:focus-visible,#giftsDialog button:focus-visible{outline:3px solid #c79832;outline-offset:4px}[hidden]{display:none!important}
+
+
+.completion-check{display:inline-block;margin:6px 0 6px 10px;padding:5px 9px;border-radius:12px;background:#d9f0de;color:#174b40;font-size:.8rem;font-weight:800;line-height:1.3}.folder-game.is-complete,.game-card.is-complete,.game-card--rhymes.is-complete,.game-card--imperatives.is-complete,.game-card--feelings.is-complete,.game-card--be.is-complete,.lesson-folder.is-complete{background:#e9f6eb;border-color:#559968}.exercise-picker [data-progress].is-complete{background:#e9f6eb;border-color:#559968;color:#174b40}.game-card__content>.completion-check{margin-left:0}.exercise-progress{margin:0;padding:0 24px 12px}.unit-progress{text-align:center;margin:0}.lesson-folder .completion-check{align-self:flex-start}.folder-game .completion-check{font-size:.8rem;display:inline-block}.game-card.is-complete>.completion-check{margin-left:0}
+
+
+.demo-bar{padding:16px;background:#fff6d9;text-align:center;font-family:sans-serif}.demo-bar button{margin:6px;padding:10px;border-radius:12px;cursor:pointer}</style></head>
+  <body><aside class="demo-bar"><strong>CE2 demo — sample names only</strong><p>Choose CE2 A → Demo Student 1 or CE2 D → Demo Student 2. Finish the game to try sending a result.</p><p>Results stay in this demo.</p><button type="button" data-gifts="gifts">Check my gifts 🎁</button><button type="button" data-gifts="certificates">My certificates 🏅</button></aside>
+    <main class="game-page">
+      <a class="home-link" href="#"><span aria-hidden="true">←</span> Back to Unit 1</a>
+
+      <section class="game-panel" aria-labelledby="game-title">
+        <header class="game-header">
+          <div class="title-wrap">
+            <span class="game-icon" aria-hidden="true">😊</span>
+            <div><p class="kicker">Vocabulary game</p><h1 id="game-title">Feelings</h1></div>
+          </div>
+          <div class="score-pill">⭐ Score: <strong id="score">0</strong></div>
+        </header>
+
+        <nav class="exercise-picker" aria-label="Choose an exercise">
+          <button class="secondary-button" id="sentence-mode" data-progress="feelings-sentences" type="button" aria-pressed="true">📝 Sentences</button>
+          <button class="secondary-button" id="picture-mode" data-progress="feelings-pictures" type="button" aria-pressed="false">🖼️ Picture matching</button>
+          <button class="secondary-button" id="order-mode" data-progress="feelings-order" type="button" aria-pressed="false">🧩 Build a sentence</button>
+        </nav>
+        <div id="quiz-view">
+          <div class="progress-info">
+            <span>Question <strong id="question-number">1</strong> / <span id="question-total">18</span></span>
+            <span id="progress-label">Let’s begin!</span>
+          </div>
+          <div class="progress-track" role="progressbar" aria-label="Game progress" aria-valuemin="0" aria-valuemax="18" aria-valuenow="1">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+
+          <div class="question-area">
+            <p class="instruction" id="instruction">How do I feel?</p>
+            <div class="sentence" id="sentence">I feel _____ when it's really sunny outside.</div>
+            <div class="feeling-picture" id="feeling-picture" role="img" hidden></div>
+            <div class="answers" id="answers" aria-label="Answer choices"></div>
+            <p class="feedback" id="feedback" aria-live="polite"></p>
+            <button class="primary-button next-button" id="next-button" type="button">Next Question <span aria-hidden="true">→</span></button>
+          </div>
+        </div>
+
+        <div class="results" id="results" hidden>
+          <div class="celebration" aria-hidden="true">🎉</div>
+          <h2 tabindex="-1">Great work!</h2>
+          <p>Your score: <strong><span id="final-score">0</span> / <span id="final-total">18</span></strong></p>
+          <div class="result-actions">
+            <button class="primary-button" id="play-again" type="button">↻ Play Again</button>
+            <a class="secondary-button" href="#">← Back to Unit 1</a>
+            <a class="secondary-button" href="#">⌂ Back to CE2 Homepage</a>
+          </div>
+        </div>
+      </section>
+    </main>
+    
+    
+    
+    
+  <dialog id="giftsDialog" aria-labelledby="giftsTitle"><div class="dialog-top"><h2 id="giftsTitle">Check my gifts 🎁</h2><button id="closeGifts" aria-label="Close gifts">✕</button></div><form id="giftLookup"><label for="giftName">Your name</label><select id="giftName" name="gift_name" required><option value="">Choose your class first</option></select><label for="giftSection">Your class</label><select id="giftSection" name="gift_section" required><option value="">Choose your class</option><option>CE2 A</option><option>CE2 D</option></select><button type="submit">Check →</button></form><p id="giftStatus" role="status" aria-live="polite"></p><div id="giftList"></div><section id="certificate" class="certificate" hidden><div class="seal" aria-hidden="true">🏅 ⭐ 🏅</div><h3 id="certificateHeading" tabindex="-1">Certificate of achievement</h3><p>Awarded to</p><p id="certificateName" class="certificate-name"></p><h3>Congratulations!</h3><p>You completed all <strong>Unit 1 games!</strong></p><p>CE2 · Unit 1</p><p>From: <strong>Mrs. Reem</strong></p><p id="certificateDate"></p><div class="certificate-actions"><button id="collectionFromGift">My certificates 🏅</button><button id="printCertificate">Print / Save as PDF</button></div></section></dialog>
+<script>// Registered names supplied by Mrs. Reem. Keep each name stable to retain its results.
+window.StudentRoster = (() => {
+  const classes = {"CE2 A":["Demo Student 1"],"CE2 D":["Demo Student 2"]};
+  function bind(form, nameField, sectionField) {
+    const name = form.elements[nameField], section = form.elements[sectionField];
+    const nameLabel = form.querySelector(`label[for="${name.id}"]`);
+    const sectionLabel = form.querySelector(`label[for="${section.id}"]`);
+    // Present the class first, followed by its registered names.
+    form.insertBefore(sectionLabel, nameLabel);
+    form.insertBefore(section, nameLabel);
+    function refresh() {
+      name.setCustomValidity('');
+      const names = classes[section.value] || [];
+      name.replaceChildren(new Option(names.length ? 'Choose your name' : 'Choose your class first', ''));
+      for (const value of [...names].sort((a, b) => a.localeCompare(b, 'en'))) {
+        name.add(new Option(value, value));
+      }
+    }
+    section.addEventListener('change', refresh);
+    name.addEventListener('change', () => name.setCustomValidity(''));
+    form.addEventListener('reset', () => queueMicrotask(refresh));
+    form.addEventListener('submit', event => {
+      if (!(classes[section.value] || []).includes(name.value)) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        name.setCustomValidity('Please choose your class and your registered name.');
+        name.reportValidity();
+      }
+    }, true);
+    refresh();
+  }
+  return { bind };
+})();
+</script><script>window.ResultsAPI={
+submit:async record=>{window.demoResult=record;},
+gifts:async(name,section)=>[{id:'demo-award',student_name:name,class_section:section,awarded_at:new Date().toISOString(),opened_at:window.demoOpened?new Date().toISOString():null}],
+openGift:async(name,section,id)=>{window.demoOpened=true;return {id,student_name:name,class_section:section,awarded_at:new Date().toISOString(),opened_at:new Date().toISOString()};}
+};</script><script>window.GiftConfig = {
+  "level": "CE2",
+  "sections": [
+    "CE2 A",
+    "CE2 D"
+  ],
+  "allSections": [
+    "CP C",
+    "CP F",
+    "CE2 A",
+    "CE2 D",
+    "CM1 A",
+    "CM1 D"
+  ],
+  "catalog": {
+    "CP": [
+      {
+        "game": "School supplies",
+        "exercise": "Picture pairs"
+      },
+      {
+        "game": "School supplies",
+        "exercise": "What’s missing?"
+      },
+      {
+        "game": "My daily routine",
+        "exercise": "Picture pairs"
+      },
+      {
+        "game": "My daily routine",
+        "exercise": "What’s missing?"
+      },
+      {
+        "game": "There is / There are",
+        "exercise": "Choose the sentence"
+      }
+    ],
+    "CE2": [
+      {
+        "game": "Rhyming Words",
+        "exercise": "Rhyming words"
+      },
+      {
+        "game": "Rhyming Words",
+        "exercise": "Picture clues"
+      },
+      {
+        "game": "Imperative Verbs",
+        "exercise": "Sort sentences"
+      },
+      {
+        "game": "Imperative Verbs",
+        "exercise": "Choose a sentence"
+      },
+      {
+        "game": "Feelings",
+        "exercise": "Picture matching"
+      },
+      {
+        "game": "Feelings",
+        "exercise": "Build a sentence"
+      },
+      {
+        "game": "Feelings",
+        "exercise": "Sentences and situations"
+      },
+      {
+        "game": "Verb to Be",
+        "exercise": "affirmative"
+      },
+      {
+        "game": "Verb to Be",
+        "exercise": "negative"
+      },
+      {
+        "game": "Verb to Be",
+        "exercise": "interrogative"
+      },
+      {
+        "game": "Verb to Be",
+        "exercise": "mixed"
+      }
+    ],
+    "CM1": [
+      {
+        "game": "CM1 · Capitalization and Punctuation",
+        "exercise": "Capitalize and Punctuate"
+      },
+      {
+        "game": "CM1 · Capitalization and Punctuation",
+        "exercise": "Full Stop or Question Mark?"
+      },
+      {
+        "game": "CM1 · London Landmarks",
+        "exercise": "Guess the Landmark"
+      },
+      {
+        "game": "CM1 · London Landmarks",
+        "exercise": "Who or What Am I?"
+      },
+      {
+        "game": "CM1 · London Landmarks",
+        "exercise": "Match the Landmark"
+      },
+      {
+        "game": "CM1 · Family Tree",
+        "exercise": "Family Tree Quiz"
+      },
+      {
+        "game": "CM1 · Family Tree",
+        "exercise": "Choose the Relationship"
+      },
+      {
+        "game": "CM1 · Subject Pronouns",
+        "exercise": "Replace the Subject"
+      },
+      {
+        "game": "CM1 · Subject Pronouns",
+        "exercise": "Pronoun Challenge"
+      },
+      {
+        "game": "CM1 · Object Pronouns",
+        "exercise": "Replace the Object"
+      },
+      {
+        "game": "CM1 · Object Pronouns",
+        "exercise": "Subject or Object Pronoun?"
+      },
+      {
+        "game": "CM1 · Verb to Be",
+        "exercise": "Am / Is / Are"
+      },
+      {
+        "game": "CM1 · Verb to Be",
+        "exercise": "Make It Negative"
+      },
+      {
+        "game": "CM1 · Verb to Be",
+        "exercise": "Make a Question"
+      },
+      {
+        "game": "CM1 · Prepositions of Place",
+        "exercise": "Where is it?"
+      },
+      {
+        "game": "CM1 · Prepositions of Place",
+        "exercise": "Choose the Correct Sentence"
+      }
+    ]
+  }
+};
+
+</script><script>window.GameProgressConfig = {
+  "storageKey": "ce2-unit1-completed",
+  "entries": [
+    {
+      "id": "rhymes-words",
+      "group": "rhyming-words",
+      "game": "Rhyming Words",
+      "exercise": "Rhyming words"
+    },
+    {
+      "id": "rhymes-pictures",
+      "group": "rhyming-words",
+      "game": "Rhyming Words",
+      "exercise": "Picture clues"
+    },
+    {
+      "id": "imperatives-sort",
+      "group": "imperative-verbs",
+      "game": "Imperative Verbs",
+      "exercise": "Sort sentences"
+    },
+    {
+      "id": "imperatives-choose",
+      "group": "imperative-verbs",
+      "game": "Imperative Verbs",
+      "exercise": "Choose a sentence"
+    },
+    {
+      "id": "feelings-pictures",
+      "group": "feelings",
+      "game": "Feelings",
+      "exercise": "Picture matching"
+    },
+    {
+      "id": "feelings-order",
+      "group": "feelings",
+      "game": "Feelings",
+      "exercise": "Build a sentence"
+    },
+    {
+      "id": "feelings-sentences",
+      "group": "feelings",
+      "game": "Feelings",
+      "exercise": "Sentences and situations"
+    },
+    {
+      "id": "be-affirmative",
+      "group": "verb-to-be",
+      "game": "Verb to Be",
+      "exercise": "affirmative"
+    },
+    {
+      "id": "be-negative",
+      "group": "verb-to-be",
+      "game": "Verb to Be",
+      "exercise": "negative"
+    },
+    {
+      "id": "be-interrogative",
+      "group": "verb-to-be",
+      "game": "Verb to Be",
+      "exercise": "interrogative"
+    },
+    {
+      "id": "be-mixed",
+      "group": "verb-to-be",
+      "game": "Verb to Be",
+      "exercise": "mixed"
+    }
+  ]
+};
+
+</script><script>window.GameProgress=(()=>{
+ const config=window.GameProgressConfig;
+ function history(){try{const data=JSON.parse(localStorage.getItem(config.storageKey)||'{}');return data&&typeof data==='object'&&!Array.isArray(data)?data:{};}catch{return {};}}
+ function completed(id,data=history()){const result=data[id];return !!result&&Number.isFinite(result.score)&&Number.isFinite(result.total)&&result.total>0&&result.score>=0&&result.score<=result.total;}
+ function render(){const data=history();document.querySelectorAll('[data-progress],[data-progress-group],[data-progress-unit]').forEach(el=>{const entries=el.hasAttribute('data-progress-unit')?config.entries:el.dataset.progressGroup?config.entries.filter(e=>e.group===el.dataset.progressGroup):config.entries.filter(e=>e.id===el.dataset.progress);const done=entries.length>0&&entries.every(e=>completed(e.id,data));el.classList.toggle('is-complete',done);const host=el.matches('details')?el.querySelector('summary'):(el.querySelector('.game-card__content')||el);host.querySelector(':scope > .completion-check')?.remove();if(done){const badge=document.createElement('span');badge.className='completion-check';badge.textContent=el.hasAttribute('data-progress-unit')?'✓ All games completed':'✓ Completed';host.append(badge);}});}
+ function save(game,exercise,score,total){const entry=config.entries.find(e=>e.game===game&&e.exercise===exercise);if(!entry||!Number.isFinite(score)||!Number.isFinite(total)||total<=0||score<0||score>total)return;try{const data=history();data[entry.id]={score,total};localStorage.setItem(config.storageKey,JSON.stringify(data));}catch{}render();}
+ window.addEventListener('storage',event=>{if(event.key===config.storageKey||event.key===null)render();});window.addEventListener('pageshow',render);
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',render);else render();
+ return {save,completed,render};
+})();
+
+</script><script>// Uses the game's existing answer handler and retry-friendly scoring.
+function renderWordOrder(question, container) {
+  container.replaceChildren();
+  container.classList.add("word-order");
+  const built = document.createElement("p");
+  built.className = "built-sentence";
+  built.setAttribute("aria-live", "polite");
+  const bank = document.createElement("div");
+  bank.className = "word-bank";
+  const selected = [];
+  const check = document.createElement("button");
+  check.type = "button";
+  check.className = "answer-button";
+  check.textContent = "Check sentence";
+  check.dataset.answer = "";
+  check.disabled = true;
+  const clear = document.createElement("button");
+  clear.type = "button";
+  clear.className = "secondary-button";
+  clear.textContent = "Start sentence again";
+  question.words.forEach(word => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "secondary-button";
+    button.textContent = word;
+    button.addEventListener("click", () => {
+      selected.push(word);
+      button.disabled = true;
+      built.textContent = selected.join(" ");
+      check.dataset.answer = built.textContent;
+      check.disabled = selected.length !== question.words.length;
+    });
+    bank.append(button);
+  });
+  clear.addEventListener("click", () => {
+    selected.length = 0;
+    built.textContent = "Choose the words below.";
+    check.dataset.answer = "";
+    check.disabled = true;
+    check.classList.remove("wrong");
+    check.removeAttribute("aria-label");
+    bank.querySelectorAll("button").forEach(button => { button.disabled = false; });
+    bank.querySelector("button").focus();
+  });
+  built.textContent = "Choose the words below.";
+  container.append(built, bank, check, clear);
+}
+
+</script><script>window.CompletionResult = (() => {
+  const host = document.querySelector('#results');
+  const form = document.createElement('form');
+  form.className = 'completion-form';
+  form.innerHTML = `
+    <h3>Send your result to your teacher</h3>
+    <p class="score-note">Your score counts questions you solved, including retries.</p>
+    <label for="student-name">Student name</label>
+    <select id="student-name" name="student_name" required><option value="">Choose your class first</option></select>
+    <label for="class-section">Class section</label>
+    <select id="class-section" name="class_section" required>
+      <option value="">Choose your section</option>
+      <option>CE2 A</option><option>CE2 D</option>
+    </select>
+    <button class="primary-button" type="submit">Submit result</button>
+    <p class="submission-status" role="status" aria-live="polite"></p>`;
+  host.insertBefore(form, host.querySelector('.result-actions'));
+  StudentRoster.bind(form, 'student_name', 'class_section');
+  const status = form.querySelector('.submission-status');
+  const controls = [...form.querySelectorAll('input, select, button')];
+  let completion = null;
+  let sending = false;
+  let saved = false;
+  let record = null;
+  function reset() {
+    completion = null;
+    record = null;
+    saved = false;
+    form.reset();
+    status.textContent = '';
+    controls.forEach(control => { control.disabled = false; });
+  }
+  form.addEventListener('submit', async event => {
+    event.preventDefault();
+    if (!completion || sending || saved) return;
+    const name = form.elements.student_name.value.trim();
+    if (!name) {
+      form.elements.student_name.setCustomValidity('Please enter your name.');
+      form.elements.student_name.reportValidity();
+      return;
+    }
+    record ||= { ...completion, student_name: name, class_section: form.elements.class_section.value };
+    // Keep the same payload and ID on retry, even if the network response was lost.
+    const submitted = record;
+    sending = true;
+    controls.forEach(control => { control.disabled = true; });
+    status.textContent = 'Sending… Please wait.';
+    try {
+      await ResultsAPI.submit(submitted);
+      if (record === submitted) {
+        saved = true;
+        status.textContent = 'Demo result saved! No result was sent to your teacher.';
+      }
+    } catch {
+      if (record === submitted) {
+        status.textContent = 'Your result could not be confirmed. Check your connection and press Submit result to retry.';
+        // Freeze identity while retrying this same completion.
+        form.querySelector('button').disabled = false;
+      }
+    } finally {
+      sending = false;
+    }
+  });
+  form.elements.student_name.addEventListener('input', () => form.elements.student_name.setCustomValidity(''));
+  return {
+    reset,
+    show(game, exercise, score, total) {
+      GameProgress.save(game, exercise, score, total);
+      reset();
+      completion = { id: crypto.randomUUID(), game, exercise, score, total };
+    },
+  };
+})();
+
+</script><script>const sentenceQuestions = [
+  { sentence: "I feel _____ when it's really sunny outside.", choices: ["hot", "cold", "sad"], answer: "hot" },
+  { sentence: "I feel _____ when I have a big test coming up.", choices: ["worried", "excited", "calm"], answer: "worried" },
+  { sentence: "I feel _____ when it's snowing outside.", choices: ["cold", "hot", "happy"], answer: "cold" },
+  { sentence: "I feel _____ when I'm playing with my favorite toy.", choices: ["happy", "scared", "worried"], answer: "happy" },
+  { sentence: "I feel _____ after a long day at school.", choices: ["tired", "excited", "angry"], answer: "tired" },
+  { sentence: "I feel _____ when I watch a scary movie.", choices: ["scared", "happy", "calm"], answer: "scared" },
+  { sentence: "I feel _____ when someone takes my things without asking.", choices: ["angry", "sad", "cold"], answer: "angry" },
+  { sentence: "I feel _____ when I know we're going on a field trip.", choices: ["excited", "tired", "happy"], answer: "excited" },
+  { sentence: "I feel _____ when I take deep breaths and relax.", choices: ["calm", "worried", "angry"], answer: "calm" },
+  { sentence: "I feel _____ when I miss my family.", choices: ["sad", "happy", "excited"], answer: "sad" },
+  { sentence: "I feel _____ when I run outside on a very warm day.", choices: ["hot", "cold", "tired"], answer: "hot" },
+  { sentence: "I feel _____ when I hear a strange noise at night.", choices: ["scared", "calm", "happy"], answer: "scared" },
+
+  { section: "Choose the correct feeling", sentence: "It is really sunny outside.", choices: ["hot", "cold", "sad"], answer: "hot" },
+  { section: "Choose the correct feeling", sentence: "I have a big test coming up.", choices: ["worried", "happy", "calm"], answer: "worried" },
+  { section: "Choose the correct feeling", sentence: "I watch a scary movie.", choices: ["scared", "excited", "tired"], answer: "scared" },
+  { section: "Choose the correct feeling", sentence: "We are going on a field trip.", choices: ["excited", "angry", "cold"], answer: "excited" },
+  { section: "Choose the correct feeling", sentence: "I take deep breaths and relax.", choices: ["calm", "worried", "hot"], answer: "calm" },
+  { section: "Choose the correct feeling", sentence: "I miss my family.", choices: ["sad", "happy", "excited"], answer: "sad" },
+];
+
+const pictureQuestions = [
+  {
+    "picture": "🥵",
+    "description": "A face sweating in the heat",
+    "choices": [
+      "hot",
+      "cold",
+      "sad"
+    ],
+    "answer": "hot"
+  },
+  {
+    "picture": "😟",
+    "description": "A face with raised eyebrows and an uneasy mouth",
+    "choices": [
+      "calm",
+      "happy",
+      "worried"
+    ],
+    "answer": "worried"
+  },
+  {
+    "picture": "🥶",
+    "description": "A blue face with chattering teeth and ice",
+    "choices": [
+      "angry",
+      "cold",
+      "hot"
+    ],
+    "answer": "cold"
+  },
+  {
+    "picture": "😊",
+    "description": "A face with a big smile",
+    "choices": [
+      "happy",
+      "sad",
+      "scared"
+    ],
+    "answer": "happy"
+  },
+  {
+    "picture": "😴",
+    "description": "A face with closed eyes and sleep symbols",
+    "choices": [
+      "excited",
+      "angry",
+      "tired"
+    ],
+    "answer": "tired"
+  },
+  {
+    "picture": "😨",
+    "description": "A face with wide eyes and a frightened open mouth",
+    "choices": [
+      "happy",
+      "scared",
+      "calm"
+    ],
+    "answer": "scared"
+  },
+  {
+    "picture": "😠",
+    "description": "A face with a frown and eyebrows pointing down",
+    "choices": [
+      "angry",
+      "happy",
+      "cold"
+    ],
+    "answer": "angry"
+  },
+  {
+    "picture": "🤩",
+    "description": "A smiling face with stars in its eyes",
+    "choices": [
+      "tired",
+      "sad",
+      "excited"
+    ],
+    "answer": "excited"
+  },
+  {
+    "picture": "😌",
+    "description": "A face with gently closed eyes and a relaxed smile",
+    "choices": [
+      "angry",
+      "calm",
+      "worried"
+    ],
+    "answer": "calm"
+  },
+  {
+    "picture": "😢",
+    "description": "A face with a frown and a tear",
+    "choices": [
+      "sad",
+      "happy",
+      "hot"
+    ],
+    "answer": "sad"
+  }
+];
+const orderQuestions = [
+  { section: "Put the words in order", sentence: "The school trip is tomorrow. Build the sentence.", words: ["excited.", "am", "I"], answer: "I am excited." },
+  { section: "Put the words in order", sentence: "I take deep breaths. Build the sentence.", words: ["calm.", "I", "am"], answer: "I am calm." },
+  { section: "Put the words in order", sentence: "I need to sleep. Build the sentence.", words: ["am", "tired.", "I"], answer: "I am tired." },
+];
+let questions = sentenceQuestions;
+
+const positiveMessages = ["Great job!", "Correct!", "Excellent!", "Well done!"];
+let currentQuestion = 0;
+let score = 0;
+let questionSolved = false;
+
+const elements = {
+  quizView: document.querySelector("#quiz-view"), results: document.querySelector("#results"),
+  questionNumber: document.querySelector("#question-number"), sentence: document.querySelector("#sentence"),
+  instruction: document.querySelector("#instruction"), answers: document.querySelector("#answers"),
+  picture: document.querySelector("#feeling-picture"),
+  questionTotal: document.querySelector("#question-total"), finalTotal: document.querySelector("#final-total"),
+  sentenceMode: document.querySelector("#sentence-mode"), pictureMode: document.querySelector("#picture-mode"),
+  feedback: document.querySelector("#feedback"),
+  score: document.querySelector("#score"), nextButton: document.querySelector("#next-button"),
+  progressFill: document.querySelector("#progress-fill"), progressBar: document.querySelector("[role='progressbar']"),
+  progressLabel: document.querySelector("#progress-label"), finalScore: document.querySelector("#final-score"),
+  playAgain: document.querySelector("#play-again"),
+};
+
+function renderQuestion() {
+  questionSolved = false;
+  const question = questions[currentQuestion];
+  elements.questionNumber.textContent = currentQuestion + 1;
+  elements.instruction.textContent = question.section || "How do I feel?";
+  const isPicture = Boolean(question.picture);
+  elements.instruction.textContent = isPicture ? "Match the picture to the correct word." : (question.section || "How do I feel?");
+  elements.sentence.hidden = isPicture;
+  elements.picture.hidden = !isPicture;
+  elements.sentence.textContent = question.sentence || "";
+  elements.picture.textContent = question.picture || "";
+  elements.picture.setAttribute("aria-label", question.description || "");
+  elements.questionTotal.textContent = questions.length;
+  elements.finalTotal.textContent = questions.length;
+  elements.progressBar.setAttribute("aria-valuemax", questions.length);
+  elements.feedback.textContent = "";
+  elements.feedback.className = "feedback";
+  elements.nextButton.classList.remove("visible");
+  elements.progressFill.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
+  elements.progressBar.setAttribute("aria-valuenow", currentQuestion + 1);
+  elements.progressLabel.textContent = currentQuestion === 0 ? "Let’s begin!" : (question.section ? "Choose the best answer!" : "Keep going!");
+  if (question.words) { renderWordOrder(question, elements.answers); return; }
+  elements.answers.classList.remove("word-order");
+  elements.answers.replaceChildren(...question.choices.map((choice) => {
+    const button = document.createElement("button");
+    button.className = "answer-button";
+    button.type = "button";
+    button.dataset.answer = choice;
+    button.textContent = choice;
+    return button;
+  }));
+}
+
+function checkAnswer(button) {
+  if (questionSolved) return;
+  if (button.dataset.answer === questions[currentQuestion].answer) {
+    questionSolved = true;
+    score += 1;
+    button.classList.add("correct");
+    button.setAttribute("aria-label", `${button.textContent}, correct answer`);
+    elements.answers.querySelectorAll("button").forEach((answer) => { answer.disabled = true; });
+    elements.score.textContent = score;
+    elements.feedback.textContent = positiveMessages[currentQuestion % positiveMessages.length];
+    elements.feedback.className = "feedback feedback--correct";
+    elements.nextButton.classList.add("visible");
+    elements.nextButton.focus();
+  } else {
+    button.classList.add("wrong");
+    button.disabled = true;
+    elements.feedback.textContent = "Try again!";
+    elements.feedback.className = "feedback feedback--wrong";
+  }
+}
+
+function nextQuestion() {
+  currentQuestion += 1;
+  if (currentQuestion < questions.length) renderQuestion();
+  else showResults();
+}
+
+function showResults() {
+  CompletionResult.show("Feelings", questions === pictureQuestions ? "Picture matching" : (questions === orderQuestions ? "Build a sentence" : "Sentences and situations"), score, questions.length);
+  elements.quizView.hidden = true;
+  elements.results.hidden = false;
+  elements.finalScore.textContent = score;
+  elements.results.querySelector("h2").focus();
+}
+
+function restartGame() {
+  CompletionResult.reset();
+  currentQuestion = 0;
+  score = 0;
+  elements.score.textContent = "0";
+  elements.results.hidden = true;
+  elements.quizView.hidden = false;
+  renderQuestion();
+}
+
+elements.answers.addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-answer]");
+  if (button) checkAnswer(button);
+});
+elements.nextButton.addEventListener("click", nextQuestion);
+elements.playAgain.addEventListener("click", restartGame);
+function selectExercise(mode) {
+  questions = mode === "order" ? orderQuestions : (mode === "picture" ? pictureQuestions : sentenceQuestions);
+  const pictureMode = mode === "picture";
+  document.querySelector("#order-mode").setAttribute("aria-pressed", String(mode === "order"));
+  elements.sentenceMode.setAttribute("aria-pressed", String(mode === "sentence"));
+  elements.pictureMode.setAttribute("aria-pressed", String(pictureMode));
+  restartGame();
+}
+elements.sentenceMode.addEventListener("click", () => selectExercise("sentence"));
+elements.pictureMode.addEventListener("click", () => selectExercise("picture"));
+renderQuestion();
+
+document.querySelector("#order-mode").addEventListener("click", () => selectExercise("order"));
+
+</script><script>(() => {
+ const dialog=document.querySelector('#giftsDialog'),form=document.querySelector('#giftLookup'),status=document.querySelector('#giftStatus'),list=document.querySelector('#giftList'),certificate=document.querySelector('#certificate');
+ StudentRoster.bind(form, 'gift_name', 'gift_section');
+ let mode='gifts',identity=null,awards=[],generation=0;
+ function confetti(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const layer=document.createElement('div');layer.className='confetti';layer.setAttribute('aria-hidden','true');for(let i=0;i<65;i++){const bit=document.createElement('i');bit.style.setProperty('--x',Math.random()*100+'vw');bit.style.setProperty('--delay',Math.random()*.5+'s');bit.style.setProperty('--spin',Math.random()*720+'deg');bit.style.background=['#ffd55b','#6655c7','#df6d42','#46b890','#ed89b6'][i%5];layer.append(bit);}dialog.append(layer);setTimeout(()=>layer.remove(),3500);}
+ function render(){list.replaceChildren();certificate.hidden=true;const available=awards.filter(a=>mode==='gifts'?!a.opened_at:!!a.opened_at);status.textContent=available.length?(mode==='gifts'?'🎁 Gift from Mrs. Reem! Click your gift to open it.':'Your certificate collection'):(mode==='gifts'?'No new gifts yet. Any gift from Mrs. Reem will appear here.':'Your certificates will appear here after you open a gift.');for(const award of available){const b=document.createElement('button');b.className='gift-card';b.textContent=mode==='gifts'?'🎁 Open your Unit 1 gift':'🏅 Unit 1 certificate';b.onclick=async()=>{const run=generation;b.disabled=true;try{let current=award;if(!award.opened_at){current=await ResultsAPI.openGift(identity.name,identity.section,award.id);if(run!==generation)return;awards=awards.map(a=>a.id===current.id?current:a);}showCertificate(current);}catch{if(run===generation){status.textContent='Could not open your gift. Please try again.';b.disabled=false;}}};list.append(b);}}
+ function showCertificate(award){list.replaceChildren();status.textContent='';certificate.hidden=false;document.querySelector('#certificateName').textContent=award.student_name;document.querySelector('#certificateDate').textContent=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Qatar',dateStyle:'long'}).format(new Date(award.awarded_at));document.querySelector('#certificateHeading').focus();}
+ document.querySelectorAll('[data-gifts]').forEach(b=>b.onclick=()=>{generation++;mode=b.dataset.gifts;identity=null;awards=[];form.reset();form.querySelector('button').disabled=false;form.hidden=false;list.replaceChildren();certificate.hidden=true;status.textContent='';document.querySelector('#giftsTitle').textContent=mode==='gifts'?'Check my gifts 🎁':'My certificates 🏅';dialog.showModal();});
+ document.querySelector('#closeGifts').onclick=()=>dialog.close();dialog.addEventListener('close',()=>{dialog.querySelectorAll('.confetti').forEach(x=>x.remove());generation++;identity=null;awards=[];form.reset();list.replaceChildren();certificate.hidden=true;status.textContent='';});
+ form.onsubmit=async event=>{event.preventDefault();const name=form.elements.gift_name.value.trim().replace(/\s+/g,' '),section=form.elements.gift_section.value;if(!name){form.elements.gift_name.setCustomValidity('Please enter your name.');form.elements.gift_name.reportValidity();return;}const run=++generation;const b=form.querySelector('button');b.disabled=true;status.textContent='Checking…';list.replaceChildren();certificate.hidden=true;try{const loaded=await ResultsAPI.gifts(name,section);if(run!==generation)return;identity={name,section};awards=loaded;render();if(mode==='gifts'&&awards.some(a=>!a.opened_at))confetti();}catch{if(run===generation)status.textContent='Could not check gifts. Please try again.';}finally{if(run===generation)b.disabled=false;}};
+ form.elements.gift_name.oninput=()=>form.elements.gift_name.setCustomValidity('');
+ document.querySelector('#collectionFromGift').onclick=()=>{mode='certificates';document.querySelector('#giftsTitle').textContent='My certificates 🏅';render();};
+ document.querySelector('#printCertificate').onclick=()=>window.print();
+})();
+
+</script></body>
+</html>
+
